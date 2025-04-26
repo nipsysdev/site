@@ -1,7 +1,19 @@
 {
   "name": "site",
+  "description": "My personal website",
   "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nipsysdev/site"
+  },
+  "homepage": "https://nipsys.dev/",
+  "author": "Xavier Saliniere <bonjour@xaviers.sh>",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
