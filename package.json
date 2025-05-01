@@ -16,8 +16,8 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "export": "next build",
+    "serve": "npx serve@latest out",
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky"
