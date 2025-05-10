@@ -15,7 +15,7 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "export": "next build",
     "serve": "npx serve@latest out",
     "lint": "next lint",
