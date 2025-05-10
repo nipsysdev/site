@@ -1,0 +1,6 @@
+@import '@srcpunks/src_ui/css';
+@import 'tailwindcss';
+
+:root {
+  --app-color: 340;
+}
