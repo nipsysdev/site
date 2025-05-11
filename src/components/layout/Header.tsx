@@ -1,13 +1,25 @@
 'use client'
 import { PiGithubLogoFill } from 'react-icons/pi'
 import { Button } from '@srcpunks/src_ui'
+import { useLocale, useTranslations } from 'next-intl'
+import { LangLabels } from '@/constants/lang'
+import { Link, usePathname } from '@/i18n/navigation'
 
 export default function Header() {
+  const pathname = usePathname()
+  const locale = useLocale()
+  const t = useTranslations('Core')
+
   return (
     <div className="flex w-full items-center justify-between p-3 text-xs tracking-tighter transition-colors sm:p-5 sm:text-sm">
       <div className="flex gap-x-2 text-xs sm:text-sm">
-        <Button variant="ghost">English</Button>
-        <Button variant="ghost">French</Button>
+        {Object.entries(LangLabels).map(([lang, label]) => (
+          <Button key={lang} variant={locale === lang ? 'outline' : 'ghost'}>
+            <Link href={pathname} locale={lang}>
+              {label}
+            </Link>
+          </Button>
+        ))}
       </div>
 
       <Button variant="link" className="text-secondary">
@@ -17,7 +29,7 @@ export default function Header() {
           target="_blank"
         >
           <PiGithubLogoFill size="1.2rem" className="mr-2" />
-          Source code
+          {t('sourceCode')}
         </a>
       </Button>
     </div>

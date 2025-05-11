@@ -1,13 +1,12 @@
 'use client'
 import { Routes } from '@/constants/routes'
+import { Link, usePathname } from '@/i18n/navigation'
 import {
   Tabcard,
   TabcardList,
   TabcardTrigger,
   TabcardContent,
 } from '@srcpunks/src_ui'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 export default function TerminalWindow({
   children,
