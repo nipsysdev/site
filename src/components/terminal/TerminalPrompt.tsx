@@ -1,13 +1,18 @@
+import { Commands } from '@/constants/commands'
 import { Translator } from '@/i18n/intl'
+import { Key } from '@/types/keyboard'
 import { CommandEntry } from '@/types/terminal'
+import { CompareUtils } from '@/utils/compare-utils'
 import { TerminalUtils } from '@/utils/terminal-utils'
-import { Component, createRef, RefObject } from 'react'
+import { Component, createRef, KeyboardEvent, RefObject } from 'react'
 
 interface Props {
   i18n: Translator
   entry?: CommandEntry
   history?: CommandEntry[]
-  updateSubmission?: (value: string) => void
+  lastKeyDown?: KeyboardEvent | null
+  setSubmission?: (value: string) => void
+  setLastKeyDown?: (value: KeyboardEvent | null) => void
 }
 
 interface State {
@@ -32,6 +37,15 @@ export default class TerminalPrompt extends Component<Props, State> {
   componentDidMount(): void {
     if (this.props.entry) {
       this.setInput(TerminalUtils.GetEntryInput(this.props.entry))
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    if (
+      this.props.lastKeyDown &&
+      CompareUtils.IsNewKeyEvent(prevProps.lastKeyDown, this.props.lastKeyDown)
+    ) {
+      this.keyDownHandler(this.props.lastKeyDown)
     }
   }
 
@@ -81,10 +95,113 @@ export default class TerminalPrompt extends Component<Props, State> {
     this.setState((previousState) => ({ ...previousState, historyIdx: idx }))
   }
 
+  private setAutocomplete(
+    autocomplete: string[] | null,
+    callback?: () => void,
+  ): void {
+    this.setState(
+      (previousState) => ({ ...previousState, autocomplete }),
+      callback,
+    )
+  }
+
+  private resetEntry(): void {
+    this.setState((previousState) => ({
+      ...previousState,
+      historyIdx: -1,
+      inputText: '',
+    }))
+  }
+
   private submit(): void {
-    if (this.props.updateSubmission)
-      this.props.updateSubmission(this.state.inputText)
+    if (this.props.setSubmission) this.props.setSubmission(this.state.inputText)
     this.setInput('')
+  }
+
+  private getPastInputStr(entry: CommandEntry): string {
+    let pastInput = entry.cmdName as string
+    if (entry.option) {
+      pastInput += ` ${entry.option}`
+    }
+    if (entry.argName) {
+      pastInput += ` --${entry.argName}=${entry.argValue}`
+    }
+    return pastInput
+  }
+
+  private updateCursorPosition(): void {
+    setTimeout(() => {
+      if (this.state.inputRef.current) {
+        this.state.inputRef.current.setSelectionRange(
+          this.state.inputText.length,
+          this.state.inputText.length,
+        )
+      }
+    }, 50)
+  }
+
+  private usePreviousEntry() {
+    if (!this.props.history || this.state.historyIdx === 0) return
+    const idx =
+      this.state.historyIdx === -1
+        ? this.props.history.length - 1
+        : this.state.historyIdx - 1
+    this.setInput(this.getPastInputStr(this.props.history[idx]), () => {
+      this.updateCursorPosition()
+      this.setHistoryIdx(idx)
+    })
+  }
+
+  private useNextEntry() {
+    if (!this.props.history || this.state.historyIdx === -1) return
+    let idx = this.state.historyIdx
+
+    if (idx === this.props.history.length - 1) {
+      this.resetEntry()
+      return
+    }
+
+    idx++
+    this.setInput(this.getPastInputStr(this.props.history[idx]), () => {
+      this.updateCursorPosition()
+      this.setHistoryIdx(idx)
+    })
+  }
+
+  private autoComplete(): void {
+    const matchedCmds = Commands.map((cmd) => cmd.name).filter((cmd) =>
+      cmd.startsWith(this.state.inputText),
+    )
+    if (matchedCmds.length === 1) {
+      this.setInput(matchedCmds[0])
+      return
+    }
+    this.setAutocomplete(matchedCmds, () => {
+      this.state.autocompleteRef.current?.scrollIntoView()
+    })
+  }
+
+  private keyDownHandler(event: KeyboardEvent): void {
+    if (!this.props.setLastKeyDown) return
+    if (event.ctrlKey && event.key === Key.c) {
+      return this.resetEntry()
+    }
+
+    switch (event.key) {
+      case Key.Enter:
+        this.props.setLastKeyDown(null)
+        this.submit()
+        break
+      case Key.ArrowUp:
+        this.usePreviousEntry()
+        break
+      case Key.ArrowDown:
+        this.useNextEntry()
+        break
+      case Key.Tab:
+        event.preventDefault()
+        this.autoComplete()
+    }
   }
 
   render = () => (
@@ -101,6 +218,7 @@ export default class TerminalPrompt extends Component<Props, State> {
           spellCheck="false"
           readOnly={!!this.props.entry}
           onChange={(e) => this.setInput(e.target.value)}
+          onKeyDown={this.props.setLastKeyDown}
           onBeforeInput={() => this.setHistoryIdx(-1)}
         />
       </div>

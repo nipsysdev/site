@@ -1,6 +1,5 @@
 'use client'
-import { createContext, useContext, useState } from 'react'
-import type { KeyboardEvent } from 'react'
+import { createContext, KeyboardEvent, useContext, useState } from 'react'
 
 interface AppState {
   isTerminal: boolean

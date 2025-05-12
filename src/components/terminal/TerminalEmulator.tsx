@@ -24,7 +24,7 @@ export default function TerminalEmulator() {
     setSimulatedCmd,
     setSubmission,
   } = useTerminalContext()
-  const { setIsTerminal } = useAppContext()
+  const { lastKeyDown, setIsTerminal, setLastKeyDown } = useAppContext()
   const isPrerender = useIsPrerender()
   const t = useTranslations('Terminal')
 
@@ -112,7 +112,9 @@ export default function TerminalEmulator() {
         ref={mainPrompt}
         i18n={t}
         history={history}
-        updateSubmission={setSubmission}
+        lastKeyDown={lastKeyDown}
+        setSubmission={setSubmission}
+        setLastKeyDown={setLastKeyDown}
       />
     </div>
   )
