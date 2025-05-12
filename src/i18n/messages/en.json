@@ -16,5 +16,11 @@
     "ctrlc": "CTRL+C",
     "web2Loading": "Loading from a centralized server",
     "web3Loading": "Loading from the Swarm network"
+  },
+  "Pages": {
+    "terminal": "terminal",
+    "whoami": "whoami",
+    "mission": "mission",
+    "contact": "contact"
   }
 }

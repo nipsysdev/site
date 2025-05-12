@@ -16,5 +16,11 @@
     "ctrlc": "CTRL+C",
     "web2Loading": "Chargement à partir d'un serveur central",
     "web3Loading": "Chargement à partir du réseau Swarm"
+  },
+  "Pages": {
+    "terminal": "terminal",
+    "whoami": "quisuisje",
+    "mission": "mission",
+    "contact": "contact"
   }
 }

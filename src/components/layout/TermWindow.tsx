@@ -7,12 +7,15 @@ import {
   TabcardTrigger,
   TabcardContent,
 } from '@srcpunks/src_ui'
+import { useTranslations } from 'next-intl'
 
 export default function TerminalWindow({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const t = useTranslations('Pages')
+
   const pathname = usePathname()
   const notfound = '404'
   const activeRouteName =
@@ -29,7 +32,7 @@ export default function TerminalWindow({
       <TabcardList>
         {Object.entries(Routes).map(([routeName, routePath]) => (
           <TabcardTrigger key={routeName} value={routeName} asChild>
-            <Link href={routePath}>{routeName}</Link>
+            <Link href={routePath}>{t(routeName)}</Link>
           </TabcardTrigger>
         ))}
       </TabcardList>
