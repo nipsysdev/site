@@ -10,3 +10,7 @@ export enum ViewRoute {
   Blog = '/blog',
   Contact = '/contact',
 }
+
+export interface RouteData {
+  params: Promise<{ locale: string }>
+}

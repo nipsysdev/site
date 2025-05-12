@@ -1,29 +1,20 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import Header from '@/components/layout/Header'
 import TerminalWindow from '@/components/layout/TermWindow'
+import { MetadataUtils } from '@/utils/metadata-utils'
+import { RouteData } from '@/types/routing'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'Metadata' })
+export const generateMetadata = async (routeData: RouteData) =>
+  await MetadataUtils.setPageMeta(routeData)
 
-  return {
-    title: t('title'),
-    description: t('description'),
-  }
-}
-
-export default async function LayoutEn({
+export default async function Layout({
   children,
   params,
 }: {
