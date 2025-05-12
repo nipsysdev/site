@@ -22,5 +22,11 @@
     "whoami": "whoami",
     "mission": "mission",
     "contact": "contact"
+  },
+  "Terminal": {
+    "unknownCmdErr": "command not recognized",
+    "fullScreenMode": "full-screen mode",
+    "autocomplete": "autocomplete:",
+    "noMatch": "no match"
   }
 }

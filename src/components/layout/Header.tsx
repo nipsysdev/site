@@ -3,7 +3,7 @@ import { PiGithubLogoFill } from 'react-icons/pi'
 import { Button } from '@srcpunks/src_ui'
 import { useLocale, useTranslations } from 'next-intl'
 import { LangLabels } from '@/constants/lang'
-import { Link, usePathname } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/intl'
 
 export default function Header() {
   const pathname = usePathname()
