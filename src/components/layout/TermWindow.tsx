@@ -1,19 +1,21 @@
 'use client'
 import { Routes } from '@/constants/routes'
+import { Link, usePathname } from '@/i18n/navigation'
 import {
   Tabcard,
   TabcardList,
   TabcardTrigger,
   TabcardContent,
 } from '@srcpunks/src_ui'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 export default function TerminalWindow({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const t = useTranslations('Pages')
+
   const pathname = usePathname()
   const notfound = '404'
   const activeRouteName =
@@ -29,8 +31,8 @@ export default function TerminalWindow({
     >
       <TabcardList>
         {Object.entries(Routes).map(([routeName, routePath]) => (
-          <TabcardTrigger key={routeName} value={routeName}>
-            <Link href={routePath}>{routeName}</Link>
+          <TabcardTrigger key={routeName} value={routeName} asChild>
+            <Link href={routePath}>{t(routeName)}</Link>
           </TabcardTrigger>
         ))}
       </TabcardList>
