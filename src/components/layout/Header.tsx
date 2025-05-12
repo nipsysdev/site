@@ -14,7 +14,11 @@ export default function Header() {
     <div className="flex w-full items-center justify-between p-3 text-xs tracking-tighter transition-colors sm:p-5 sm:text-sm">
       <div className="flex gap-x-2 text-xs sm:text-sm">
         {Object.entries(LangLabels).map(([lang, label]) => (
-          <Button key={lang} variant={locale === lang ? 'outline' : 'ghost'}>
+          <Button
+            key={lang}
+            variant={locale === lang ? 'outline' : 'ghost'}
+            asChild
+          >
             <Link href={pathname} locale={lang}>
               {label}
             </Link>
@@ -22,13 +26,13 @@ export default function Header() {
         ))}
       </div>
 
-      <Button variant="link" className="text-secondary">
+      <Button variant="link" className="text-secondary" asChild>
         <a
           className="flex items-center"
           href="https://github.com/nipsysdev/site"
           target="_blank"
         >
-          <PiGithubLogoFill size="1.2rem" className="mr-2" />
+          <PiGithubLogoFill size="1.2rem" />
           {t('sourceCode')}
         </a>
       </Button>

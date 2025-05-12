@@ -28,7 +28,7 @@ export default function TerminalWindow({
     >
       <TabcardList>
         {Object.entries(Routes).map(([routeName, routePath]) => (
-          <TabcardTrigger key={routeName} value={routeName}>
+          <TabcardTrigger key={routeName} value={routeName} asChild>
             <Link href={routePath}>{routeName}</Link>
           </TabcardTrigger>
         ))}
