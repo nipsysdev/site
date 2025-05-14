@@ -207,7 +207,7 @@ export default class TerminalPrompt extends Component<Props, State> {
   render = () => (
     <>
       <div className="flex w-full gap-x-2">
-        <span>
+        <span className="text-primary">
           {this.props.i18n('visitor')}@{this.state.host}:~$
         </span>
         <input
