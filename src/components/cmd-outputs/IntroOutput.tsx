@@ -30,14 +30,14 @@ export default class IntroOutput extends Component<CommandOutputProps> {
         </div>
 
         <p className="mb-3 text-lg">
-          {this.props.t.rich('introOutput.welcome', {
+          {this.props.t.rich('cmds.intro.welcome', {
             name: (name) => <span className="font-bold">{name}</span>,
           })}
         </p>
 
-        <p>{this.props.t('introOutput.site_intro_1')}</p>
+        <p>{this.props.t('cmds.intro.site_intro_1')}</p>
         <p>
-          {this.props.t.rich('introOutput.site_intro_2', {
+          {this.props.t.rich('cmds.intro.site_intro_2', {
             cmd: () => <CmdLink cmdName={Command.Help} />,
           })}
         </p>

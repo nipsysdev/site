@@ -20,7 +20,7 @@
   "Pages": {
     "terminal": "terminal",
     "whoami": "whoami",
-    "mission": "web3 mission",
+    "mission": "web3_mission",
     "contact": "contact"
   },
   "Terminal": {
@@ -29,10 +29,31 @@
     "autocomplete": "autocomplete:",
     "noMatch": "no match",
     "visitor": "visitor",
-    "introOutput": {
-      "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
-      "site_intro_1": "This site can be browsed by clicking on the tabs above.",
-      "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
+    "cmds": {
+      "clear": {
+        "description": "Clear the terminal screen"
+      },
+      "contact": {
+        "description": "Print contact info"
+      },
+      "help": {
+        "description": "Print list of commands"
+      },
+      "intro": {
+        "description": "Print intro message",
+        "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
+        "site_intro_1": "This site can be browsed by clicking on the tabs above.",
+        "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
+      },
+      "set-lang": {
+        "description": "Change language"
+      },
+      "web3-mission": {
+        "description": "Discover what I'm working on in the web3 space"
+      },
+      "whoami": {
+        "description": "Learn more about me"
+      }
     }
   }
 }

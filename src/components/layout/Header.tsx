@@ -26,7 +26,7 @@ export default function Header() {
         ))}
       </div>
 
-      <Button variant="link" className="text-secondary" asChild>
+      <Button variant="link" asChild>
         <a
           className="flex items-center"
           href="https://github.com/nipsysdev/site"

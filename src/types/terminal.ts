@@ -6,7 +6,7 @@ export enum Command {
   Contact = 'contact',
   Help = 'help',
   Intro = 'intro',
-  Mission = 'mission',
+  Web3Mission = 'web3-mission',
   SetLang = 'set-lang',
   Whoami = 'whoami',
 }

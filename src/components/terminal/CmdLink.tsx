@@ -53,7 +53,7 @@ export default function CmdLink(props: Props) {
     <Button
       variant="ghost"
       size="sm"
-      className="text-md text-secondary"
+      className="text-md w-fit"
       onClick={submitCmd}
     >
       <span>{props.cmdName ?? props.cmdInfo?.name}</span>
