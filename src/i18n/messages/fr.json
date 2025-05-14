@@ -19,8 +19,41 @@
   },
   "Pages": {
     "terminal": "terminal",
-    "whoami": "quisuisje",
-    "mission": "mission",
+    "whoami": "qui_suis_je",
+    "mission": "mission_web3",
     "contact": "contact"
+  },
+  "Terminal": {
+    "unknownCmdErr": "commande non reconnue",
+    "fullScreenMode": "mode plein écran",
+    "autocomplete": "autocomplétion :",
+    "noMatch": "aucune correspondance",
+    "visitor": "visiteur",
+    "cmds": {
+      "clear": {
+        "description": "Effacer l'écran du terminal"
+      },
+      "contact": {
+        "description": "Afficher les informations de contact"
+      },
+      "help": {
+        "description": "Afficher la liste des commandes"
+      },
+      "intro": {
+        "description": "Afficher le message d'introduction",
+        "welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
+        "site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",
+        "site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd></cmd>"
+      },
+      "set-lang": {
+        "description": "Changer la langue"
+      },
+      "web3-mission": {
+        "description": "Découvrez ce sur quoi je travaille dans l'espace web3"
+      },
+      "whoami": {
+        "description": "En savoir plus sur moi"
+      }
+    }
   }
 }

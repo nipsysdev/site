@@ -1,6 +1,6 @@
 'use client'
 import { Routes } from '@/constants/routes'
-import { Link, usePathname } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/intl'
 import {
   Tabcard,
   TabcardList,

@@ -1,9 +1,13 @@
 import { Routes } from '@/constants/routes'
 import { RouteData } from '@/types/routing'
+import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-export const MetadataUtils = {
-  setPageMeta: async (routeData: RouteData, page?: keyof typeof Routes) => {
+export class MetadataUtils {
+  static async setPageMeta(
+    routeData: RouteData,
+    page?: keyof typeof Routes,
+  ): Promise<Metadata> {
     const { locale } = await routeData.params
     const tMeta = await getTranslations({ locale, namespace: 'Metadata' })
 
@@ -22,5 +26,5 @@ export const MetadataUtils = {
       ...baseMeta,
       title: `${pageTitle} @ ${baseMeta.title}`,
     }
-  },
+  }
 }
