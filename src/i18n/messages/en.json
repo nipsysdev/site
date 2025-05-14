@@ -27,6 +27,7 @@
     "unknownCmdErr": "command not recognized",
     "fullScreenMode": "full-screen mode",
     "autocomplete": "autocomplete:",
-    "noMatch": "no match"
+    "noMatch": "no match",
+    "visitor": "visitor"
   }
 }

@@ -207,10 +207,9 @@ export default class TerminalPrompt extends Component<Props, State> {
   render = () => (
     <>
       <div className="flex w-full gap-x-2">
-        <div className="font-bold">
-          <span className="text-steelblue">visitor@{this.state.host}</span>:
-          <span className="text-steelblue">~</span>$
-        </div>
+        <span>
+          {this.props.i18n('visitor')}@{this.state.host}:~$
+        </span>
         <input
           ref={this.state.inputRef}
           value={this.state.inputText}
@@ -224,7 +223,7 @@ export default class TerminalPrompt extends Component<Props, State> {
       </div>
       <div className="flex items-start" ref={this.state.autocompleteRef}>
         {!this.props.entry && this.state.autocomplete && (
-          <span className="text-darkgray text-sm opacity-60">
+          <span className="text-sm opacity-60">
             {this.props.i18n('autocomplete')}&nbsp;
             {this.state.autocomplete.join(' | ') || this.props.i18n('noMatch')}
           </span>
