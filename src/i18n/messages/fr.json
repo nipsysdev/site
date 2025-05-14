@@ -32,7 +32,7 @@
     "introOutput": {
       "welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
       "site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",
-      "site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd>help</cmd>"
+      "site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd></cmd>"
     }
   }
 }

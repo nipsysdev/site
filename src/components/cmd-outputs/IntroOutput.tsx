@@ -1,7 +1,8 @@
-import { CommandOutputProps } from '@/types/terminal.js'
+import { Command, CommandOutputProps } from '@/types/terminal'
 import { Component } from 'react'
 import figlet from 'figlet'
 import standard from 'figlet/importable-fonts/Standard'
+import CmdLink from '../terminal/CmdLink'
 
 export default class IntroOutput extends Component<CommandOutputProps> {
   readonly nickname = 'nipsysdev'
@@ -37,7 +38,7 @@ export default class IntroOutput extends Component<CommandOutputProps> {
         <p>{this.props.t('introOutput.site_intro_1')}</p>
         <p>
           {this.props.t.rich('introOutput.site_intro_2', {
-            cmd: (cmd) => <span className="font-bold">{cmd}</span>,
+            cmd: () => <CmdLink cmdName={Command.Help} />,
           })}
         </p>
       </div>
