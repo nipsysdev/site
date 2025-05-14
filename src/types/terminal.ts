@@ -1,3 +1,4 @@
+import { Translator } from '@/i18n/intl'
 import { ComponentType } from 'react'
 
 export enum Command {
@@ -22,6 +23,7 @@ export interface CommandEntry {
 
 export interface CommandOutputProps {
   entry: CommandEntry
+  t: Translator
 }
 
 export type CommandOutput = ComponentType<CommandOutputProps>

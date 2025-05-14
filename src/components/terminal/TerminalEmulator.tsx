@@ -99,10 +99,10 @@ export default function TerminalEmulator() {
       onClick={() => mainPrompt.current?.focus()}
     >
       {history.map((entry) => (
-        <div key={entry.timestamp}>
+        <div key={entry.timestamp} className="mb-1">
           <TerminalPrompt i18n={t} entry={entry} />
           {entry.fullscreen ? null : entry.output ? (
-            <entry.output entry={entry} />
+            <entry.output entry={entry} t={t} />
           ) : (
             <UnknownCmdOutput cmdName={entry.cmdName} />
           )}
@@ -121,7 +121,7 @@ export default function TerminalEmulator() {
 
   return (
     hasWindow && (
-      <div className="size-full overflow-y-auto text-sm select-none sm:text-base">
+      <div className="size-full overflow-y-auto text-sm sm:text-base">
         {/* TOOD: Add fullscreen display */}
         {fullscreenEntry ? null : standardView}
       </div>

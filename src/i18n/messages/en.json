@@ -20,7 +20,7 @@
   "Pages": {
     "terminal": "terminal",
     "whoami": "whoami",
-    "mission": "mission",
+    "mission": "web3 mission",
     "contact": "contact"
   },
   "Terminal": {
@@ -28,6 +28,11 @@
     "fullScreenMode": "full-screen mode",
     "autocomplete": "autocomplete:",
     "noMatch": "no match",
-    "visitor": "visitor"
+    "visitor": "visitor",
+    "introOutput": {
+      "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
+      "site_intro_1": "This site can be browsed by clicking on the tabs above.",
+      "site_intro_2": "Or, for a CLI experience, get started with: <cmd>help</cmd>"
+    }
   }
 }
