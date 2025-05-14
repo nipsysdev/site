@@ -24,7 +24,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@srcpunks/src_ui": "^0.0.13",
+    "@srcpunks/src_ui": "^0.0.14",
     "figlet": "^1.8.1",
     "next": "15.3.1",
     "next-intl": "^4.1.0",
