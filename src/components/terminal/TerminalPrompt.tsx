@@ -230,18 +230,17 @@ export default class TerminalPrompt extends Component<Props, State> {
         )}
       </div>
 
-      <style scoped>
-        {`
-          input {
-            &, &:focus {
-              all: unset;
-            }
-            flex: 1 1 auto;
-            width: inherit;
-            opacity: 0.8;
+      <style jsx>{`
+        input {
+          &,
+          &:focus {
+            all: unset;
           }
-        `}
-      </style>
+          flex: 1 1 auto;
+          width: inherit;
+          opacity: 0.8;
+        }
+      `}</style>
     </>
   )
 }
