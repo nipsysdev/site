@@ -1,6 +1,6 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
-import { routing } from '@/i18n/routing'
+import { routing } from '@/i18n/intl'
 import { setRequestLocale } from 'next-intl/server'
 import Header from '@/components/layout/Header'
 import TerminalWindow from '@/components/layout/TermWindow'

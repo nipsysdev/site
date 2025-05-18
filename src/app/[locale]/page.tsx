@@ -1,7 +1,11 @@
 'use client'
-import { useTranslations } from 'next-intl'
+import TerminalEmulator from '@/components/terminal/TerminalEmulator'
+import { TerminalStateProvider } from '@/contexts/TerminalContext'
 
 export default function HomePage() {
-  const t = useTranslations('Core')
-  return <div>{t('sourceCode')}</div>
+  return (
+    <TerminalStateProvider>
+      <TerminalEmulator />
+    </TerminalStateProvider>
+  )
 }

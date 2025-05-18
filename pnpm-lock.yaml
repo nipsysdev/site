@@ -9,8 +9,11 @@ importers:
   .:
     dependencies:
       '@srcpunks/src_ui':
-        specifier: ^0.0.13
-        version: 0.0.13(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1))
+        specifier: ^0.0.14
+        version: 0.0.14(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1))
+      figlet:
+        specifier: ^1.8.1
+        version: 1.8.1
       next:
         specifier: 15.3.1
         version: 15.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -33,6 +36,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.1.5
+      '@types/figlet':
+        specifier: ^1.7.0
+        version: 1.7.0
       '@types/node':
         specifier: ^20
         version: 20.17.31
@@ -997,8 +1003,8 @@ packages:
   '@schummar/icu-type-parser@1.21.5':
     resolution: {integrity: sha512-bXHSaW5jRTmke9Vd0h5P7BtWZG9Znqb8gSDxZnxaGSJnGwPLDPfS+3g0BKzeWqzgZPsIVZkM7m2tbo18cm5HBw==}
 
-  '@srcpunks/src_ui@0.0.13':
-    resolution: {integrity: sha512-P8OniYp/vV6S/IJwYWS3frE300Ywg0u3W2wEYME5xFlFYZjTWeRB1lppX9Y+AjrKENRche+z6AT4CtcNtEsgXw==}
+  '@srcpunks/src_ui@0.0.14':
+    resolution: {integrity: sha512-VqWIcQ4sMnE63pLhEgdpbUzfgzaMhdwokEeDwYG+UBS1tVMcnke5dJF3J10LogFQrNi0foCwHSLHDnG0VEaMiA==}
     engines: {node: '>=22.0.0', pnpm: '>=9'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
@@ -1193,6 +1199,9 @@ packages:
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
+  '@types/figlet@1.7.0':
+    resolution: {integrity: sha512-KwrT7p/8Eo3Op/HBSIwGXOsTZKYiM9NpWRBJ5sVjWP/SmlS+oxxRvJht/FNAtliJvja44N3ul1yATgohnVBV0Q==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -1797,6 +1806,11 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+
+  figlet@1.8.1:
+    resolution: {integrity: sha512-kEC3Sme+YvA8Hkibv0NR1oClGcWia0VB2fC1SlMy027cwe795Xx40Xiv/nw/iFAwQLupymWh+uhAAErn/7hwPg==}
+    engines: {node: '>= 0.4.0'}
+    hasBin: true
 
   file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
@@ -2736,8 +2750,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  tailwind-merge@3.2.0:
-    resolution: {integrity: sha512-FQT/OVqCD+7edmmJpsgCsY820RTD5AkBryuG5IUqR5YQZSdj5xlH5nLgH7YPths7WsLPSpSBNneJdM8aS8aeFA==}
+  tailwind-merge@3.3.0:
+    resolution: {integrity: sha512-fyW/pEfcQSiigd5SNn0nApUOxx0zB/dm6UDU/rEwc2c3sX2smWUNbapHv+QRqLGVp9GWX3THIa7MUGPo+YkDzQ==}
 
   tailwindcss-animate@1.0.7:
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
@@ -3680,7 +3694,7 @@ snapshots:
 
   '@schummar/icu-type-parser@1.21.5': {}
 
-  '@srcpunks/src_ui@0.0.13(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1))':
+  '@srcpunks/src_ui@0.0.14(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@20.17.31)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1))':
     dependencies:
       '@radix-ui/react-checkbox': 1.3.1(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-dialog': 1.1.13(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3696,9 +3710,9 @@ snapshots:
       lucide-react: 0.477.0(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      tailwind-merge: 3.2.0
-      tailwindcss: 4.1.5
-      tailwindcss-animate: 1.0.7(tailwindcss@4.1.5)
+      tailwind-merge: 3.3.0
+      tailwindcss: 4.1.6
+      tailwindcss-animate: 1.0.7(tailwindcss@4.1.6)
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -3853,6 +3867,8 @@ snapshots:
     optional: true
 
   '@types/estree@1.0.7': {}
+
+  '@types/figlet@1.7.0': {}
 
   '@types/json-schema@7.0.15': {}
 
@@ -4645,6 +4661,8 @@ snapshots:
   fdir@6.4.4(picomatch@4.0.2):
     optionalDependencies:
       picomatch: 4.0.2
+
+  figlet@1.8.1: {}
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -5592,11 +5610,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tailwind-merge@3.2.0: {}
+  tailwind-merge@3.3.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.5):
+  tailwindcss-animate@1.0.7(tailwindcss@4.1.6):
     dependencies:
-      tailwindcss: 4.1.5
+      tailwindcss: 4.1.6
 
   tailwindcss@4.1.5: {}
 

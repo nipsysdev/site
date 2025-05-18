@@ -1,3 +1,4 @@
+import { AppStateProvider } from '@/contexts/AppContext'
 import '@/styles/global.css'
 
 export default function RootLayout({
@@ -5,5 +6,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return children
+  return <AppStateProvider>{children}</AppStateProvider>
 }
