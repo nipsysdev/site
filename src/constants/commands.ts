@@ -4,6 +4,7 @@ import IntroOutput from '@/components/cmd-outputs/IntroOutput'
 import HelpOutput from '@/components/cmd-outputs/HelpOutput'
 import WhoamiOutput from '@/components/cmd-outputs/WhoamiOutput'
 import Web3MissionOutput from '@/components/cmd-outputs/Web3MissionOutput'
+import ContactOutput from '@/components/cmd-outputs/ContactOutput'
 
 function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
   return Object.values(o).map((l: string) => {
@@ -17,7 +18,7 @@ export const Commands: CommandInfo[] = [
   },
   {
     name: Command.Contact,
-    // output: ContactOutput,
+    output: ContactOutput,
   },
   {
     name: Command.Help,
