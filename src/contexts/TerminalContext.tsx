@@ -1,6 +1,6 @@
 import { AppRoute } from '@/types/routing'
 import { CommandEntry } from '@/types/terminal'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 interface TerminalState {
   input: string
@@ -49,22 +49,48 @@ export const TerminalStateProvider = ({
 }) => {
   const [state, setState] = useState<TerminalState>(initialState)
 
-  const setInput = (value: string) =>
-    setState((prev) => ({ ...prev, input: value }))
-  const setSubmission = (value: string) =>
-    setState((prev) => ({ ...prev, submission: value }))
-  const setSimulatedCmd = (value: string) =>
-    setState((prev) => ({ ...prev, simulatedCmd: value }))
-  const setHistory = (newHistory: CommandEntry[]) =>
-    setState((prev) => ({ ...prev, history: newHistory }))
-  const setHasIntroduced = (value: boolean) =>
-    setState((prev) => ({ ...prev, hasIntroduced: value }))
-  const setHasRefreshed = (value: boolean) =>
-    setState((prev) => ({ ...prev, hasRefreshed: value }))
-  const setLastRouteReq = (value: AppRoute | null) =>
-    setState((prev) => ({ ...prev, lastRouteReq: value }))
-  const setOldRouteReq = (value: AppRoute | null) =>
-    setState((prev) => ({ ...prev, oldRouteReq: value }))
+  const setInput = useCallback(
+    (value: string) => setState((prev) => ({ ...prev, input: value })),
+    [],
+  )
+
+  const setSubmission = useCallback(
+    (value: string) => setState((prev) => ({ ...prev, submission: value })),
+    [],
+  )
+
+  const setSimulatedCmd = useCallback(
+    (value: string) => setState((prev) => ({ ...prev, simulatedCmd: value })),
+    [],
+  )
+
+  const setHistory = useCallback(
+    (newHistory: CommandEntry[]) =>
+      setState((prev) => ({ ...prev, history: newHistory })),
+    [],
+  )
+
+  const setHasIntroduced = useCallback(
+    (value: boolean) => setState((prev) => ({ ...prev, hasIntroduced: value })),
+    [],
+  )
+
+  const setHasRefreshed = useCallback(
+    (value: boolean) => setState((prev) => ({ ...prev, hasRefreshed: value })),
+    [],
+  )
+
+  const setLastRouteReq = useCallback(
+    (value: AppRoute | null) =>
+      setState((prev) => ({ ...prev, lastRouteReq: value })),
+    [],
+  )
+
+  const setOldRouteReq = useCallback(
+    (value: AppRoute | null) =>
+      setState((prev) => ({ ...prev, oldRouteReq: value })),
+    [],
+  )
 
   const contextValue = {
     ...state,

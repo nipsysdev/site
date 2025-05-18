@@ -38,7 +38,7 @@ export default function TerminalEmulator() {
   useEffect(() => {
     setIsTerminal(true)
     setHasWindow(typeof window !== 'undefined')
-  }, [])
+  }, [setIsTerminal])
 
   useEffect(() => {
     mainPrompt.current?.focus()
@@ -47,7 +47,7 @@ export default function TerminalEmulator() {
       setHasIntroduced(true)
       mainPrompt.current?.simulate(Command.Intro)
     }
-  }, [isPrerender, mainPrompt])
+  }, [hasIntroduced, isPrerender, mainPrompt, setHasIntroduced])
 
   useEffect(() => {
     if (!submission) return
@@ -66,19 +66,19 @@ export default function TerminalEmulator() {
     if (cmdEntry.fullscreen) {
       setFullscreenEntry(cmdEntry)
     }
-  }, [submission])
+  }, [history, setHasRefreshed, setHistory, setSubmission, submission])
 
   useEffect(() => {
     setTimeout(() => {
       mainPrompt.current?.scrollIntoView()
     }, 100)
-  }, [history])
+  }, [history, mainPrompt])
 
   useEffect(() => {
     if (!simulatedCmd) return
     mainPrompt.current?.simulate(simulatedCmd)
     setSimulatedCmd('')
-  }, [simulatedCmd])
+  }, [mainPrompt, setSimulatedCmd, simulatedCmd])
 
   useEffect(() => {
     if (!input) return

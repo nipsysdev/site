@@ -1,5 +1,11 @@
 'use client'
-import { createContext, KeyboardEvent, useContext, useState } from 'react'
+import {
+  createContext,
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useState,
+} from 'react'
 
 interface AppState {
   isTerminal: boolean
@@ -28,12 +34,20 @@ export const AppStateProvider = ({
 }) => {
   const [state, setState] = useState<AppState>(initialState)
 
-  const setIsTerminal = (value: boolean) =>
-    setState((prev) => ({ ...prev, isTerminal: value }))
-  const setLastKeyDown = (value: KeyboardEvent | null) =>
-    setState((prev) => ({ ...prev, lastKeyDown: value }))
-  const setOldKeyDown = (value: KeyboardEvent | null) =>
-    setState((prev) => ({ ...prev, oldKeyDown: value }))
+  const setIsTerminal = useCallback(
+    (value: boolean) => setState((prev) => ({ ...prev, isTerminal: value })),
+    [],
+  )
+  const setLastKeyDown = useCallback(
+    (value: KeyboardEvent | null) =>
+      setState((prev) => ({ ...prev, lastKeyDown: value })),
+    [],
+  )
+  const setOldKeyDown = useCallback(
+    (value: KeyboardEvent | null) =>
+      setState((prev) => ({ ...prev, oldKeyDown: value })),
+    [],
+  )
 
   const contextValue = {
     ...state,
