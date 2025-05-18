@@ -2,6 +2,7 @@ import { Command, CommandInfo } from '@/types/terminal'
 import { Lang } from './lang'
 import IntroOutput from '@/components/cmd-outputs/IntroOutput'
 import HelpOutput from '@/components/cmd-outputs/HelpOutput'
+import WhoamiOutput from '@/components/cmd-outputs/WhoamiOutput'
 
 function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
   return Object.values(o).map((l: string) => {
@@ -32,7 +33,7 @@ export const Commands: CommandInfo[] = [
   },
   {
     name: Command.Whoami,
-    // output: WhoamiOutput,
+    output: WhoamiOutput,
   },
   {
     name: Command.Web3Mission,
