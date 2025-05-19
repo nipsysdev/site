@@ -2,10 +2,9 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/intl'
 import { setRequestLocale } from 'next-intl/server'
-import Header from '@/components/layout/Header'
-import TerminalWindow from '@/components/layout/TermWindow'
 import { MetadataUtils } from '@/utils/metadata-utils'
 import { RouteData } from '@/types/routing'
+import LayoutWrapper from '@/components/layout/LayoutWrapper'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -31,13 +30,7 @@ export default async function Layout({
     <html lang={locale}>
       <NextIntlClientProvider>
         <body id="site" className={`antialiased`}>
-          <main className="relative flex h-dvh w-dvw flex-col items-center">
-            <Header />
-
-            <div className="flex w-full flex-auto items-center justify-center pb-8">
-              <TerminalWindow>{children}</TerminalWindow>
-            </div>
-          </main>
+          <LayoutWrapper>{children}</LayoutWrapper>
         </body>
       </NextIntlClientProvider>
     </html>
