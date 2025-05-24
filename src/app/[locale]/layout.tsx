@@ -4,7 +4,7 @@ import { routing } from '@/i18n/intl'
 import { setRequestLocale } from 'next-intl/server'
 import { MetadataUtils } from '@/utils/metadata-utils'
 import { RouteData } from '@/types/routing'
-import LayoutWrapper from '@/components/layout/LayoutWrapper'
+import Header from '@/components/layout/Header'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -30,7 +30,15 @@ export default async function Layout({
     <html lang={locale}>
       <NextIntlClientProvider>
         <body id="site" className={`antialiased`}>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <main className="relative flex h-dvh w-dvw flex-col items-center">
+            <div className="flex h-full w-11/12 flex-col items-center justify-evenly">
+              <div className="w-3/5">
+                <Header />
+              </div>
+
+              {children}
+            </div>
+          </main>
         </body>
       </NextIntlClientProvider>
     </html>
