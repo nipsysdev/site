@@ -50,7 +50,12 @@ export default function CmdLink(props: Props) {
 	};
 
 	return (
-		<Button variant="outlined" size="small" onClick={submitCmd}>
+		<Button
+			variant="outlined"
+			size="small"
+			onClick={submitCmd}
+			className="text-xs w-fit!"
+		>
 			<span>{props.cmdName ?? props.cmdInfo?.name}</span>
 			{cmdArgOptionRender()}
 		</Button>

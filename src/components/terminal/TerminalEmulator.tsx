@@ -90,40 +90,36 @@ export default function TerminalEmulator() {
 		setFullscreenEntry(null);
 	});
 
-	const standardView = (
-		<div
-			role="button"
-			tabIndex={0}
-			className="flex size-full cursor-default flex-col"
-			onKeyDown={() => {}}
-			onClick={() => mainPrompt.current?.focus()}
-		>
-			{history.map((entry) => (
-				<div key={entry.timestamp} className="mb-1">
-					<TerminalPrompt i18n={t} entry={entry} />
-					{entry.fullscreen ? null : entry.output ? (
-						<entry.output entry={entry} t={t} />
-					) : (
-						<UnknownCmdOutput cmdName={entry.cmdName} />
-					)}
-				</div>
-			))}
-			<TerminalPrompt
-				ref={mainPrompt}
-				i18n={t}
-				history={history}
-				lastKeyDown={lastKeyDown}
-				setSubmission={setSubmission}
-				setLastKeyDown={setLastKeyDown}
-			/>
-		</div>
-	);
-
 	return (
 		hasWindow && (
 			<div className="size-full overflow-y-auto text-sm sm:text-base">
-				{/* TOOD: Add fullscreen display */}
-				{fullscreenEntry ? null : standardView}
+				{/** biome-ignore lint/a11y/useSemanticElements: terminal container needs to be clickable and listen to inputs while still displaying as a div */}
+				<div
+					role="button"
+					tabIndex={0}
+					className="flex size-full cursor-default flex-col"
+					onKeyDown={() => {}}
+					onClick={() => mainPrompt.current?.focus()}
+				>
+					{history.map((entry) => (
+						<div key={entry.timestamp} className="mb-1">
+							<TerminalPrompt i18n={t} entry={entry} />
+							{entry.fullscreen ? null : entry.output ? (
+								<entry.output entry={entry} t={t} />
+							) : (
+								<UnknownCmdOutput cmdName={entry.cmdName} />
+							)}
+						</div>
+					))}
+					<TerminalPrompt
+						ref={mainPrompt}
+						i18n={t}
+						history={history}
+						lastKeyDown={lastKeyDown}
+						setSubmission={setSubmission}
+						setLastKeyDown={setLastKeyDown}
+					/>
+				</div>
 			</div>
 		)
 	);

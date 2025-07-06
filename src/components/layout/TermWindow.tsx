@@ -3,6 +3,7 @@ import { TabItem, Tabs } from '@acid-info/lsd-react/components';
 import { useTranslations } from 'next-intl';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
+import styles from '@/styles/components.module.css';
 
 export default function TerminalWindow({
 	children,
@@ -20,37 +21,23 @@ export default function TerminalWindow({
 			.find(Boolean) ?? notfound;
 
 	return (
-		<div>
-			<Tabs activeTab={activeRouteName} fullWidth>
+		<div className="size-full overflow-auto">
+			<Tabs
+				className="mb-(--lsd-spacing-16)"
+				activeTab={activeRouteName}
+				fullWidth
+			>
 				{Object.entries(Routes).map(([routeName, routePath]) => (
-					<TabItem key={routeName} name={routeName}>
+					<TabItem
+						key={routeName}
+						name={routeName}
+						className={styles.terminalTab}
+					>
 						<Link href={routePath}>{t(routeName)}</Link>
 					</TabItem>
 				))}
 			</Tabs>
 			{children}
 		</div>
-		// <Tabcard
-		//   value={activeRouteName}
-		//   className="h-full max-h-[768px] w-11/12 max-w-[1024px] overflow-hidden"
-		// >
-		//   <TabcardList>
-		//     {Object.entries(Routes).map(([routeName, routePath]) => (
-		//       <TabcardTrigger key={routeName} value={routeName} asChild>
-		//         <Link href={routePath}>{t(routeName)}</Link>
-		//       </TabcardTrigger>
-		//     ))}
-		//   </TabcardList>
-
-		//   {Object.keys(Routes).map((routeName) => (
-		//     <TabcardContent key={routeName} value={routeName}>
-		//       {routeName === activeRouteName ? children : null}
-		//     </TabcardContent>
-		//   ))}
-
-		//   {activeRouteName === notfound && (
-		//     <TabcardContent value={notfound}>{children}</TabcardContent>
-		//   )}
-		// </Tabcard>
 	);
 }

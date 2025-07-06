@@ -1,59 +1,58 @@
 {
-	"Metadata": {
-		"title": "xav / nipsysdev",
-		"description": "My personal website"
-	},
-	"Core": {
-		"sourceCode": "Source Code",
-		"web2": "Web2 hosted version.",
-		"web3": "Web3 hosted version 🌐",
-		"goWeb3": "Go Web3",
-		"exit": "exit",
-		"or": "or",
-		"na": "N/A",
-		"back": "back",
-		"backspace": "BACKSPACE",
-		"ctrlc": "CTRL+C",
-		"web2Loading": "Loading from a centralized server",
-		"web3Loading": "Loading from the Swarm network"
-	},
-	"Pages": {
-		"terminal": "terminal",
-		"whoami": "whoami",
-		"mission": "web3_mission",
-		"contact": "contact"
-	},
-	"Terminal": {
-		"unknownCmdErr": "command not recognized",
-		"fullScreenMode": "full-screen mode",
-		"autocomplete": "autocomplete:",
-		"noMatch": "no match",
-		"visitor": "visitor",
-		"cmds": {
-			"clear": {
-				"description": "Clear the terminal screen"
-			},
-			"contact": {
-				"description": "Print contact info"
-			},
-			"help": {
-				"description": "Print list of commands"
-			},
-			"intro": {
-				"description": "Print intro message",
-				"welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
-				"site_intro_1": "This site can be browsed by clicking on the tabs above.",
-				"site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
-			},
-			"set-lang": {
-				"description": "Change language"
-			},
-			"web3-mission": {
-				"description": "Discover what I'm working on in the web3 space"
-			},
-			"whoami": {
-				"description": "Learn more about me"
-			}
-		}
-	}
+  "Metadata": {
+    "title": "xav / nipsysdev",
+    "description": "My personal website"
+  },
+  "Core": {
+    "web2": "Web2 hosted version.",
+    "web3": "Web3 hosted version 🌐",
+    "goWeb3": "Go Web3",
+    "exit": "exit",
+    "or": "or",
+    "na": "N/A",
+    "back": "back",
+    "backspace": "BACKSPACE",
+    "ctrlc": "CTRL+C",
+    "web2Loading": "Loading from a centralized server",
+    "web3Loading": "Loading from the Swarm network"
+  },
+  "Pages": {
+    "terminal": "terminal",
+    "whoami": "whoami",
+    "mission": "web3_mission",
+    "contact": "contact"
+  },
+  "Terminal": {
+    "unknownCmdErr": "command not recognized",
+    "fullScreenMode": "full-screen mode",
+    "autocomplete": "autocomplete:",
+    "noMatch": "no match",
+    "visitor": "visitor",
+    "cmds": {
+      "clear": {
+        "description": "Clear the terminal screen"
+      },
+      "contact": {
+        "description": "Print contact info"
+      },
+      "help": {
+        "description": "Print list of commands"
+      },
+      "intro": {
+        "description": "Print intro message",
+        "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
+        "site_intro_1": "This site can be browsed by clicking on the tabs above.",
+        "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
+      },
+      "set-lang": {
+        "description": "Change language"
+      },
+      "web3-mission": {
+        "description": "Discover what I'm working on in the web3 space"
+      },
+      "whoami": {
+        "description": "Learn more about me"
+      }
+    }
+  }
 }

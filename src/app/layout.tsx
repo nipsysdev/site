@@ -1,5 +1,5 @@
 import { AppStateProvider } from '@/contexts/AppContext';
-import '@/styles/global.css';
+import 'tailwindcss/index.css';
 
 export default function RootLayout({
 	children,

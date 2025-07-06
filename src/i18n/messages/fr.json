@@ -1,59 +1,58 @@
 {
-	"Metadata": {
-		"title": "xav / nipsysdev",
-		"description": "Mon site personnel"
-	},
-	"Core": {
-		"sourceCode": "Code Source",
-		"web2": "Web2 héberge cette version.",
-		"web3": "Web3 héberge cette version 🌐",
-		"goWeb3": "Aller sur Web3",
-		"exit": "quitter",
-		"or": "ou",
-		"na": "N/A",
-		"back": "retour",
-		"backspace": "BACKSPACE",
-		"ctrlc": "CTRL+C",
-		"web2Loading": "Chargement à partir d'un serveur central",
-		"web3Loading": "Chargement à partir du réseau Swarm"
-	},
-	"Pages": {
-		"terminal": "terminal",
-		"whoami": "qui_suis_je",
-		"mission": "mission_web3",
-		"contact": "contact"
-	},
-	"Terminal": {
-		"unknownCmdErr": "commande non reconnue",
-		"fullScreenMode": "mode plein écran",
-		"autocomplete": "autocomplétion :",
-		"noMatch": "aucune correspondance",
-		"visitor": "visiteur",
-		"cmds": {
-			"clear": {
-				"description": "Effacer l'écran du terminal"
-			},
-			"contact": {
-				"description": "Afficher les informations de contact"
-			},
-			"help": {
-				"description": "Afficher la liste des commandes"
-			},
-			"intro": {
-				"description": "Afficher le message d'introduction",
-				"welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
-				"site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",
-				"site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd></cmd>"
-			},
-			"set-lang": {
-				"description": "Changer la langue"
-			},
-			"web3-mission": {
-				"description": "Découvrez ce sur quoi je travaille dans l'espace web3"
-			},
-			"whoami": {
-				"description": "En savoir plus sur moi"
-			}
-		}
-	}
+  "Metadata": {
+    "title": "xav / nipsysdev",
+    "description": "Mon site personnel"
+  },
+  "Core": {
+    "web2": "Web2 héberge cette version.",
+    "web3": "Web3 héberge cette version 🌐",
+    "goWeb3": "Aller sur Web3",
+    "exit": "quitter",
+    "or": "ou",
+    "na": "N/A",
+    "back": "retour",
+    "backspace": "BACKSPACE",
+    "ctrlc": "CTRL+C",
+    "web2Loading": "Chargement à partir d'un serveur central",
+    "web3Loading": "Chargement à partir du réseau Swarm"
+  },
+  "Pages": {
+    "terminal": "terminal",
+    "whoami": "qui_suis_je",
+    "mission": "mission_web3",
+    "contact": "contact"
+  },
+  "Terminal": {
+    "unknownCmdErr": "commande non reconnue",
+    "fullScreenMode": "mode plein écran",
+    "autocomplete": "autocomplétion :",
+    "noMatch": "aucune correspondance",
+    "visitor": "visiteur",
+    "cmds": {
+      "clear": {
+        "description": "Effacer l'écran du terminal"
+      },
+      "contact": {
+        "description": "Afficher les informations de contact"
+      },
+      "help": {
+        "description": "Afficher la liste des commandes"
+      },
+      "intro": {
+        "description": "Afficher le message d'introduction",
+        "welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
+        "site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",
+        "site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd></cmd>"
+      },
+      "set-lang": {
+        "description": "Changer la langue"
+      },
+      "web3-mission": {
+        "description": "Découvrez ce sur quoi je travaille dans l'espace web3"
+      },
+      "whoami": {
+        "description": "En savoir plus sur moi"
+      }
+    }
+  }
 }

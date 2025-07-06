@@ -34,11 +34,11 @@ export default async function Layout({
 				<LsdThemeStyles />
 			</head>
 			<NextIntlClientProvider>
-				<body id="site" className="antialiased">
-					<main className="monospace relative flex h-dvh w-dvw flex-col items-center">
+				<body className="bg-black">
+					<main className="monospace flex flex-col gap-y-(--lsd-spacing-40) w-5xl mx-auto max-w-full p-3 sm:p-5">
 						<Header />
 
-						<div className="flex w-full flex-auto items-center justify-center pb-8">
+						<div className="w-full sm:w-4/5 mx-auto">
 							<TerminalWindow>{children}</TerminalWindow>
 						</div>
 					</main>

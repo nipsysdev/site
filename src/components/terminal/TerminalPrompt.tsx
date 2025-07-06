@@ -6,6 +6,7 @@ import {
 } from 'react';
 import { Commands } from '@/constants/commands';
 import type { Translator } from '@/i18n/intl';
+import styles from '@/styles/components.module.css';
 import { Key } from '@/types/keyboard';
 import type { CommandEntry } from '@/types/terminal';
 import { isNewKeyEvent } from '@/utils/compare-utils';
@@ -214,7 +215,7 @@ export default class TerminalPrompt extends Component<Props, State> {
 	render = () => (
 		<>
 			<div className="flex w-full gap-x-2">
-				<span className="text-primary">
+				<span className={styles.terminalPrompt}>
 					{this.props.i18n('visitor')}@{this.state.host}:~$
 				</span>
 				<input
