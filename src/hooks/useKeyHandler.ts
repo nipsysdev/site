@@ -1,22 +1,19 @@
-import { useAppContext } from '@/contexts/AppContext'
-import { CompareUtils } from '@/utils/compare-utils'
-import { type KeyboardEvent, useEffect } from 'react'
+import type { KeyboardEvent } from "react";
+import { useEffect } from "react";
+import { useAppContext } from "@/contexts/AppContext";
+import { isNewKeyEvent } from "@/utils/compare-utils";
 
 export default function useKeyHandler(
   handler: (event: KeyboardEvent) => void,
-  deactivated?: boolean,
+  deactivated?: boolean
 ) {
-  const { lastKeyDown, oldKeyDown, setOldKeyDown } = useAppContext()
+  const { lastKeyDown, oldKeyDown, setOldKeyDown } = useAppContext();
 
   useEffect(() => {
-    if (
-      !deactivated &&
-      lastKeyDown &&
-      CompareUtils.IsNewKeyEvent(oldKeyDown, lastKeyDown)
-    ) {
-      const keyDownEvent = lastKeyDown
-      setOldKeyDown(keyDownEvent)
-      handler(keyDownEvent)
+    if (!deactivated && lastKeyDown && isNewKeyEvent(oldKeyDown, lastKeyDown)) {
+      const keyDownEvent = lastKeyDown;
+      setOldKeyDown(keyDownEvent);
+      handler(keyDownEvent);
     }
-  }, [lastKeyDown])
+  }, [lastKeyDown, deactivated, handler, oldKeyDown, setOldKeyDown]);
 }

@@ -1,1 +1,1 @@
-declare module 'figlet/importable-fonts/Standard'
+declare module 'figlet/importable-fonts/Standard';
