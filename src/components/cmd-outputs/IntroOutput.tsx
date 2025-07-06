@@ -25,11 +25,11 @@ export default class IntroOutput extends Component<CommandOutputProps> {
 	render() {
 		return (
 			<div className="flex flex-col">
-				<div className="mb-2 hidden font-mono text-xs leading-none whitespace-break-spaces md:block">
+				<div className="mb-2 hidden font-mono text-(length:--lsd-subtitle4-fontSize) leading-none whitespace-break-spaces md:block">
 					{this.state.figletText}
 				</div>
 
-				<p className="mb-3 text-lg">
+				<p className="mb-3">
 					{this.props.t.rich('cmds.intro.welcome', {
 						name: (name) => <span className="font-bold">{name}</span>,
 					})}

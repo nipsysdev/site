@@ -21,12 +21,8 @@ export default function TerminalWindow({
 			.find(Boolean) ?? notfound;
 
 	return (
-		<div className="size-full overflow-auto">
-			<Tabs
-				className="mb-(--lsd-spacing-16)"
-				activeTab={activeRouteName}
-				fullWidth
-			>
+		<div className="size-full flex flex-col">
+			<Tabs className="shrink-0" activeTab={activeRouteName} fullWidth>
 				{Object.entries(Routes).map(([routeName, routePath]) => (
 					<TabItem
 						key={routeName}

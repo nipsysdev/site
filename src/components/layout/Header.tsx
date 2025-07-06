@@ -13,7 +13,7 @@ export default function Header() {
 	const t = useTranslations('Core');
 
 	return (
-		<div className="flex w-full items-center justify-between text-xs tracking-tighter transition-colors sm:text-sm">
+		<div className="flex w-full items-center justify-between tracking-tighter transition-colors text-(length:--lsd-body1-fontSize)">
 			<ButtonGroup>
 				{Object.entries(LangLabels).map(([lang, label]) => (
 					<Button

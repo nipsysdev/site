@@ -1,3 +1,4 @@
+import { Typography } from '@acid-info/lsd-react/components';
 import {
 	Component,
 	createRef,
@@ -231,10 +232,10 @@ export default class TerminalPrompt extends Component<Props, State> {
 			</div>
 			<div className="flex items-start" ref={this.state.autocompleteRef}>
 				{!this.props.entry && this.state.autocomplete && (
-					<span className="text-sm opacity-60">
+					<Typography variant="subtitle4" className="opacity-60">
 						{this.props.i18n('autocomplete')}&nbsp;
 						{this.state.autocomplete.join(' | ') || this.props.i18n('noMatch')}
-					</span>
+					</Typography>
 				)}
 			</div>
 

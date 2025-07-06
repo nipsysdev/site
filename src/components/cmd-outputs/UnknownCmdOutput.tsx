@@ -6,7 +6,7 @@ export default function UnknownCmdOutput({ cmdName }: { cmdName: string }) {
 	return (
 		<div className="flex items-center gap-x-1">
 			<PiSmileyNervousFill size="1.2rem" />
-			<span className="text-firebrick">
+			<span>
 				{t('unknownCmdErr')}: {cmdName}
 			</span>
 		</div>
