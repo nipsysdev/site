@@ -1,9 +1,9 @@
 'use client'
 import { PiGithubLogoFill } from 'react-icons/pi'
-import { Button } from '@srcpunks/src_ui'
 import { useLocale, useTranslations } from 'next-intl'
 import { LangLabels } from '@/constants/lang'
 import { Link, usePathname } from '@/i18n/intl'
+import { Button } from '@acid-info/lsd-react/components'
 
 export default function Header() {
   const pathname = usePathname()
@@ -16,8 +16,8 @@ export default function Header() {
         {Object.entries(LangLabels).map(([lang, label]) => (
           <Button
             key={lang}
-            variant={locale === lang ? 'outline' : 'ghost'}
-            asChild
+            variant={locale === lang ? 'filled' : 'outlined'}
+            size="small"
           >
             <Link href={pathname} locale={lang}>
               {label}
@@ -26,7 +26,7 @@ export default function Header() {
         ))}
       </div>
 
-      <Button variant="link" asChild>
+      <Button variant="outlined">
         <a
           className="flex items-center"
           href="https://github.com/nipsysdev/site"

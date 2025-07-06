@@ -24,7 +24,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@srcpunks/src_ui": "^0.0.14",
+    "@acid-info/lsd-react": "file:~/Sources/lsd/packages/lsd-react/acid-info-lsd-react-v0.2.0-beta.2.tgz",
     "figlet": "^1.8.1",
     "next": "15.3.1",
     "next-intl": "^4.1.0",

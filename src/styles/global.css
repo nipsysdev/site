@@ -1,6 +1,5 @@
-@import '@srcpunks/src_ui/css';
 @import 'tailwindcss';
 
-:root {
-  --app-color: 340deg; /* Represents a hue in the HSL color model */
+body {
+  background-color: black;
 }

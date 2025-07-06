@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import TerminalWindow from '@/components/layout/TermWindow'
 import { MetadataUtils } from '@/utils/metadata-utils'
 import { RouteData } from '@/types/routing'
+import { LsdThemeStyles } from '@acid-info/lsd-react'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -28,10 +29,13 @@ export default async function Layout({
   setRequestLocale(locale)
 
   return (
-    <html lang={locale}>
+    <html lang={locale} data-theme="dark">
+      <head>
+        <LsdThemeStyles />
+      </head>
       <NextIntlClientProvider>
-        <body id="site" className={`antialiased`}>
-          <main className="relative flex h-dvh w-dvw flex-col items-center">
+        <body id="site" className="antialiased">
+          <main className="monospace relative flex h-dvh w-dvw flex-col items-center">
             <Header />
 
             <div className="flex w-full flex-auto items-center justify-center pb-8">

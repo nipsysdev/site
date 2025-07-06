@@ -1,12 +1,7 @@
 'use client'
 import { Routes } from '@/constants/routes'
 import { Link, usePathname } from '@/i18n/intl'
-import {
-  Tabcard,
-  TabcardList,
-  TabcardTrigger,
-  TabcardContent,
-} from '@srcpunks/src_ui'
+import { TabItem, Tabs } from '@acid-info/lsd-react/components'
 import { useTranslations } from 'next-intl'
 
 export default function TerminalWindow({
@@ -25,27 +20,37 @@ export default function TerminalWindow({
       .find(Boolean) ?? notfound
 
   return (
-    <Tabcard
-      value={activeRouteName}
-      className="h-full max-h-[768px] w-11/12 max-w-[1024px] overflow-hidden"
-    >
-      <TabcardList>
+    <div>
+      <Tabs activeTab={activeRouteName} fullWidth>
         {Object.entries(Routes).map(([routeName, routePath]) => (
-          <TabcardTrigger key={routeName} value={routeName} asChild>
+          <TabItem key={routeName} name={routeName}>
             <Link href={routePath}>{t(routeName)}</Link>
-          </TabcardTrigger>
+          </TabItem>
         ))}
-      </TabcardList>
+      </Tabs>
+      {children}
+    </div>
+    // <Tabcard
+    //   value={activeRouteName}
+    //   className="h-full max-h-[768px] w-11/12 max-w-[1024px] overflow-hidden"
+    // >
+    //   <TabcardList>
+    //     {Object.entries(Routes).map(([routeName, routePath]) => (
+    //       <TabcardTrigger key={routeName} value={routeName} asChild>
+    //         <Link href={routePath}>{t(routeName)}</Link>
+    //       </TabcardTrigger>
+    //     ))}
+    //   </TabcardList>
 
-      {Object.keys(Routes).map((routeName) => (
-        <TabcardContent key={routeName} value={routeName}>
-          {routeName === activeRouteName ? children : null}
-        </TabcardContent>
-      ))}
+    //   {Object.keys(Routes).map((routeName) => (
+    //     <TabcardContent key={routeName} value={routeName}>
+    //       {routeName === activeRouteName ? children : null}
+    //     </TabcardContent>
+    //   ))}
 
-      {activeRouteName === notfound && (
-        <TabcardContent value={notfound}>{children}</TabcardContent>
-      )}
-    </Tabcard>
+    //   {activeRouteName === notfound && (
+    //     <TabcardContent value={notfound}>{children}</TabcardContent>
+    //   )}
+    // </Tabcard>
   )
 }

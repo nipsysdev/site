@@ -1,7 +1,7 @@
 import { CommandArgument, CommandInfo } from '@/types/terminal'
 import type { JSX } from 'react'
 import { useTerminalContext } from '@/contexts/TerminalContext'
-import { Button } from '@srcpunks/src_ui'
+import { Button } from '@acid-info/lsd-react/components'
 
 interface Props {
   cmdName?: string
@@ -50,12 +50,7 @@ export default function CmdLink(props: Props) {
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="text-md w-fit"
-      onClick={submitCmd}
-    >
+    <Button variant="outlined" size="small" onClick={submitCmd}>
       <span>{props.cmdName ?? props.cmdInfo?.name}</span>
       {cmdArgOptionRender()}
     </Button>
