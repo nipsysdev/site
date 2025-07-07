@@ -1,3 +1,7 @@
+---
+applyTo: "**"
+---
+
 # AI Documentation Guidelines
 
 ## Purpose
@@ -6,7 +10,7 @@ The `.ai` directory contains comprehensive documentation to help AI agents quick
 
 ## Usage
 
-1. Always consult the `.ai` documentation when starting work on the project
+1. You must always consult the `.ai` documentation when starting work on the project
 2. Use the documentation to understand the project structure and conventions
 3. Refer to specific files for detailed information:
    - `README.md`: Project overview and quick start

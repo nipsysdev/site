@@ -3,6 +3,7 @@
 ## Key Components
 
 - `TerminalEmulator`: Main terminal interface component
+- `TerminalPrompt`: Handles user input, command history, and autocomplete
 - `TerminalContext`: Manages terminal state (history, input, etc.)
 - `AppContext`: Manages app-wide state (key presses, etc.)
 - `cmd-outputs/`: Output components for each command
