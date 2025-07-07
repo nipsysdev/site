@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { cx } from '@/utils/helpers';
 
 describe('helpers', () => {
@@ -8,7 +8,9 @@ describe('helpers', () => {
     });
 
     it('should filter out non-string values', () => {
-      expect(cx('class1', null, undefined, 'class2', false, 'class3')).toBe('class1 class2 class3');
+      expect(cx('class1', null, undefined, 'class2', false, 'class3')).toBe(
+        'class1 class2 class3',
+      );
     });
 
     it('should handle numbers by filtering them out', () => {
@@ -21,7 +23,9 @@ describe('helpers', () => {
 
     it('should handle nested arrays', () => {
       // Only one level of flattening, nested arrays are filtered out (not strings)
-      expect(cx(['class1', ['class2', 'class3']], 'class4')).toBe('class1 class4');
+      expect(cx(['class1', ['class2', 'class3']], 'class4')).toBe(
+        'class1 class4',
+      );
     });
 
     it('should trim the result', () => {
@@ -39,7 +43,9 @@ describe('helpers', () => {
 
     it('should handle mixed nested structures', () => {
       // Nested arrays are filtered out since they're not strings
-      expect(cx(['class1', null, ['class2', undefined, 'class3']], false, 'class4')).toBe('class1 class4');
+      expect(
+        cx(['class1', null, ['class2', undefined, 'class3']], false, 'class4'),
+      ).toBe('class1 class4');
     });
 
     it('should handle empty strings', () => {

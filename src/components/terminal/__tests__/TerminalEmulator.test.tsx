@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useAppContext } from '@/contexts/AppContext';
 import { useTerminalContext } from '@/contexts/TerminalContext';
 import useIsPrerender from '@/hooks/useIsPrerender';

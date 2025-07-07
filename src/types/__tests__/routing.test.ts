@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { ViewRoute } from '@/types/routing';
+import { describe, expect, it } from 'vitest';
 import type { AppRoute, RouteData } from '@/types/routing';
+import { ViewRoute } from '@/types/routing';
 
 describe('routing types', () => {
   describe('ViewRoute enum', () => {
@@ -17,7 +17,7 @@ describe('routing types', () => {
     });
 
     it('should have string values for all routes', () => {
-      Object.values(ViewRoute).forEach(route => {
+      Object.values(ViewRoute).forEach((route) => {
         expect(typeof route).toBe('string');
         expect(route.startsWith('/')).toBe(true);
       });
@@ -30,7 +30,7 @@ describe('routing types', () => {
     });
 
     it('should use lowercase paths', () => {
-      Object.values(ViewRoute).forEach(route => {
+      Object.values(ViewRoute).forEach((route) => {
         expect(route).toBe(route.toLowerCase());
       });
     });
@@ -73,7 +73,7 @@ describe('routing types', () => {
     });
 
     it('should accept all ViewRoute values', () => {
-      Object.values(ViewRoute).forEach(viewRoute => {
+      Object.values(ViewRoute).forEach((viewRoute) => {
         const route: AppRoute = {
           viewRoute,
           timeStamp: Date.now(),

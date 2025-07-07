@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import WhoamiOutput from '../WhoamiOutput';
+import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
+import WhoamiOutput from '../WhoamiOutput';
 
 // Mock the AboutMe component - it just renders simple text
 vi.mock('../about-me/AboutMe', () => ({
@@ -9,8 +10,7 @@ vi.mock('../about-me/AboutMe', () => ({
 }));
 
 describe('WhoamiOutput', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mockT = vi.fn((key: string) => key) as any;
+  const mockT = vi.fn((key: string) => key) as unknown as Translator;
   const mockEntry: CommandEntry = {
     timestamp: Date.now(),
     cmdName: Command.Whoami,

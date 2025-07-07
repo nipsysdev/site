@@ -1,6 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import type {
+  CommandArgument,
+  CommandEntry,
+  CommandInfo,
+  CommandOutputProps,
+} from '@/types/terminal';
 import { Command } from '@/types/terminal';
-import type { CommandEntry, CommandOutputProps, CommandArgument, CommandInfo } from '@/types/terminal';
 
 describe('terminal types', () => {
   describe('Command enum', () => {
@@ -20,7 +25,7 @@ describe('terminal types', () => {
     });
 
     it('should have string values for all commands', () => {
-      Object.values(Command).forEach(command => {
+      Object.values(Command).forEach((command) => {
         expect(typeof command).toBe('string');
         expect(command.length).toBeGreaterThan(0);
       });
@@ -51,7 +56,7 @@ describe('terminal types', () => {
 
     it('should accept CommandEntry with all optional properties', () => {
       const mockOutput = () => null;
-      
+
       const entry: CommandEntry = {
         timestamp: Date.now(),
         cmdName: Command.Help,

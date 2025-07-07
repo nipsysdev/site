@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Commands } from '@/constants/commands';
+import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
 import HelpOutput from '../HelpOutput';
 
@@ -73,7 +74,7 @@ vi.mock('@acid-info/lsd-react/components', () => ({
 
 describe('HelpOutput', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mockT = vi.fn((key: string) => key) as any;
+  const mockT = vi.fn((key: string) => key) as unknown as Translator;
   const mockEntry: CommandEntry = {
     timestamp: Date.now(),
     cmdName: Command.Help,

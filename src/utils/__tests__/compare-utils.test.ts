@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
 import type { KeyboardEvent } from 'react';
-import { isNewRouteEvent, isNewKeyEvent } from '@/utils/compare-utils';
+import { describe, expect, it } from 'vitest';
 import type { AppRoute } from '@/types/routing';
 import { ViewRoute } from '@/types/routing';
+import { isNewKeyEvent, isNewRouteEvent } from '@/utils/compare-utils';
 
 describe('compare-utils', () => {
   describe('isNewRouteEvent', () => {
@@ -119,21 +119,25 @@ describe('compare-utils', () => {
   });
 
   describe('isNewKeyEvent', () => {
-    const createKeyboardEvent = (key: string, timeStamp: number): KeyboardEvent => ({
-      key,
-      timeStamp,
-      // Add minimal required properties for KeyboardEvent
-      altKey: false,
-      ctrlKey: false,
-      shiftKey: false,
-      metaKey: false,
-      repeat: false,
-      type: 'keydown',
-      bubbles: true,
-      cancelable: true,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    } as KeyboardEvent);
+    const createKeyboardEvent = (
+      key: string,
+      timeStamp: number,
+    ): KeyboardEvent =>
+      ({
+        key,
+        timeStamp,
+        // Add minimal required properties for KeyboardEvent
+        altKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        metaKey: false,
+        repeat: false,
+        type: 'keydown',
+        bubbles: true,
+        cancelable: true,
+        preventDefault: () => {},
+        stopPropagation: () => {},
+      }) as KeyboardEvent;
 
     it('should return true when newEvent exists and oldEvent is null', () => {
       const newEvent = createKeyboardEvent('Enter', 123456);

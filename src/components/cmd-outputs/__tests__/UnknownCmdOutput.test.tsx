@@ -35,7 +35,9 @@ describe('UnknownCmdOutput', () => {
 
   it('renders the error message', () => {
     render(<UnknownCmdOutput cmdName="test" />);
-    expect(screen.getByText('unknownCmdErr', { exact: false })).toBeInTheDocument();
+    expect(
+      screen.getByText('unknownCmdErr', { exact: false }),
+    ).toBeInTheDocument();
   });
 
   it('sets the correct icon size', () => {
@@ -46,7 +48,7 @@ describe('UnknownCmdOutput', () => {
 
   it('renders with proper CSS classes', () => {
     const { container } = render(<UnknownCmdOutput cmdName="test" />);
-    
+
     const mainDiv = container.firstChild as HTMLElement;
     expect(mainDiv).toHaveClass('flex', 'items-center', 'gap-x-1');
   });
@@ -54,7 +56,7 @@ describe('UnknownCmdOutput', () => {
   it('displays the full error message format', () => {
     const cmdName = 'someCommand';
     render(<UnknownCmdOutput cmdName={cmdName} />);
-    
+
     // Check that both the translation key and command name are present
     expect(screen.getByText(/unknownCmdErr/)).toBeInTheDocument();
     expect(screen.getByText(/someCommand/)).toBeInTheDocument();

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { setPageMeta } from '@/utils/metadata-utils';
+import { describe, expect, it, vi } from 'vitest';
 import type { RouteData } from '@/types/routing';
+import { setPageMeta } from '@/utils/metadata-utils';
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
@@ -12,13 +12,13 @@ describe('metadata-utils', () => {
     it('should return base metadata when no page is specified', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'Test Site';
         if (key === 'description') return 'Test Description';
         return key;
       });
-      
+
       mockGetTranslations.mockResolvedValue(mockTMeta);
 
       const routeData: RouteData = {
@@ -41,18 +41,18 @@ describe('metadata-utils', () => {
     it('should return page-specific metadata when page is specified', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'Test Site';
         if (key === 'description') return 'Test Description';
         return key;
       });
-      
+
       const mockTPages = vi.fn((key: string) => {
         if (key === 'contact') return 'Contact Page';
         return key;
       });
-      
+
       mockGetTranslations
         .mockResolvedValueOnce(mockTMeta)
         .mockResolvedValueOnce(mockTPages);
@@ -81,13 +81,13 @@ describe('metadata-utils', () => {
     it('should handle different locales', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'Site de Test';
         if (key === 'description') return 'Description de Test';
         return key;
       });
-      
+
       mockGetTranslations.mockResolvedValue(mockTMeta);
 
       const routeData: RouteData = {
@@ -110,18 +110,18 @@ describe('metadata-utils', () => {
     it('should handle whoami page', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'My Site';
         if (key === 'description') return 'My Description';
         return key;
       });
-      
+
       const mockTPages = vi.fn((key: string) => {
         if (key === 'whoami') return 'Who Am I';
         return key;
       });
-      
+
       mockGetTranslations
         .mockResolvedValueOnce(mockTMeta)
         .mockResolvedValueOnce(mockTPages);
@@ -141,18 +141,18 @@ describe('metadata-utils', () => {
     it('should handle mission page', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'My Site';
         if (key === 'description') return 'My Description';
         return key;
       });
-      
+
       const mockTPages = vi.fn((key: string) => {
         if (key === 'mission') return 'Mission';
         return key;
       });
-      
+
       mockGetTranslations
         .mockResolvedValueOnce(mockTMeta)
         .mockResolvedValueOnce(mockTPages);
@@ -172,18 +172,18 @@ describe('metadata-utils', () => {
     it('should handle terminal page', async () => {
       const { getTranslations } = await import('next-intl/server');
       const mockGetTranslations = vi.mocked(getTranslations);
-      
+
       const mockTMeta = vi.fn((key: string) => {
         if (key === 'title') return 'My Site';
         if (key === 'description') return 'My Description';
         return key;
       });
-      
+
       const mockTPages = vi.fn((key: string) => {
         if (key === 'terminal') return 'Terminal';
         return key;
       });
-      
+
       mockGetTranslations
         .mockResolvedValueOnce(mockTMeta)
         .mockResolvedValueOnce(mockTPages);

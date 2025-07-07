@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { Command } from '@/types/terminal';
+import { describe, expect, it, vi } from 'vitest';
 import type { CommandEntry } from '@/types/terminal';
+import { Command } from '@/types/terminal';
 
 // Mock the Commands array
 vi.mock('@/constants/commands', () => ({
@@ -28,10 +28,10 @@ vi.mock('@/constants/commands', () => ({
 }));
 
 import {
-  newTerminalEntry,
-  unrecognizedTerminalEntry,
-  parseTerminalEntry,
   getTerminalEntryInput,
+  newTerminalEntry,
+  parseTerminalEntry,
+  unrecognizedTerminalEntry,
 } from '@/utils/terminal-utils';
 
 describe('terminal-utils', () => {
@@ -83,7 +83,7 @@ describe('terminal-utils', () => {
         mockOutput,
         'en',
         'lang',
-        'english'
+        'english',
       );
 
       expect(entry).toEqual({

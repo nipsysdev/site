@@ -1,23 +1,23 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import Contact from '../Contact';
 
 describe('Contact', () => {
   it('should render the component', () => {
     render(<Contact />);
-    
+
     expect(screen.getByText('contact / todo')).toBeInTheDocument();
   });
 
   it('should render as a div element', () => {
     const { container } = render(<Contact />);
-    
+
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement);
   });
 
   it('should have the expected content', () => {
     const { container } = render(<Contact />);
-    
+
     expect(container.firstChild?.textContent).toBe('contact / todo');
   });
 
@@ -27,7 +27,7 @@ describe('Contact', () => {
 
   it('should match snapshot', () => {
     const { container } = render(<Contact />);
-    
+
     expect(container.firstChild).toMatchInlineSnapshot(`
       <div>
         contact / todo

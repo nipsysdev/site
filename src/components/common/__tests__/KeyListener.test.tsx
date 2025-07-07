@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { KeyListener } from '../KeyListener';
 
@@ -44,20 +44,20 @@ describe('KeyListener', () => {
   it('calls setLastKeyDown on keyDown event', () => {
     const { container } = render(<KeyListener />);
     const button = container.querySelector('button') as HTMLButtonElement;
-    
+
     const keyDownEvent = new KeyboardEvent('keydown', { key: 'Enter' });
     fireEvent.keyDown(button, keyDownEvent);
-    
+
     expect(mockSetLastKeyDown).toHaveBeenCalledWith(expect.any(Object));
   });
 
   it('refocuses button on blur', () => {
     const { container } = render(<KeyListener />);
     const button = container.querySelector('button') as HTMLButtonElement;
-    
+
     const focusSpy = vi.spyOn(button, 'focus');
     fireEvent.blur(button);
-    
+
     expect(focusSpy).toHaveBeenCalled();
   });
 });

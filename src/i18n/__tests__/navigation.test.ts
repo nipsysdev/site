@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock next-intl/navigation module
 vi.mock('next-intl/navigation', () => ({
@@ -24,7 +24,7 @@ describe('i18n navigation', () => {
     it('should export navigation utilities when imported', async () => {
       // Import after mocks are set up
       const navigation = await import('../navigation');
-      
+
       expect(navigation.Link).toBeDefined();
       expect(navigation.redirect).toBeDefined();
       expect(navigation.usePathname).toBeDefined();
@@ -64,9 +64,10 @@ describe('i18n navigation', () => {
 
     it('should have all navigation utilities available', async () => {
       const navigation = await import('../navigation');
-      const { Link, redirect, usePathname, useRouter, getPathname } = navigation;
+      const { Link, redirect, usePathname, useRouter, getPathname } =
+        navigation;
       const exports = { Link, redirect, usePathname, useRouter, getPathname };
-      
+
       for (const [name, func] of Object.entries(exports)) {
         expect(func, `${name} should be defined`).toBeDefined();
         expect(typeof func, `${name} should be a function`).toBe('function');
@@ -76,7 +77,7 @@ describe('i18n navigation', () => {
     it('should export exactly 5 navigation utilities', async () => {
       const navigation = await import('../navigation');
       const exportedKeys = Object.keys(navigation);
-      
+
       expect(exportedKeys).toContain('Link');
       expect(exportedKeys).toContain('redirect');
       expect(exportedKeys).toContain('usePathname');

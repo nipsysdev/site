@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Routes } from '@/constants/routes';
 
 describe('routes', () => {
@@ -16,7 +16,7 @@ describe('routes', () => {
     });
 
     it('should have all routes starting with /', () => {
-      Object.values(Routes).forEach(route => {
+      Object.values(Routes).forEach((route) => {
         expect(route).toMatch(/^\/.*$/);
       });
     });
@@ -24,7 +24,7 @@ describe('routes', () => {
     it('should have unique route paths', () => {
       const routePaths = Object.values(Routes);
       const uniquePaths = [...new Set(routePaths)];
-      
+
       expect(routePaths.length).toBe(uniquePaths.length);
     });
 
@@ -34,8 +34,8 @@ describe('routes', () => {
 
     it('should have proper route naming convention', () => {
       const routeKeys = Object.keys(Routes);
-      
-      routeKeys.forEach(key => {
+
+      routeKeys.forEach((key) => {
         expect(key).toMatch(/^[a-z]+$/);
       });
     });
@@ -47,7 +47,7 @@ describe('routes', () => {
     });
 
     it('should not have trailing slashes (except root)', () => {
-      Object.values(Routes).forEach(route => {
+      Object.values(Routes).forEach((route) => {
         if (route !== '/') {
           expect(route).not.toMatch(/\/$/);
         }

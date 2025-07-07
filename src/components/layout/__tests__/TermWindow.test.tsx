@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import TerminalWindow from '../TermWindow';
 import { Routes } from '@/constants/routes';
+import TerminalWindow from '../TermWindow';
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -18,14 +18,19 @@ vi.mock('@/i18n/intl', () => ({
 
 // Mock LSD React components
 vi.mock('@acid-info/lsd-react/components', () => ({
-  Tabs: ({ children, className, activeTab, fullWidth }: { 
-    children: React.ReactNode; 
-    className?: string; 
+  Tabs: ({
+    children,
+    className,
+    activeTab,
+    fullWidth,
+  }: {
+    children: React.ReactNode;
+    className?: string;
     activeTab: string;
     fullWidth?: boolean;
   }) => (
-    <div 
-      data-testid="tabs" 
+    <div
+      data-testid="tabs"
       className={className}
       data-active-tab={activeTab}
       data-full-width={fullWidth}
@@ -33,12 +38,16 @@ vi.mock('@acid-info/lsd-react/components', () => ({
       {children}
     </div>
   ),
-  TabItem: ({ children, name, className }: { 
-    children: React.ReactNode; 
-    name: string; 
-    className?: string; 
+  TabItem: ({
+    children,
+    name,
+    className,
+  }: {
+    children: React.ReactNode;
+    name: string;
+    className?: string;
   }) => (
-    <div 
+    <div
       data-testid={`tab-item-${name}`}
       className={className}
       data-name={name}
@@ -52,19 +61,23 @@ describe('TerminalWindow', () => {
   const mockChildren = <div data-testid="mock-children">Test content</div>;
 
   it('renders without crashing', () => {
-    const { container } = render(<TerminalWindow>{mockChildren}</TerminalWindow>);
+    const { container } = render(
+      <TerminalWindow>{mockChildren}</TerminalWindow>,
+    );
     expect(container.firstChild).toBeInTheDocument();
   });
 
   it('renders with correct CSS classes', () => {
-    const { container } = render(<TerminalWindow>{mockChildren}</TerminalWindow>);
+    const { container } = render(
+      <TerminalWindow>{mockChildren}</TerminalWindow>,
+    );
     const mainDiv = container.firstChild as HTMLElement;
     expect(mainDiv).toHaveClass('size-full', 'flex', 'flex-col');
   });
 
   it('renders Tabs component with correct props', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
-    
+
     const tabs = screen.getByTestId('tabs');
     expect(tabs).toBeInTheDocument();
     expect(tabs).toHaveClass('shrink-0');
@@ -73,19 +86,19 @@ describe('TerminalWindow', () => {
 
   it('sets correct active tab based on pathname', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
-    
+
     const tabs = screen.getByTestId('tabs');
     expect(tabs).toHaveAttribute('data-active-tab', 'mission');
   });
 
   it('renders tab items for all routes', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
-    
+
     Object.entries(Routes).forEach(([routeName, routePath]) => {
       const tabItem = screen.getByTestId(`tab-item-${routeName}`);
       expect(tabItem).toBeInTheDocument();
       expect(tabItem).toHaveAttribute('data-name', routeName);
-      
+
       // Check the link inside the tab
       const link = screen.getByRole('link', { name: routeName });
       expect(link).toHaveAttribute('href', routePath);
@@ -99,7 +112,7 @@ describe('TerminalWindow', () => {
 
   it('applies terminal tab className to tab items', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
-    
+
     Object.keys(Routes).forEach((routeName) => {
       const tabItem = screen.getByTestId(`tab-item-${routeName}`);
       // Check that the className property contains the styles reference
@@ -109,7 +122,7 @@ describe('TerminalWindow', () => {
 
   it('uses translations for tab labels', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
-    
+
     Object.keys(Routes).forEach((routeName) => {
       // Since our mock translation function returns the key, check for the route name
       expect(screen.getByText(routeName)).toBeInTheDocument();

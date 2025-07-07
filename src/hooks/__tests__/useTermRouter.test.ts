@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTerminalContext } from '@/contexts/TerminalContext';
 import useTermRouter from '@/hooks/useTermRouter';
-import { ViewRoute } from '@/types/routing';
 import type { AppRoute } from '@/types/routing';
+import { ViewRoute } from '@/types/routing';
 
 // Mock the TerminalContext
 vi.mock('@/contexts/TerminalContext', () => ({

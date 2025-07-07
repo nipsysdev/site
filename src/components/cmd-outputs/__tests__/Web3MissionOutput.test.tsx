@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import Web3MissionOutput from '../Web3MissionOutput';
+import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
+import Web3MissionOutput from '../Web3MissionOutput';
 
 // Mock the Web3Mission component - it just renders simple text
 vi.mock('../web3-mission/Web3Mission', () => ({
@@ -9,15 +10,16 @@ vi.mock('../web3-mission/Web3Mission', () => ({
 }));
 
 describe('Web3MissionOutput', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mockT = vi.fn((key: string) => key) as any;
+  const mockT = vi.fn((key: string) => key) as unknown as Translator;
   const mockEntry: CommandEntry = {
     timestamp: Date.now(),
     cmdName: Command.Web3Mission,
   };
 
   it('renders without crashing', () => {
-    const { container } = render(<Web3MissionOutput t={mockT} entry={mockEntry} />);
+    const { container } = render(
+      <Web3MissionOutput t={mockT} entry={mockEntry} />,
+    );
     expect(container).toBeInTheDocument();
   });
 

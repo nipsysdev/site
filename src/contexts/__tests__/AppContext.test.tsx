@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { AppStateProvider, useAppContext } from '@/contexts/AppContext';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import type { KeyboardEvent } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AppStateProvider, useAppContext } from '@/contexts/AppContext';
 
 // Test component to use the context
 const TestComponent = () => {
@@ -14,46 +14,47 @@ const TestComponent = () => {
     setOldKeyDown,
   } = useAppContext();
 
-  const createMockKeyEvent = (key: string): KeyboardEvent => ({
-    key,
-    code: key,
-    ctrlKey: false,
-    shiftKey: false,
-    altKey: false,
-    metaKey: false,
-    repeat: false,
-    timeStamp: Date.now(),
-  } as KeyboardEvent);
+  const createMockKeyEvent = (key: string): KeyboardEvent =>
+    ({
+      key,
+      code: key,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false,
+      metaKey: false,
+      repeat: false,
+      timeStamp: Date.now(),
+    }) as KeyboardEvent;
 
   return (
     <div>
       <div data-testid="is-terminal">{isTerminal ? 'true' : 'false'}</div>
       <div data-testid="last-key">{lastKeyDown?.key || 'none'}</div>
       <div data-testid="old-key">{oldKeyDown?.key || 'none'}</div>
-      <button 
+      <button
         type="button"
-        data-testid="set-terminal-true" 
+        data-testid="set-terminal-true"
         onClick={() => setIsTerminal(true)}
       >
         Set Terminal True
       </button>
-      <button 
+      <button
         type="button"
-        data-testid="set-terminal-false" 
+        data-testid="set-terminal-false"
         onClick={() => setIsTerminal(false)}
       >
         Set Terminal False
       </button>
-      <button 
+      <button
         type="button"
-        data-testid="set-last-key" 
+        data-testid="set-last-key"
         onClick={() => setLastKeyDown(createMockKeyEvent('Enter'))}
       >
         Set Last Key
       </button>
-      <button 
+      <button
         type="button"
-        data-testid="set-old-key" 
+        data-testid="set-old-key"
         onClick={() => setOldKeyDown(lastKeyDown)}
       >
         Set Old Key
@@ -71,7 +72,7 @@ describe('AppContext', () => {
     render(
       <AppStateProvider>
         <TestComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     expect(screen.getByTestId('is-terminal')).toHaveTextContent('false');
@@ -83,12 +84,12 @@ describe('AppContext', () => {
     render(
       <AppStateProvider>
         <TestComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     const setTrueButton = screen.getByTestId('set-terminal-true');
     const setFalseButton = screen.getByTestId('set-terminal-false');
-    
+
     act(() => {
       fireEvent.click(setTrueButton);
     });
@@ -106,11 +107,11 @@ describe('AppContext', () => {
     render(
       <AppStateProvider>
         <TestComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     const setLastKeyButton = screen.getByTestId('set-last-key');
-    
+
     act(() => {
       fireEvent.click(setLastKeyButton);
     });
@@ -122,12 +123,12 @@ describe('AppContext', () => {
     render(
       <AppStateProvider>
         <TestComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     const setLastKeyButton = screen.getByTestId('set-last-key');
     const setOldKeyButton = screen.getByTestId('set-old-key');
-    
+
     // First set a last key
     act(() => {
       fireEvent.click(setLastKeyButton);
@@ -147,12 +148,12 @@ describe('AppContext', () => {
     render(
       <AppStateProvider>
         <TestComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     const setTrueButton = screen.getByTestId('set-terminal-true');
     const setLastKeyButton = screen.getByTestId('set-last-key');
-    
+
     act(() => {
       fireEvent.click(setTrueButton);
       fireEvent.click(setLastKeyButton);
@@ -165,19 +166,19 @@ describe('AppContext', () => {
   it('should handle null values', () => {
     const TestNullComponent = () => {
       const { setLastKeyDown, setOldKeyDown } = useAppContext();
-      
+
       return (
         <div>
-          <button 
+          <button
             type="button"
-            data-testid="set-last-null" 
+            data-testid="set-last-null"
             onClick={() => setLastKeyDown(null)}
           >
             Set Last Null
           </button>
-          <button 
+          <button
             type="button"
-            data-testid="set-old-null" 
+            data-testid="set-old-null"
             onClick={() => setOldKeyDown(null)}
           >
             Set Old Null
@@ -190,12 +191,12 @@ describe('AppContext', () => {
       <AppStateProvider>
         <TestComponent />
         <TestNullComponent />
-      </AppStateProvider>
+      </AppStateProvider>,
     );
 
     const setLastNullButton = screen.getByTestId('set-last-null');
     const setOldNullButton = screen.getByTestId('set-old-null');
-    
+
     act(() => {
       fireEvent.click(setLastNullButton);
       fireEvent.click(setOldNullButton);

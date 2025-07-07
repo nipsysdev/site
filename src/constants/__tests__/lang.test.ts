@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Lang, LangLabels } from '@/constants/lang';
 
 describe('lang', () => {
@@ -14,7 +14,7 @@ describe('lang', () => {
     });
 
     it('should have string values', () => {
-      Object.values(Lang).forEach(lang => {
+      Object.values(Lang).forEach((lang) => {
         expect(typeof lang).toBe('string');
       });
     });
@@ -27,7 +27,7 @@ describe('lang', () => {
     });
 
     it('should have labels for all Lang enum values', () => {
-      Object.values(Lang).forEach(lang => {
+      Object.values(Lang).forEach((lang) => {
         expect(LangLabels[lang]).toBeDefined();
         expect(typeof LangLabels[lang]).toBe('string');
         expect(LangLabels[lang].length).toBeGreaterThan(0);
@@ -37,10 +37,10 @@ describe('lang', () => {
     it('should not have extra labels', () => {
       const langKeys = Object.keys(LangLabels);
       const enumValues = Object.values(Lang);
-      
+
       expect(langKeys).toHaveLength(enumValues.length);
-      
-      langKeys.forEach(key => {
+
+      langKeys.forEach((key) => {
         expect(enumValues).toContain(key as Lang);
       });
     });
@@ -55,12 +55,12 @@ describe('lang', () => {
     it('should have matching keys between Lang enum and LangLabels', () => {
       const enumValues = Object.values(Lang);
       const labelKeys = Object.keys(LangLabels);
-      
-      enumValues.forEach(lang => {
+
+      enumValues.forEach((lang) => {
         expect(labelKeys).toContain(lang);
       });
-      
-      labelKeys.forEach(key => {
+
+      labelKeys.forEach((key) => {
         expect(enumValues).toContain(key as Lang);
       });
     });

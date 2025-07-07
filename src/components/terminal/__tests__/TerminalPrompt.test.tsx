@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
 import { isNewKeyEvent } from '@/utils/compare-utils';

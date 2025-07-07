@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { TerminalStateProvider, useTerminalContext } from '../TerminalContext';
+import { describe, expect, it } from 'vitest';
+import type { AppRoute, CommandEntry } from '@/types/routing';
 import { ViewRoute } from '@/types/routing';
 import { Command } from '@/types/terminal';
-import type { AppRoute, CommandEntry } from '@/types/routing';
+import { TerminalStateProvider, useTerminalContext } from '../TerminalContext';
 
 describe('TerminalContext', () => {
   describe('TerminalStateProvider', () => {

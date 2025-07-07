@@ -1,8 +1,12 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import CmdLink from '../CmdLink';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTerminalContext } from '@/contexts/TerminalContext';
-import { Command, type CommandInfo, type CommandArgument } from '@/types/terminal';
+import {
+  Command,
+  type CommandArgument,
+  type CommandInfo,
+} from '@/types/terminal';
+import CmdLink from '../CmdLink';
 
 // Mock the terminal context
 vi.mock('@/contexts/TerminalContext', () => ({
@@ -24,15 +28,17 @@ describe('CmdLink', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      setInput: mockSetInput,
-      setSimulatedCmd: mockSetSimulatedCmd,
-    });
+    (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      {
+        setInput: mockSetInput,
+        setSimulatedCmd: mockSetSimulatedCmd,
+      },
+    );
   });
 
   it('renders with cmdName prop', () => {
     render(<CmdLink cmdName="help" />);
-    
+
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByText('help')).toBeInTheDocument();
   });
@@ -43,17 +49,17 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdInfo={cmdInfo} />);
-    
+
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByText('whoami')).toBeInTheDocument();
   });
 
   it('handles click with simple command (no options)', () => {
     render(<CmdLink cmdName="help" />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(mockSetSimulatedCmd).toHaveBeenCalledWith('help');
     expect(mockSetInput).not.toHaveBeenCalled();
   });
@@ -65,10 +71,10 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdInfo={cmdInfo} />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(mockSetInput).toHaveBeenCalledWith('contact ');
     expect(mockSetSimulatedCmd).not.toHaveBeenCalled();
   });
@@ -82,10 +88,10 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdInfo={cmdInfo} arg={arg} />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(mockSetInput).toHaveBeenCalledWith('web3-mission --framework=');
     expect(mockSetSimulatedCmd).not.toHaveBeenCalled();
   });
@@ -97,7 +103,7 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdInfo={cmdInfo} />);
-    
+
     expect(screen.getByText('email|linkedin|twitter')).toBeInTheDocument();
   });
 
@@ -111,7 +117,7 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdInfo={cmdInfo} arg={arg} />);
-    
+
     expect(screen.getByText('react|vue|angular')).toBeInTheDocument();
   });
 
@@ -121,20 +127,31 @@ describe('CmdLink', () => {
     };
     const arg: CommandArgument = {
       name: 'framework',
-      options: ['react', 'vue', 'angular', 'svelte', 'solid', 'qwik', 'next', 'nuxt'],
+      options: [
+        'react',
+        'vue',
+        'angular',
+        'svelte',
+        'solid',
+        'qwik',
+        'next',
+        'nuxt',
+      ],
     };
 
     render(<CmdLink cmdInfo={cmdInfo} arg={arg} />);
-    
-    expect(screen.getByText('react|vue|angular|svelte|solid|qwik|...')).toBeInTheDocument();
+
+    expect(
+      screen.getByText('react|vue|angular|svelte|solid|qwik|...'),
+    ).toBeInTheDocument();
   });
 
   it('handles empty cmd gracefully', () => {
     render(<CmdLink />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(mockSetSimulatedCmd).not.toHaveBeenCalled();
     expect(mockSetInput).not.toHaveBeenCalled();
   });
@@ -145,14 +162,14 @@ describe('CmdLink', () => {
     };
 
     render(<CmdLink cmdName="help" cmdInfo={cmdInfo} />);
-    
+
     expect(screen.getByText('help')).toBeInTheDocument();
     expect(screen.queryByText('intro')).not.toBeInTheDocument();
   });
 
   it('renders with correct button props', () => {
     render(<CmdLink cmdName="help" />);
-    
+
     const button = screen.getByRole('button');
     expect(button).toHaveClass('text-xs', 'w-fit!');
   });
