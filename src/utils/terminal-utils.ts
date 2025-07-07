@@ -1,6 +1,6 @@
-import { Commands } from "@/constants/commands";
-import type { CommandEntry, CommandOutput } from "@/types/terminal";
-import { Command } from "@/types/terminal";
+import { Commands } from '@/constants/commands';
+import type { CommandEntry, CommandOutput } from '@/types/terminal';
+import { Command } from '@/types/terminal';
 
 export function newTerminalEntry(
   name: Command,
@@ -8,7 +8,7 @@ export function newTerminalEntry(
   fullscreen?: boolean,
   option?: string,
   argName?: string,
-  argValue?: string
+  argValue?: string,
 ): CommandEntry {
   return {
     cmdName: name,
@@ -26,24 +26,24 @@ export function unrecognizedTerminalEntry(name: string): CommandEntry {
 }
 
 export function parseTerminalEntry(entry: string): CommandEntry {
-  const split = entry.split(" ");
+  const split = entry.split(' ');
   const cmdName =
     Command[
       (Object.entries(Command).find(([, v]) => v === split[0]) ?? [
-        "",
+        '',
       ])[0] as keyof typeof Command
     ];
   const cmdInfo = Commands.find((cmd) => cmd.name === cmdName);
 
   if (!cmdName || !cmdInfo) return unrecognizedTerminalEntry(entry);
 
-  let option = undefined;
-  let argName = undefined;
-  let argValue = undefined;
+  let option: string | undefined;
+  let argName: string | undefined;
+  let argValue: string | undefined;
 
-  if (split[1]?.includes("--") && split[1]?.includes("=")) {
-    const argSplit = split[1].split("=");
-    argName = argSplit[0].replace("--", "");
+  if (split[1]?.includes('--') && split[1]?.includes('=')) {
+    const argSplit = split[1].split('=');
+    argName = argSplit[0].replace('--', '');
     argValue = argSplit[1];
   } else {
     option = split[1];
@@ -55,7 +55,7 @@ export function parseTerminalEntry(entry: string): CommandEntry {
     cmdInfo.fullscreen,
     option,
     argName,
-    argValue
+    argValue,
   );
 }
 

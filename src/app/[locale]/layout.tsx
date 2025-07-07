@@ -9,41 +9,41 @@ import type { RouteData } from '@/types/routing';
 import { setPageMeta } from '@/utils/metadata-utils';
 
 export function generateStaticParams() {
-	return routing.locales.map((locale) => ({ locale }));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export const generateMetadata = async (routeData: RouteData) =>
-	await setPageMeta(routeData);
+  await setPageMeta(routeData);
 
 export default async function Layout({
-	children,
-	params,
+  children,
+  params,
 }: {
-	children: React.ReactNode;
-	params: Promise<{ locale: string }>;
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-	const { locale } = await params;
-	if (!hasLocale(routing.locales, locale)) {
-		notFound();
-	}
-	setRequestLocale(locale);
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+  setRequestLocale(locale);
 
-	return (
-		<html lang={locale} data-theme="dark">
-			<head>
-				<LsdThemeStyles />
-			</head>
-			<NextIntlClientProvider>
-				<body className="bg-black">
-					<main className="monospace flex flex-col gap-y-(--lsd-spacing-40) w-5xl mx-auto max-w-full p-3 sm:p-5 h-screen">
-						<Header />
+  return (
+    <html lang={locale} data-theme="dark">
+      <head>
+        <LsdThemeStyles />
+      </head>
+      <NextIntlClientProvider>
+        <body className="bg-black">
+          <main className="monospace flex flex-col gap-y-(--lsd-spacing-40) w-5xl mx-auto max-w-full p-3 sm:p-5 h-screen">
+            <Header />
 
-						<div className="w-full sm:w-4/5 mx-auto overflow-hidden flex-auto">
-							<TerminalWindow>{children}</TerminalWindow>
-						</div>
-					</main>
-				</body>
-			</NextIntlClientProvider>
-		</html>
-	);
+            <div className="w-full sm:w-4/5 mx-auto overflow-hidden flex-auto">
+              <TerminalWindow>{children}</TerminalWindow>
+            </div>
+          </main>
+        </body>
+      </NextIntlClientProvider>
+    </html>
+  );
 }

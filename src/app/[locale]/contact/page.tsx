@@ -3,8 +3,8 @@ import type { RouteData } from '@/types/routing';
 import { setPageMeta } from '@/utils/metadata-utils';
 
 export const generateMetadata = async (routeData: RouteData) =>
-	await setPageMeta(routeData, 'contact');
+  await setPageMeta(routeData, 'contact');
 
 export default function ContactPage() {
-	return <Contact />;
+  return <Contact />;
 }

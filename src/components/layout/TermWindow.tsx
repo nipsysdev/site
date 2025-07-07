@@ -6,34 +6,34 @@ import { Link, usePathname } from '@/i18n/intl';
 import styles from '@/styles/components.module.css';
 
 export default function TerminalWindow({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	const t = useTranslations('Pages');
+  const t = useTranslations('Pages');
 
-	const pathname = usePathname();
-	const notfound = '404';
-	const activeRouteName =
-		Object.entries(Routes)
-			.filter(([, routePath]) => routePath === pathname)
-			.map(([routeName]) => routeName)
-			.find(Boolean) ?? notfound;
+  const pathname = usePathname();
+  const notfound = '404';
+  const activeRouteName =
+    Object.entries(Routes)
+      .filter(([, routePath]) => routePath === pathname)
+      .map(([routeName]) => routeName)
+      .find(Boolean) ?? notfound;
 
-	return (
-		<div className="size-full flex flex-col">
-			<Tabs className="shrink-0" activeTab={activeRouteName} fullWidth>
-				{Object.entries(Routes).map(([routeName, routePath]) => (
-					<TabItem
-						key={routeName}
-						name={routeName}
-						className={styles.terminalTab}
-					>
-						<Link href={routePath}>{t(routeName)}</Link>
-					</TabItem>
-				))}
-			</Tabs>
-			{children}
-		</div>
-	);
+  return (
+    <div className="size-full flex flex-col">
+      <Tabs className="shrink-0" activeTab={activeRouteName} fullWidth>
+        {Object.entries(Routes).map(([routeName, routePath]) => (
+          <TabItem
+            key={routeName}
+            name={routeName}
+            className={styles.terminalTab}
+          >
+            <Link href={routePath}>{t(routeName)}</Link>
+          </TabItem>
+        ))}
+      </Tabs>
+      {children}
+    </div>
+  );
 }

@@ -4,10 +4,10 @@ import {
   type Messages,
   type NamespaceKeys,
   type NestedKeyOf,
-} from "next-intl";
-import { createNavigation } from "next-intl/navigation";
-import { defineRouting } from "next-intl/routing";
-import { getRequestConfig } from "next-intl/server";
+} from 'next-intl';
+import { createNavigation } from 'next-intl/navigation';
+import { defineRouting } from 'next-intl/routing';
+import { getRequestConfig } from 'next-intl/server';
 
 export type Translator = ReturnType<
   typeof createTranslator<
@@ -17,9 +17,9 @@ export type Translator = ReturnType<
 >;
 
 export const routing = defineRouting({
-  locales: ["en", "fr"],
-  defaultLocale: "en",
-  localePrefix: "always",
+  locales: ['en', 'fr'],
+  defaultLocale: 'en',
+  localePrefix: 'always',
   localeDetection: false,
 });
 

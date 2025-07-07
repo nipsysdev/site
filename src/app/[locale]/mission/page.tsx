@@ -3,8 +3,8 @@ import type { RouteData } from '@/types/routing';
 import { setPageMeta } from '@/utils/metadata-utils';
 
 export const generateMetadata = async (routeData: RouteData) =>
-	await setPageMeta(routeData, 'mission');
+  await setPageMeta(routeData, 'mission');
 
 export default function MissionPage() {
-	return <Web3Mission />;
+  return <Web3Mission />;
 }

@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { useTerminalContext } from "@/contexts/TerminalContext";
-import type { AppRoute, ViewRoute } from "@/types/routing";
-import { isNewRouteEvent } from "@/utils/compare-utils";
+import { useEffect } from 'react';
+import { useTerminalContext } from '@/contexts/TerminalContext';
+import type { AppRoute, ViewRoute } from '@/types/routing';
+import { isNewRouteEvent } from '@/utils/compare-utils';
 
 export default function useTermRouter(
   listenRoute: ViewRoute,
-  handler: (appRoute: AppRoute) => void
+  handler: (appRoute: AppRoute) => void,
 ) {
   const { lastRouteReq, oldRouteReq, setOldRouteReq } = useTerminalContext();
 

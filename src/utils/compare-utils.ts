@@ -1,9 +1,9 @@
-import type { KeyboardEvent } from "react";
-import type { AppRoute } from "@/types/routing";
+import type { KeyboardEvent } from 'react';
+import type { AppRoute } from '@/types/routing';
 
 export function isNewRouteEvent(
   oldEvent?: AppRoute | null,
-  newEvent?: AppRoute | null
+  newEvent?: AppRoute | null,
 ): boolean {
   return (
     !!newEvent &&
@@ -16,7 +16,7 @@ export function isNewRouteEvent(
 
 export function isNewKeyEvent(
   oldEvent?: KeyboardEvent | null,
-  newEvent?: KeyboardEvent | null
+  newEvent?: KeyboardEvent | null,
 ): boolean {
   return (
     !!newEvent &&

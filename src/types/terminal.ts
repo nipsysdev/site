@@ -1,14 +1,14 @@
-import type { ComponentType } from "react";
-import type { Translator } from "@/i18n/intl";
+import type { ComponentType } from 'react';
+import type { Translator } from '@/i18n/intl';
 
 export enum Command {
-  Clear = "clear",
-  Contact = "contact",
-  Help = "help",
-  Intro = "intro",
-  Web3Mission = "web3-mission",
-  SetLang = "set-lang",
-  Whoami = "whoami",
+  Clear = 'clear',
+  Contact = 'contact',
+  Help = 'help',
+  Intro = 'intro',
+  Web3Mission = 'web3-mission',
+  SetLang = 'set-lang',
+  Whoami = 'whoami',
 }
 
 export interface CommandEntry {
