@@ -24,7 +24,6 @@
   },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",
-    "fullScreenMode": "mode plein écran",
     "autocomplete": "autocomplétion :",
     "noMatch": "aucune correspondance",
     "visitor": "visiteur",

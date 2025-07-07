@@ -15,7 +15,6 @@ export interface CommandEntry {
   timestamp: number;
   cmdName: Command;
   output?: CommandOutput;
-  fullscreen?: boolean;
   option?: string;
   argName?: string;
   argValue?: string;
@@ -36,7 +35,6 @@ export interface CommandArgument {
 export interface CommandInfo {
   name: Command;
   output?: CommandOutput;
-  fullscreen?: boolean;
   arguments?: CommandArgument[];
   options?: string[];
 }

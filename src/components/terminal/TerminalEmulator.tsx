@@ -91,7 +91,7 @@ export default function TerminalEmulator() {
           {history.map((entry) => (
             <div key={entry.timestamp} className="mb-1">
               <TerminalPrompt i18n={t} entry={entry} />
-              {entry.fullscreen ? null : entry.output ? (
+              {entry.output ? (
                 <entry.output entry={entry} t={t} />
               ) : (
                 <UnknownCmdOutput cmdName={entry.cmdName} />
