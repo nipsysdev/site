@@ -1,7 +1,7 @@
 export interface KeyListen {
-  key: Key
-  deactivated?: boolean
-  ctrlKey?: boolean
+  key: Key;
+  deactivated?: boolean;
+  ctrlKey?: boolean;
 }
 
 /* eslint-disable @typescript-eslint/no-duplicate-enum-values */

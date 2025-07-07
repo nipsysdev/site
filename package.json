@@ -19,37 +19,34 @@
     "dev-legacy": "next dev",
     "export": "next build",
     "serve": "npx serve@latest out",
-    "lint": "next lint",
-    "format": "prettier --write .",
-    "prepare": "husky"
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "postinstall": "lefthook install"
   },
   "dependencies": {
-    "@srcpunks/src_ui": "^0.0.14",
+    "@acid-info/lsd-react": "0.2.0-topic-canary-test-4.55",
     "figlet": "^1.8.1",
-    "next": "15.3.1",
-    "next-intl": "^4.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0"
+    "next": "15.3.5",
+    "next-intl": "^4.3.4",
+    "postcss": "^8.5.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@biomejs/biome": "^2.0.6",
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/figlet": "^1.7.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.5.1",
-    "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "lefthook": "^1.11.16",
+    "lint-staged": "^16.1.2",
+    "typescript": "^5.8.3"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint",
-    "**/*": "prettier --write --config ./.prettierrc --ignore-unknown"
+    "*": "biome check --apply",
+    "**/*": "biome format --write"
   }
 }

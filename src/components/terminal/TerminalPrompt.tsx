@@ -1,27 +1,34 @@
-import { Commands } from '@/constants/commands'
-import { Translator } from '@/i18n/intl'
-import { Key } from '@/types/keyboard'
-import { CommandEntry } from '@/types/terminal'
-import { CompareUtils } from '@/utils/compare-utils'
-import { TerminalUtils } from '@/utils/terminal-utils'
-import { Component, createRef, KeyboardEvent, RefObject } from 'react'
+import { Typography } from '@acid-info/lsd-react/components';
+import {
+  Component,
+  createRef,
+  type KeyboardEvent,
+  type RefObject,
+} from 'react';
+import { Commands } from '@/constants/commands';
+import type { Translator } from '@/i18n/intl';
+import styles from '@/styles/components.module.css';
+import { Key } from '@/types/keyboard';
+import type { CommandEntry } from '@/types/terminal';
+import { isNewKeyEvent } from '@/utils/compare-utils';
+import { getTerminalEntryInput } from '@/utils/terminal-utils';
 
 interface Props {
-  i18n: Translator
-  entry?: CommandEntry
-  history?: CommandEntry[]
-  lastKeyDown?: KeyboardEvent | null
-  setSubmission?: (value: string) => void
-  setLastKeyDown?: (value: KeyboardEvent | null) => void
+  i18n: Translator;
+  entry?: CommandEntry;
+  history?: CommandEntry[];
+  lastKeyDown?: KeyboardEvent | null;
+  setSubmission?: (value: string) => void;
+  setLastKeyDown?: (value: KeyboardEvent | null) => void;
 }
 
 interface State {
-  inputText: string
-  inputRef: RefObject<HTMLInputElement | null>
-  autocompleteRef: RefObject<HTMLDivElement | null>
-  historyIdx: number
-  autocomplete: string[] | null
-  host: string
+  inputText: string;
+  inputRef: RefObject<HTMLInputElement | null>;
+  autocompleteRef: RefObject<HTMLDivElement | null>;
+  historyIdx: number;
+  autocomplete: string[] | null;
+  host: string;
 }
 
 export default class TerminalPrompt extends Component<Props, State> {
@@ -32,52 +39,52 @@ export default class TerminalPrompt extends Component<Props, State> {
     historyIdx: -1,
     autocomplete: null,
     host: window.location.host.split(':')[0],
-  }
+  };
 
   componentDidMount(): void {
     if (this.props.entry) {
-      this.setInput(TerminalUtils.GetEntryInput(this.props.entry))
+      this.setInput(getTerminalEntryInput(this.props.entry));
     }
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     if (
       this.props.lastKeyDown &&
-      CompareUtils.IsNewKeyEvent(prevProps.lastKeyDown, this.props.lastKeyDown)
+      isNewKeyEvent(prevProps.lastKeyDown, this.props.lastKeyDown)
     ) {
-      this.keyDownHandler(this.props.lastKeyDown)
+      this.keyDownHandler(this.props.lastKeyDown);
     }
   }
 
   focus() {
-    this.state.inputRef.current?.focus()
+    this.state.inputRef.current?.focus();
   }
 
   simulate(input: string) {
-    let i = 0
+    let i = 0;
 
     const addChar = (cmd: string) => {
       if (!cmd || i >= cmd.length) {
-        this.submit()
-        return
+        this.submit();
+        return;
       }
       this.setInput(this.state.inputText + cmd.charAt(i), () => {
-        i++
+        i++;
 
         setTimeout(() => {
-          addChar(cmd)
-        }, 50)
-      })
-    }
+          addChar(cmd);
+        }, 50);
+      });
+    };
 
     this.setInput('', () => {
-      addChar(input)
-      this.state.inputRef.current?.focus()
-    })
+      addChar(input);
+      this.state.inputRef.current?.focus();
+    });
   }
 
   scrollIntoView() {
-    this.state.inputRef.current?.scrollIntoView({ behavior: 'smooth' })
+    this.state.inputRef.current?.scrollIntoView({ behavior: 'smooth' });
   }
 
   setInput(input: string, callback?: () => void): void {
@@ -88,11 +95,11 @@ export default class TerminalPrompt extends Component<Props, State> {
         autocomplete: null,
       }),
       callback,
-    )
+    );
   }
 
   private setHistoryIdx(idx: number): void {
-    this.setState((previousState) => ({ ...previousState, historyIdx: idx }))
+    this.setState((previousState) => ({ ...previousState, historyIdx: idx }));
   }
 
   private setAutocomplete(
@@ -102,7 +109,7 @@ export default class TerminalPrompt extends Component<Props, State> {
     this.setState(
       (previousState) => ({ ...previousState, autocomplete }),
       callback,
-    )
+    );
   }
 
   private resetEntry(): void {
@@ -110,23 +117,24 @@ export default class TerminalPrompt extends Component<Props, State> {
       ...previousState,
       historyIdx: -1,
       inputText: '',
-    }))
+    }));
   }
 
   private submit(): void {
-    if (this.props.setSubmission) this.props.setSubmission(this.state.inputText)
-    this.setInput('')
+    if (this.props.setSubmission)
+      this.props.setSubmission(this.state.inputText);
+    this.setInput('');
   }
 
   private getPastInputStr(entry: CommandEntry): string {
-    let pastInput = entry.cmdName as string
+    let pastInput = entry.cmdName as string;
     if (entry.option) {
-      pastInput += ` ${entry.option}`
+      pastInput += ` ${entry.option}`;
     }
     if (entry.argName) {
-      pastInput += ` --${entry.argName}=${entry.argValue}`
+      pastInput += ` --${entry.argName}=${entry.argValue}`;
     }
-    return pastInput
+    return pastInput;
   }
 
   private updateCursorPosition(): void {
@@ -135,79 +143,80 @@ export default class TerminalPrompt extends Component<Props, State> {
         this.state.inputRef.current.setSelectionRange(
           this.state.inputText.length,
           this.state.inputText.length,
-        )
+        );
       }
-    }, 50)
+    }, 50);
   }
 
-  private usePreviousEntry() {
-    if (!this.props.history || this.state.historyIdx === 0) return
+  private setPreviousEntry() {
+    if (!this.props.history || this.state.historyIdx === 0) return;
     const idx =
       this.state.historyIdx === -1
         ? this.props.history.length - 1
-        : this.state.historyIdx - 1
+        : this.state.historyIdx - 1;
     this.setInput(this.getPastInputStr(this.props.history[idx]), () => {
-      this.updateCursorPosition()
-      this.setHistoryIdx(idx)
-    })
+      this.updateCursorPosition();
+      this.setHistoryIdx(idx);
+    });
   }
 
-  private useNextEntry() {
-    if (!this.props.history || this.state.historyIdx === -1) return
-    let idx = this.state.historyIdx
+  private setNextEntry() {
+    if (!this.props.history || this.state.historyIdx === -1) return;
+    let idx = this.state.historyIdx;
 
     if (idx === this.props.history.length - 1) {
-      this.resetEntry()
-      return
+      this.resetEntry();
+      return;
     }
 
-    idx++
+    idx++;
     this.setInput(this.getPastInputStr(this.props.history[idx]), () => {
-      this.updateCursorPosition()
-      this.setHistoryIdx(idx)
-    })
+      this.updateCursorPosition();
+      this.setHistoryIdx(idx);
+    });
   }
 
   private autoComplete(): void {
     const matchedCmds = Commands.map((cmd) => cmd.name).filter((cmd) =>
       cmd.startsWith(this.state.inputText),
-    )
+    );
     if (matchedCmds.length === 1) {
-      this.setInput(matchedCmds[0])
-      return
+      this.setInput(matchedCmds[0]);
+      return;
     }
     this.setAutocomplete(matchedCmds, () => {
-      this.state.autocompleteRef.current?.scrollIntoView()
-    })
+      this.state.autocompleteRef.current?.scrollIntoView();
+    });
   }
 
   private keyDownHandler(event: KeyboardEvent): void {
-    if (!this.props.setLastKeyDown) return
+    if (!this.props.setLastKeyDown) return;
     if (event.ctrlKey && event.key === Key.c) {
-      return this.resetEntry()
+      this.resetEntry();
+      return;
     }
 
     switch (event.key) {
       case Key.Enter:
-        this.props.setLastKeyDown(null)
-        this.submit()
-        break
+        this.props.setLastKeyDown(null);
+        this.submit();
+        break;
       case Key.ArrowUp:
-        this.usePreviousEntry()
-        break
+        this.setPreviousEntry();
+        break;
       case Key.ArrowDown:
-        this.useNextEntry()
-        break
+        this.setNextEntry();
+        break;
       case Key.Tab:
-        event.preventDefault()
-        this.autoComplete()
+        event.preventDefault();
+        this.autoComplete();
     }
   }
 
   render = () => (
     <>
       <div className="flex w-full gap-x-2">
-        <span className="text-primary">
+        <span className={styles.terminalPrompt}>
           {this.props.i18n('visitor')}@{this.state.host}:~$
         </span>
         <input
@@ -223,10 +232,10 @@ export default class TerminalPrompt extends Component<Props, State> {
       </div>
       <div className="flex items-start" ref={this.state.autocompleteRef}>
         {!this.props.entry && this.state.autocomplete && (
-          <span className="text-sm opacity-60">
+          <Typography variant="subtitle4" className="opacity-60">
             {this.props.i18n('autocomplete')}&nbsp;
             {this.state.autocomplete.join(' | ') || this.props.i18n('noMatch')}
-          </span>
+          </Typography>
         )}
       </div>
 
@@ -242,5 +251,5 @@ export default class TerminalPrompt extends Component<Props, State> {
         }
       `}</style>
     </>
-  )
+  );
 }

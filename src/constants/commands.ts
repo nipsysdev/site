@@ -1,15 +1,15 @@
-import { Command, CommandInfo } from '@/types/terminal'
-import { Lang } from './lang'
-import IntroOutput from '@/components/cmd-outputs/IntroOutput'
-import HelpOutput from '@/components/cmd-outputs/HelpOutput'
-import WhoamiOutput from '@/components/cmd-outputs/WhoamiOutput'
-import Web3MissionOutput from '@/components/cmd-outputs/Web3MissionOutput'
-import ContactOutput from '@/components/cmd-outputs/ContactOutput'
+import ContactOutput from '@/components/cmd-outputs/ContactOutput';
+import HelpOutput from '@/components/cmd-outputs/HelpOutput';
+import IntroOutput from '@/components/cmd-outputs/IntroOutput';
+import Web3MissionOutput from '@/components/cmd-outputs/Web3MissionOutput';
+import WhoamiOutput from '@/components/cmd-outputs/WhoamiOutput';
+import { Command, type CommandInfo } from '@/types/terminal';
+import { Lang } from './lang';
 
 function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
   return Object.values(o).map((l: string) => {
-    return l.replace(' ', '').replace('-', '').toLowerCase()
-  })
+    return l.replace(' ', '').replace('-', '').toLowerCase();
+  });
 }
 
 export const Commands: CommandInfo[] = [
@@ -41,4 +41,4 @@ export const Commands: CommandInfo[] = [
     name: Command.Web3Mission,
     output: Web3MissionOutput,
   },
-]
+];

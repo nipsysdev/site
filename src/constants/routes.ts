@@ -3,4 +3,4 @@ export const Routes = {
   whoami: '/whoami',
   mission: '/mission',
   contact: '/contact',
-}
+};

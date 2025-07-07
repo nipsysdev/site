@@ -6,4 +6,4 @@ export enum Lang {
 export const LangLabels: Record<Lang, string> = {
   [Lang.En]: 'English',
   [Lang.Fr]: 'Français',
-}
+};

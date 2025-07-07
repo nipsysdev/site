@@ -1,5 +1,5 @@
-import { Translator } from '@/i18n/intl'
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react';
+import type { Translator } from '@/i18n/intl';
 
 export enum Command {
   Clear = 'clear',
@@ -12,31 +12,31 @@ export enum Command {
 }
 
 export interface CommandEntry {
-  timestamp: number
-  cmdName: Command
-  output?: CommandOutput
-  fullscreen?: boolean
-  option?: string
-  argName?: string
-  argValue?: string
+  timestamp: number;
+  cmdName: Command;
+  output?: CommandOutput;
+  fullscreen?: boolean;
+  option?: string;
+  argName?: string;
+  argValue?: string;
 }
 
 export interface CommandOutputProps {
-  entry: CommandEntry
-  t: Translator
+  entry: CommandEntry;
+  t: Translator;
 }
 
-export type CommandOutput = ComponentType<CommandOutputProps>
+export type CommandOutput = ComponentType<CommandOutputProps>;
 
 export interface CommandArgument {
-  name: string
-  options?: string[]
+  name: string;
+  options?: string[];
 }
 
 export interface CommandInfo {
-  name: Command
-  output?: CommandOutput
-  fullscreen?: boolean
-  arguments?: CommandArgument[]
-  options?: string[]
+  name: Command;
+  output?: CommandOutput;
+  fullscreen?: boolean;
+  arguments?: CommandArgument[];
+  options?: string[];
 }

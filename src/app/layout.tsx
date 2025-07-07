@@ -1,10 +1,10 @@
-import { AppStateProvider } from '@/contexts/AppContext'
-import '@/styles/global.css'
+import { AppStateProvider } from '@/contexts/AppContext';
+import 'tailwindcss/index.css';
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-  return <AppStateProvider>{children}</AppStateProvider>
+  return <AppStateProvider>{children}</AppStateProvider>;
 }

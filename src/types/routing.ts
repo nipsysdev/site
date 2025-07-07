@@ -1,7 +1,7 @@
 export interface AppRoute {
-  viewRoute: ViewRoute
-  param?: string | number
-  timeStamp: number
+  viewRoute: ViewRoute;
+  param?: string | number;
+  timeStamp: number;
 }
 
 export enum ViewRoute {
@@ -12,5 +12,5 @@ export enum ViewRoute {
 }
 
 export interface RouteData {
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: string }>;
 }
