@@ -25,6 +25,22 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js using mise
+        uses: jdx/mise-action@v2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test
+
   build:
     runs-on: ubuntu-latest
 
