@@ -1,51 +1,52 @@
 {
-	"name": "site",
-	"description": "My personal website",
-	"version": "0.1.0",
-	"license": "GPL-3.0-or-later",
-	"private": true,
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/nipsysdev/site"
-	},
-	"homepage": "https://nipsys.dev/",
-	"author": "Xavier Saliniere <bonjour@xaviers.sh>",
-	"engines": {
-		"node": ">=22.0.0",
-		"pnpm": ">=9"
-	},
-	"scripts": {
-		"dev": "next dev --turbopack",
-		"dev-legacy": "next dev",
-		"export": "next build",
-		"serve": "npx serve@latest out",
-		"lint": "biome check .",
-		"format": "biome format --write .",
-		"postinstall": "lefthook install"
-	},
-	"dependencies": {
-		"@acid-info/lsd-react": "file:~/Sources/lsd/packages/lsd-react/acid-info-lsd-react-v0.2.0-beta.2.tgz",
-		"figlet": "^1.8.1",
-		"next": "15.3.5",
-		"next-intl": "^4.3.4",
-		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
-		"react-icons": "^5.5.0"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.0.6",
-		"@tailwindcss/postcss": "^4.1.11",
-		"@types/figlet": "^1.7.0",
-		"@types/node": "^24.0.10",
-		"@types/react": "^19.1.8",
-		"@types/react-dom": "^19.1.6",
-		"lefthook": "^1.11.16",
-		"lint-staged": "^16.1.2",
-		"tailwindcss": "^4.1.11",
-		"typescript": "^5.8.3"
-	},
-	"lint-staged": {
-		"*": "biome check --apply",
-		"**/*": "biome format --write"
-	}
+  "name": "site",
+  "description": "My personal website",
+  "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nipsysdev/site"
+  },
+  "homepage": "https://nipsys.dev/",
+  "author": "Xavier Saliniere <bonjour@xaviers.sh>",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "dev-legacy": "next dev",
+    "export": "next build",
+    "serve": "npx serve@latest out",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "postinstall": "lefthook install"
+  },
+  "dependencies": {
+    "@acid-info/lsd-react": "0.2.0-topic-canary-test-4.55",
+    "figlet": "^1.8.1",
+    "next": "15.3.5",
+    "next-intl": "^4.3.4",
+    "postcss": "^8.5.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.6",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/figlet": "^1.7.0",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "lefthook": "^1.11.16",
+    "lint-staged": "^16.1.2",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*": "biome check --apply",
+    "**/*": "biome format --write"
+  }
 }
