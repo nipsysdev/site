@@ -17,8 +17,12 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev-legacy": "next dev",
+    "build": "next build",
     "export": "next build",
     "serve": "npx serve@latest out",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest run --watch",
     "lint": "biome check .",
     "format": "biome format --write .",
     "postinstall": "lefthook install"
@@ -37,13 +41,20 @@
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
     "@tailwindcss/postcss": "^4.1.11",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/figlet": "^1.7.0",
     "@types/node": "^24.0.10",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "jsdom": "^26.1.0",
     "lefthook": "^1.11.16",
     "lint-staged": "^16.1.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "*": "biome check --apply",
