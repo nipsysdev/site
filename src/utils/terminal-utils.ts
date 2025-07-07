@@ -5,7 +5,6 @@ import { Command } from '@/types/terminal';
 export function newTerminalEntry(
   name: Command,
   output?: CommandOutput,
-  fullscreen?: boolean,
   option?: string,
   argName?: string,
   argValue?: string,
@@ -13,7 +12,6 @@ export function newTerminalEntry(
   return {
     cmdName: name,
     output,
-    fullscreen,
     option,
     argName,
     argValue,
@@ -49,14 +47,7 @@ export function parseTerminalEntry(entry: string): CommandEntry {
     option = split[1];
   }
 
-  return newTerminalEntry(
-    cmdName,
-    cmdInfo.output,
-    cmdInfo.fullscreen,
-    option,
-    argName,
-    argValue,
-  );
+  return newTerminalEntry(cmdName, cmdInfo.output, option, argName, argValue);
 }
 
 export function getTerminalEntryInput(entry: CommandEntry) {
