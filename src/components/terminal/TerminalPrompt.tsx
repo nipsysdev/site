@@ -32,6 +32,11 @@ interface State {
 }
 
 export default class TerminalPrompt extends Component<Props, State> {
+  // Constants for IPFS host display formatting
+  private static readonly MAX_HOST_LENGTH = 25;
+  private static readonly CID_MIN_LENGTH = 16;
+  private static readonly CID_TRUNCATION_LENGTH = 8;
+
   state: State = {
     inputText: '',
     inputRef: createRef<HTMLInputElement>(),
@@ -46,15 +51,28 @@ export default class TerminalPrompt extends Component<Props, State> {
 
     // Check if it's an IPFS host (contains ipns or ipfs and is long)
     if (fullHost.includes('ipns') || fullHost.includes('ipfs')) {
-      if (fullHost.length > 25) {
-        // For IPFS, show first 8 chars + ... + last 8 chars of the CID + domain
+      if (fullHost.length > TerminalPrompt.MAX_HOST_LENGTH) {
+        // For IPFS, show first CID_TRUNCATION_LENGTH chars + ... + last CID_TRUNCATION_LENGTH chars of the CID + domain
         const parts = fullHost.split('.');
         const cidPart = parts[0]; // The long hash part
-        const domainPart = parts.slice(1).join('.'); // Everything after the CID
 
-        if (cidPart.length > 16) {
-          const prefix = cidPart.substring(0, 8);
-          const suffix = cidPart.substring(cidPart.length - 8);
+        // Validate that we have domain parts before constructing domainPart
+        let domainPart = '';
+        if (parts.length > 1) {
+          domainPart = parts.slice(1).join('.'); // Everything after the CID
+        } else {
+          // Fallback to fullHost if no '.' is present (edge case)
+          return fullHost;
+        }
+
+        if (cidPart.length > TerminalPrompt.CID_MIN_LENGTH) {
+          const prefix = cidPart.substring(
+            0,
+            TerminalPrompt.CID_TRUNCATION_LENGTH,
+          );
+          const suffix = cidPart.substring(
+            cidPart.length - TerminalPrompt.CID_TRUNCATION_LENGTH,
+          );
           return `${prefix}...${suffix}.${domainPart}`;
         }
       }
