@@ -20,6 +20,17 @@
 - Test framework: Vitest with React Testing Library
 - Coverage reporting: V8 coverage provider
 
+### Testing Requirements
+
+- **New functionality must include tests** - Never implement new features without corresponding tests
+- **Update existing tests** when modifying functionality
+- **Test all edge cases** - especially for utility functions and complex logic
+- **Component tests** should cover props, state changes, and user interactions
+- **Utility tests** should cover all branches and error conditions
+- **Integration tests** for command system and terminal interactions
+- **Mock external dependencies** appropriately in tests
+- **Test file organization** - keep tests in `__tests__/` directories alongside components
+
 ## Quality Assurance
 
 - Linting: `pnpm lint` (Biome)
