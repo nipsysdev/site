@@ -1,4 +1,4 @@
-# nipsys.dev
+# nipsys.eth site
 
 ```
 $ whoami
@@ -13,7 +13,7 @@ built this when i got tired of the usual portfolio sites. figured if i'm gonna s
 
 licensed under GPL-3.0 because that's how it should be.
 
-**status**: work in progress. not even hosted yet, but getting there.
+**status**: work in progress. live on IPFS via IPNS `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
 
 ## why a terminal?
 
@@ -28,11 +28,10 @@ licensed under GPL-3.0 because that's how it should be.
 - ✅ commands and navigation
 - ✅ responsive design
 - ✅ internationalization
+- ✅ deployed on IPFS
 - 🚧 content still being written
-- 🚧 ipfs deployment setup
+- 🚧 automatic ipfs deployment setup
 - 🚧 figuring out codex hosting
-- 🚧 web3 integration features
-- ❌ not live yet (soon™)
 
 ## commands
 

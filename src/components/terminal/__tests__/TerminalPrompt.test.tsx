@@ -148,7 +148,14 @@ describe('TerminalPrompt', () => {
   it('renders Terminal prompt span', () => {
     render(<TerminalPrompt {...defaultProps} />);
 
-    const promptSpan = screen.getByText('translated_visitor@localhost:~$');
+    // Check for the terminal prompt span with a more flexible matcher
+    const promptSpan = screen.getByText((content, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'span' &&
+        content.includes('translated_visitor') &&
+        content.includes(':~$')
+      );
+    });
     expect(promptSpan).toBeInTheDocument();
   });
 
@@ -834,6 +841,96 @@ describe('TerminalPrompt', () => {
       // Test ArrowDown after navigating up
       fireEvent.keyDown(input, { key: 'ArrowDown' });
       expect(mockSetLastKeyDown).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('getDisplayHost', () => {
+    it('returns full host for regular domains', () => {
+      Object.defineProperty(window, 'location', {
+        value: { host: 'example.com' },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@example.com:~$'),
+      ).toBeInTheDocument();
+    });
+
+    it('returns full host for short IPFS hosts', () => {
+      Object.defineProperty(window, 'location', {
+        value: { host: 'short.ipfs.dweb.link' },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@short.ipfs.dweb.link:~$'),
+      ).toBeInTheDocument();
+    });
+
+    it('shortens long IPNS hosts correctly', () => {
+      Object.defineProperty(window, 'location', {
+        value: {
+          host: 'k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3.ipns.dweb.link',
+        },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+
+      // Check for the shortened IPNS host in the prompt span
+      const promptSpan = screen.getByText((content, element) => {
+        return (
+          element?.tagName.toLowerCase() === 'span' &&
+          content.includes('k2k4r8ng...43veb6n3.ipns.dweb.link')
+        );
+      });
+      expect(promptSpan).toBeInTheDocument();
+    });
+
+    it('shortens long IPFS hosts correctly', () => {
+      Object.defineProperty(window, 'location', {
+        value: {
+          host: 'QmYjtig7VJQ6XsnUjqqJvj7QaMcCAwtrgNdahSiFofrE7o.ipfs.dweb.link',
+        },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+
+      // Check for the shortened IPFS host in the prompt span
+      const promptSpan = screen.getByText((content, element) => {
+        return (
+          element?.tagName.toLowerCase() === 'span' &&
+          content.includes('QmYjtig7...iFofrE7o.ipfs.dweb.link')
+        );
+      });
+      expect(promptSpan).toBeInTheDocument();
+    });
+
+    it('handles hosts with port numbers', () => {
+      Object.defineProperty(window, 'location', {
+        value: { host: 'localhost:3000' },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@localhost:~$'),
+      ).toBeInTheDocument();
+    });
+
+    it('handles CID shorter than 16 characters', () => {
+      Object.defineProperty(window, 'location', {
+        value: { host: 'shortcid.ipfs.dweb.link' },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@shortcid.ipfs.dweb.link:~$'),
+      ).toBeInTheDocument();
     });
   });
 });
