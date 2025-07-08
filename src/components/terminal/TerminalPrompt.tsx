@@ -38,8 +38,30 @@ export default class TerminalPrompt extends Component<Props, State> {
     autocompleteRef: createRef<HTMLDivElement>(),
     historyIdx: -1,
     autocomplete: null,
-    host: window.location.host.split(':')[0],
+    host: this.getDisplayHost(),
   };
+
+  private getDisplayHost(): string {
+    const fullHost = window.location.host.split(':')[0];
+
+    // Check if it's an IPFS host (contains ipns or ipfs and is long)
+    if (fullHost.includes('ipns') || fullHost.includes('ipfs')) {
+      if (fullHost.length > 25) {
+        // For IPFS, show first 8 chars + ... + last 8 chars of the CID + domain
+        const parts = fullHost.split('.');
+        const cidPart = parts[0]; // The long hash part
+        const domainPart = parts.slice(1).join('.'); // Everything after the CID
+
+        if (cidPart.length > 16) {
+          const prefix = cidPart.substring(0, 8);
+          const suffix = cidPart.substring(cidPart.length - 8);
+          return `${prefix}...${suffix}.${domainPart}`;
+        }
+      }
+    }
+
+    return fullHost;
+  }
 
   componentDidMount(): void {
     if (this.props.entry) {
