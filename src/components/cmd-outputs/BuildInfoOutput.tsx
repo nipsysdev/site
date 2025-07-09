@@ -9,13 +9,14 @@ export default function BuildInfoOutput({ t }: CommandOutputProps) {
       <div className="mb-2">{t('cmds.build-info.title')}</div>
       <div className="space-y-1">
         <div>
-          <span>Build Time:</span>{' '}
+          <span>{t('cmds.build-info.timeLabel')}</span>{' '}
           {buildTimestamp
             ? new Date(buildTimestamp).toLocaleString()
             : 'Unknown'}
         </div>
         <div>
-          <span>IPNS Name:</span> {ipnsHash || 'Not configured'}
+          <span>{t('cmds.build-info.ipnsLabel')}</span>{' '}
+          {ipnsHash || 'Not configured'}
         </div>
       </div>
     </div>

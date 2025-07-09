@@ -30,7 +30,9 @@
     "cmds": {
       "build-info": {
         "description": "Afficher la date du build et les informations de déploiement",
-        "title": "Informations du build"
+        "title": "Informations du build",
+        "timeLabel": "Date du build :",
+        "ipnsLabel": "Nom IPNS :"
       },
       "clear": {
         "description": "Effacer l'écran du terminal"

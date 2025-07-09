@@ -18,6 +18,8 @@ vi.stubGlobal('process', {
 const mockT = vi.fn((key: string) => {
   const translations: Record<string, string> = {
     'cmds.build-info.title': 'Build Information',
+    'cmds.build-info.timeLabel': 'Build Time:',
+    'cmds.build-info.ipnsLabel': 'IPNS Name:',
   };
   return translations[key] || key;
 }) as unknown as Translator;
