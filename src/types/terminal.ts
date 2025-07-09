@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import type { Translator } from '@/i18n/intl';
 
 export enum Command {
+  BuildInfo = 'build-info',
   Clear = 'clear',
   Contact = 'contact',
   Help = 'help',

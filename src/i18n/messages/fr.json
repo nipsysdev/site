@@ -28,6 +28,10 @@
     "noMatch": "aucune correspondance",
     "visitor": "visiteur",
     "cmds": {
+      "build-info": {
+        "description": "Afficher la date du build et les informations de déploiement",
+        "title": "Informations du build"
+      },
       "clear": {
         "description": "Effacer l'écran du terminal"
       },

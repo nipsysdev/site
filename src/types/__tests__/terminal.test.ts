@@ -10,6 +10,7 @@ import { Command } from '@/types/terminal';
 describe('terminal types', () => {
   describe('Command enum', () => {
     it('should have all expected command values', () => {
+      expect(Command.BuildInfo).toBe('build-info');
       expect(Command.Clear).toBe('clear');
       expect(Command.Contact).toBe('contact');
       expect(Command.Help).toBe('help');
@@ -19,9 +20,9 @@ describe('terminal types', () => {
       expect(Command.Whoami).toBe('whoami');
     });
 
-    it('should have exactly 7 commands', () => {
+    it('should have exactly 8 commands', () => {
       const commandValues = Object.values(Command);
-      expect(commandValues).toHaveLength(7);
+      expect(commandValues).toHaveLength(8);
     });
 
     it('should have string values for all commands', () => {

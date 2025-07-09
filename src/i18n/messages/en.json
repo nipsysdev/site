@@ -28,6 +28,10 @@
     "noMatch": "no match",
     "visitor": "visitor",
     "cmds": {
+      "build-info": {
+        "description": "Show build timestamp and deployment info",
+        "title": "Build Information"
+      },
       "clear": {
         "description": "Clear the terminal screen"
       },
