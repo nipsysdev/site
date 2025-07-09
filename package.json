@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev-legacy": "next dev",
+    "build": "next build",
     "export": "next build",
     "serve": "npx serve@latest out",
     "test": "vitest run",

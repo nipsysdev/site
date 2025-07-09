@@ -4,19 +4,40 @@ applyTo: "**"
 
 # AI Documentation Guidelines
 
+## ⚠️ STOP - READ THIS FIRST
+
+**BEFORE doing ANYTHING else, you MUST follow this workflow:**
+
+### Required Workflow
+
+1. **First, check for `.ai` directory documentation**
+   ```bash
+   # Search .ai docs for relevant keywords
+   grep -r "relevant_keywords" .ai/
+   ```
+
+2. **Read applicable documentation in this order:**
+   - `.ai/README.md` - Project overview and quick start
+   - `.ai/ARCHITECTURE.md` - Key components and architecture 
+   - `.ai/DEVELOPMENT.md` - Setup and coding conventions
+   - `.ai/COMMANDS.md` - Command system documentation (if working with commands)
+
+3. **Acknowledge understanding by stating:**
+   - "After reading .ai/[FILE].md, I understand that..."
+   - Reference specific patterns or conventions you'll follow
+
+4. **THEN proceed with your task**
+
 ## Purpose
 
 The `.ai` directory contains comprehensive documentation to help AI agents quickly understand and continue development on the project. It serves as a knowledge base for the project's architecture, features, and development process.
 
-## Usage
+## Usage Guidelines
 
-1. You must always consult the `.ai` documentation when starting work on the project
+1. **ALWAYS consult the `.ai` documentation when starting work on the project**
 2. Use the documentation to understand the project structure and conventions
-3. Refer to specific files for detailed information:
-   - `README.md`: Project overview and quick start
-   - `COMMANDS.md`: Command system documentation
-   - `ARCHITECTURE.md`: Key components and architecture
-   - `DEVELOPMENT.md`: Setup and coding conventions
+3. Reference specific patterns from the docs in your implementation
+4. When in doubt, search the `.ai` files for guidance
 
 ## Maintenance
 

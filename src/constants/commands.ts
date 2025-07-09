@@ -1,3 +1,4 @@
+import BuildInfoOutput from '@/components/cmd-outputs/BuildInfoOutput';
 import ContactOutput from '@/components/cmd-outputs/ContactOutput';
 import HelpOutput from '@/components/cmd-outputs/HelpOutput';
 import IntroOutput from '@/components/cmd-outputs/IntroOutput';
@@ -13,6 +14,10 @@ function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
 }
 
 export const Commands: CommandInfo[] = [
+  {
+    name: Command.BuildInfo,
+    output: BuildInfoOutput,
+  },
   {
     name: Command.Clear,
   },

@@ -28,6 +28,12 @@
     "noMatch": "no match",
     "visitor": "visitor",
     "cmds": {
+      "build-info": {
+        "description": "Show build timestamp and deployment info",
+        "title": "Build Information",
+        "timeLabel": "Build Time:",
+        "ipnsLabel": "IPNS Name:"
+      },
       "clear": {
         "description": "Clear the terminal screen"
       },

@@ -127,6 +127,8 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Build and export
+        env:
+          IPNS_HASH: ${{ secrets.IPNS_HASH }}
         run: pnpm export
 
       - name: Upload build artifacts
@@ -136,3 +138,47 @@ jobs:
           name: build-output
           path: out/
           retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ./out
+
+      - name: Deploy to IPFS
+        env:
+          IPFS_DEPLOY_URL: https://ipfs.nipsys.dev/api/deploy
+          IPFS_API_KEY: ${{ secrets.IPFS_API_KEY }}
+        run: |
+          # Create tar.gz of the site
+          tar -czf site.tar.gz -C out .
+
+          # Upload to IPFS deploy endpoint
+          RESPONSE=$(curl -X POST \
+            -H "X-API-Key: $IPFS_API_KEY" \
+            --data-binary @site.tar.gz \
+            "$IPFS_DEPLOY_URL")
+
+          echo "Deploy response: $RESPONSE"
+
+          # Extract info from response
+          HASH=$(echo "$RESPONSE" | jq -r '.hash')
+          IPNS_HASH=$(echo "$RESPONSE" | jq -r '.ipns_hash')
+          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+
+          if [ "$SUCCESS" = "true" ]; then
+            echo "✅ Deploy successful!"
+            echo "IPFS Hash: $HASH"
+            echo "IPNS Name: $IPNS_HASH"
+            echo "Site available at: https://ipfs.io/ipns/$IPNS_HASH"
+          else
+            echo "❌ Deploy failed"
+            exit 1
+          fi
