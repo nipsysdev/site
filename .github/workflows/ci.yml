@@ -177,7 +177,7 @@ jobs:
             echo "✅ Deploy successful!"
             echo "IPFS Hash: $HASH"
             echo "IPNS Name: $IPNS_HASH"
-            echo "Site available at: https://ipfs.io/ipns/$IPNS_HASH"
+            echo "Site available at: https://nipsys.eth.limo"
           else
             echo "❌ Deploy failed"
             exit 1
