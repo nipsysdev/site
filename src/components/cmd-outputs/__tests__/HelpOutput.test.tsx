@@ -48,8 +48,8 @@ vi.mock('@/contexts/TerminalContext', () => ({
   }),
 }));
 
-// Mock LSD React Typography and Button components
-vi.mock('@acid-info/lsd-react/components', () => ({
+// Mock LSD React Typography component
+vi.mock('@acid-info/lsd-react/client/Typography', () => ({
   Typography: ({
     children,
     variant,
@@ -57,19 +57,6 @@ vi.mock('@acid-info/lsd-react/components', () => ({
     children: React.ReactNode;
     variant: string;
   }) => <div data-testid={`typography-${variant}`}>{children}</div>,
-  Button: ({
-    children,
-    variant,
-    size,
-  }: {
-    children: React.ReactNode;
-    variant: string;
-    size: string;
-  }) => (
-    <button type="button" data-testid={`button-${variant}-${size}`}>
-      {children}
-    </button>
-  ),
 }));
 
 describe('HelpOutput', () => {

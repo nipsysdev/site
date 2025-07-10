@@ -14,7 +14,7 @@ vi.mock('@/contexts/TerminalContext', () => ({
 }));
 
 // Mock the LSD Button component
-vi.mock('@acid-info/lsd-react/components', () => ({
+vi.mock('@acid-info/lsd-react/client/Button', () => ({
   Button: ({ children, onClick, ...props }: React.ComponentProps<'button'>) => (
     <button onClick={onClick} {...props}>
       {children}

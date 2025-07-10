@@ -27,7 +27,7 @@ vi.mock('@/i18n/intl', () => ({
 }));
 
 // Mock LSD React components
-vi.mock('@acid-info/lsd-react/components', () => ({
+vi.mock('@acid-info/lsd-react/client/Button', () => ({
   Button: ({
     children,
     variant,
@@ -47,6 +47,9 @@ vi.mock('@acid-info/lsd-react/components', () => ({
       {children}
     </button>
   ),
+}));
+
+vi.mock('@acid-info/lsd-react/client/ButtonGroup', () => ({
   ButtonGroup: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="button-group">{children}</div>
   ),

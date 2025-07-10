@@ -30,7 +30,7 @@
     "postinstall": "lefthook install"
   },
   "dependencies": {
-    "@acid-info/lsd-react": "0.2.0-topic-canary-test-4.55",
+    "@acid-info/lsd-react": "0.2.0-topic-canary-test-5.57",
     "next": "15.3.5",
     "next-intl": "^4.3.4",
     "postcss": "^8.5.6",

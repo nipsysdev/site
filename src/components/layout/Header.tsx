@@ -1,5 +1,6 @@
 'use client';
-import { Button, ButtonGroup } from '@acid-info/lsd-react/components';
+import { Button } from '@acid-info/lsd-react/client/Button';
+import { ButtonGroup } from '@acid-info/lsd-react/client/ButtonGroup';
 import { useLocale } from 'next-intl';
 import { PiGithubLogoFill } from 'react-icons/pi';
 import { LangLabels } from '@/constants/lang';

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@acid-info/lsd-react':
-        specifier: 0.2.0-topic-canary-test-4.55
-        version: 0.2.0-topic-canary-test-4.55(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 0.2.0-topic-canary-test-5.57
+        version: 0.2.0-topic-canary-test-5.57(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next:
         specifier: 15.3.5
         version: 15.3.5(@babel/core@7.28.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -81,8 +81,8 @@ importers:
 
 packages:
 
-  '@acid-info/lsd-react@0.2.0-topic-canary-test-4.55':
-    resolution: {integrity: sha512-Cr57sny+StMUNtUNlcuIT4HR+6QWTUP3e29hlcQJlH/Avy765eroQYQVbbmO5smpeBMVJlzdMVWhPoWzbSHZ5Q==}
+  '@acid-info/lsd-react@0.2.0-topic-canary-test-5.57':
+    resolution: {integrity: sha512-TkUexik2IhUIn/RfNAKEyCGPrP1lcYPji4/r1kxqrcTiePHGMLFfyMCXrcqTLrafVXE9BDGiJ1G/TyR5fvEQKA==}
     peerDependencies:
       react: 17.x || 18.x || 19.x
       react-dom: 17.x || 18.x || 19.x
@@ -2065,7 +2065,7 @@ packages:
 
 snapshots:
 
-  '@acid-info/lsd-react@0.2.0-topic-canary-test-4.55(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@acid-info/lsd-react@0.2.0-topic-canary-test-5.57(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@datepicker-react/hooks': 2.8.4(react@19.1.0)
       clsx: 1.2.1
