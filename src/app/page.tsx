@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation';
-import { routing } from '@/i18n/intl';
+import LoadSequence from '@/components/LoadSequence';
 
 export default function RootPage() {
-  redirect(`${routing.defaultLocale}`);
+  return <LoadSequence />;
 }
