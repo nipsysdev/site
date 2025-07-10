@@ -17,7 +17,7 @@ vi.mock('@/i18n/intl', () => ({
 }));
 
 // Mock LSD React components
-vi.mock('@acid-info/lsd-react/components', () => ({
+vi.mock('@acid-info/lsd-react/client/Tabs', () => ({
   Tabs: ({
     children,
     className,
@@ -38,6 +38,9 @@ vi.mock('@acid-info/lsd-react/components', () => ({
       {children}
     </div>
   ),
+}));
+
+vi.mock('@acid-info/lsd-react/client/TabItem', () => ({
   TabItem: ({
     children,
     name,

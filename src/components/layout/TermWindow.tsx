@@ -1,5 +1,6 @@
 'use client';
-import { TabItem, Tabs } from '@acid-info/lsd-react/components';
+import { TabItem } from '@acid-info/lsd-react/client/TabItem';
+import { Tabs } from '@acid-info/lsd-react/client/Tabs';
 import { useTranslations } from 'next-intl';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';

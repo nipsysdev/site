@@ -1,11 +1,22 @@
-import BuildInfoOutput from '@/components/cmd-outputs/BuildInfoOutput';
-import ContactOutput from '@/components/cmd-outputs/ContactOutput';
-import HelpOutput from '@/components/cmd-outputs/HelpOutput';
-import IntroOutput from '@/components/cmd-outputs/IntroOutput';
-import Web3MissionOutput from '@/components/cmd-outputs/Web3MissionOutput';
-import WhoamiOutput from '@/components/cmd-outputs/WhoamiOutput';
+import { lazy } from 'react';
 import { Command, type CommandInfo } from '@/types/terminal';
 import { Lang } from './lang';
+
+// Lazy load components that aren't critical for initial render
+const BuildInfoOutput = lazy(
+  () => import('@/components/cmd-outputs/BuildInfoOutput'),
+);
+const ContactOutput = lazy(
+  () => import('@/components/cmd-outputs/ContactOutput'),
+);
+const HelpOutput = lazy(() => import('@/components/cmd-outputs/HelpOutput'));
+const IntroOutput = lazy(() => import('@/components/cmd-outputs/IntroOutput'));
+const Web3MissionOutput = lazy(
+  () => import('@/components/cmd-outputs/Web3MissionOutput'),
+);
+const WhoamiOutput = lazy(
+  () => import('@/components/cmd-outputs/WhoamiOutput'),
+);
 
 function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
   return Object.values(o).map((l: string) => {

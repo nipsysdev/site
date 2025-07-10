@@ -32,6 +32,7 @@ export default async function Layout({
     <html lang={locale} data-theme="dark">
       <head>
         <LsdThemeStyles />
+        <meta name="theme-color" content="#000000" />
       </head>
       <NextIntlClientProvider>
         <body className="bg-black">
