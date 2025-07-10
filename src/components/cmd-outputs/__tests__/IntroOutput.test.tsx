@@ -1,25 +1,9 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
 import IntroOutput from '../IntroOutput';
-
-// Mock figlet
-vi.mock('figlet', () => ({
-  default: {
-    parseFont: vi.fn(),
-    text: vi.fn((_text, _options, callback) => {
-      // Simulate async figlet response
-      setTimeout(() => callback(null, 'ASCII ART'), 0);
-    }),
-  },
-}));
-
-// Mock the figlet font
-vi.mock('figlet/importable-fonts/Standard', () => ({
-  default: 'mock-standard-font',
-}));
 
 // Mock the CmdLink component
 vi.mock('../terminal/CmdLink', () => ({
@@ -74,25 +58,15 @@ describe('IntroOutput', () => {
     );
   });
 
-  it('renders figlet text after mounting', async () => {
+  it('renders ascii art', () => {
     const { container } = render(
       <IntroOutput t={mockTWithRich} entry={mockEntry} />,
     );
 
-    await waitFor(() => {
-      const figletDiv = container.querySelector('.whitespace-break-spaces');
-      expect(figletDiv).toHaveTextContent('ASCII ART');
-    });
-  });
-
-  it('has the correct nickname property', () => {
-    const component = new IntroOutput({ t: mockTWithRich, entry: mockEntry });
-    expect(component.nickname).toBe('nipsysdev');
-  });
-
-  it('initializes with empty figletText state', () => {
-    const component = new IntroOutput({ t: mockTWithRich, entry: mockEntry });
-    expect(component.state.figletText).toBe('');
+    const asciiDiv = container.querySelector('.whitespace-break-spaces');
+    expect(asciiDiv).toBeInTheDocument();
+    // Check for part of the ASCII art content
+    expect(asciiDiv).toHaveTextContent('_ __');
   });
 
   it('renders with proper CSS classes', () => {

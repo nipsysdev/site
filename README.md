@@ -60,7 +60,6 @@ then navigate to `localhost:3000` and start typing (or clicking).
 - **next.js 15**
 - **react 19**
 - **tailwindcss 4**
-- **figlet**
 - **next-intl**
 - **vitest**
 - **biome**

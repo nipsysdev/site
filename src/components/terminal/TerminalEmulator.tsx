@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { createRef, useEffect, useState } from 'react';
+import { createRef, Suspense, useEffect, useState } from 'react';
 import { useAppContext } from '@/contexts/AppContext';
 import { useTerminalContext } from '@/contexts/TerminalContext';
 import useIsPrerender from '@/hooks/useIsPrerender';
@@ -92,7 +92,11 @@ export default function TerminalEmulator() {
             <div key={entry.timestamp} className="mb-1">
               <TerminalPrompt i18n={t} entry={entry} />
               {entry.output ? (
-                <entry.output entry={entry} t={t} />
+                <Suspense
+                  fallback={<div className="text-gray-500">Loading...</div>}
+                >
+                  <entry.output entry={entry} t={t} />
+                </Suspense>
               ) : (
                 <UnknownCmdOutput cmdName={entry.cmdName} />
               )}
