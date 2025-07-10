@@ -56,6 +56,12 @@ export default function LoadSequence() {
 
   return (
     <div className="p-8 text-sm font-medium leading-5">
+      <style>{`
+        @keyframes showInstant {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
       <div className="flex flex-col pt-[24px] relative">
         {/* Static HTML steps that display immediately */}
         <div
