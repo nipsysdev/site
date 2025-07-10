@@ -2,6 +2,7 @@ import { LsdThemeStyles } from '@acid-info/lsd-react';
 import { getTranslations } from 'next-intl/server';
 import { AppStateProvider } from '@/contexts/AppContext';
 import 'tailwindcss/index.css';
+import './globals.css';
 
 export async function generateMetadata() {
   const tMeta = await getTranslations({ locale: 'en', namespace: 'Metadata' });

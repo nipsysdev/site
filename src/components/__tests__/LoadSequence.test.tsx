@@ -62,7 +62,7 @@ describe('LoadSequence', () => {
     await waitFor(
       () => {
         expect(
-          screen.getByText('> Connection initialized'),
+          screen.getByText('> Detecting user locale...'),
         ).toBeInTheDocument();
       },
       { timeout: 1000 },
