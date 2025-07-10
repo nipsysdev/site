@@ -1,4 +1,3 @@
-import { LsdThemeStyles } from '@acid-info/lsd-react';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -29,22 +28,14 @@ export default async function Layout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} data-theme="dark">
-      <head>
-        <LsdThemeStyles />
-        <meta name="theme-color" content="#000000" />
-      </head>
-      <NextIntlClientProvider>
-        <body className="bg-black">
-          <main className="monospace flex flex-col gap-y-(--lsd-spacing-40) w-5xl mx-auto max-w-full p-3 sm:p-5 h-screen">
-            <Header />
+    <NextIntlClientProvider>
+      <main className="flex flex-col gap-y-(--lsd-spacing-40) w-5xl mx-auto max-w-full p-3 sm:p-5 h-screen">
+        <Header />
 
-            <div className="w-full sm:w-4/5 mx-auto overflow-hidden flex-auto">
-              <TerminalWindow>{children}</TerminalWindow>
-            </div>
-          </main>
-        </body>
-      </NextIntlClientProvider>
-    </html>
+        <div className="w-full sm:w-4/5 mx-auto overflow-hidden flex-auto">
+          <TerminalWindow>{children}</TerminalWindow>
+        </div>
+      </main>
+    </NextIntlClientProvider>
   );
 }
