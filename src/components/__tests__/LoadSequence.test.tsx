@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoadSequence from '../LoadSequence';
 
 // Mock Typography component
@@ -25,15 +25,25 @@ vi.mock('@/i18n/intl', () => ({
   },
 }));
 
-// Mock navigator.language
-Object.defineProperty(navigator, 'language', {
-  writable: true,
-  value: 'en-US',
-});
+// Store original navigator.language
+const originalLanguage = navigator.language;
 
 describe('LoadSequence', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset to default English
+    Object.defineProperty(navigator, 'language', {
+      writable: true,
+      value: 'en-US',
+    });
+  });
+
+  afterEach(() => {
+    // Restore original navigator.language
+    Object.defineProperty(navigator, 'language', {
+      writable: true,
+      value: originalLanguage,
+    });
   });
 
   it('should render the component with cursor', () => {
@@ -105,12 +115,6 @@ describe('LoadSequence', () => {
       },
       { timeout: 2000 },
     );
-
-    // Reset back to English for other tests
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'en-US',
-    });
   });
 
   it('should fallback to English for unsupported language', async () => {
@@ -131,12 +135,6 @@ describe('LoadSequence', () => {
       },
       { timeout: 2000 },
     );
-
-    // Reset back to English for other tests
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'en-US',
-    });
   });
 
   it('should eventually redirect to detected locale', async () => {
@@ -170,12 +168,6 @@ describe('LoadSequence', () => {
       },
       { timeout: 3000 },
     );
-
-    // Reset back to English for other tests
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'en-US',
-    });
   });
 
   it('should handle partial locale codes correctly', async () => {
@@ -196,12 +188,6 @@ describe('LoadSequence', () => {
       },
       { timeout: 2000 },
     );
-
-    // Reset back to English for other tests
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'en-US',
-    });
   });
 
   it('should match snapshot', () => {

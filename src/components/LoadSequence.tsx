@@ -42,11 +42,15 @@ export default function LoadSequence() {
       }, steps[currentStep].delay);
 
       return () => clearTimeout(timer);
-    } else {
-      // All steps done, redirect
+    }
+  }, [currentStep, steps]);
+
+  // Separate effect for redirect to avoid dependency issues
+  useEffect(() => {
+    if (currentStep >= steps.length) {
       router.push(`/${detectedLocale}`);
     }
-  }, [currentStep, steps, detectedLocale, router]);
+  }, [currentStep, steps.length, detectedLocale, router]);
 
   return (
     <div className="p-8">
