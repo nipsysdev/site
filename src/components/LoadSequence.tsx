@@ -1,15 +1,9 @@
 'use client';
 
-import { Typography } from '@acid-info/lsd-react/client/Typography';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import type { Lang } from '@/constants/lang';
 import { routing } from '@/i18n/intl';
-
-interface BootStep {
-  message: string;
-  delay: number;
-}
 
 export default function LoadSequence() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -25,12 +19,15 @@ export default function LoadSequence() {
     setDetectedLocale(supportedLocale);
   }, []);
 
-  const steps: BootStep[] = useMemo(
+  // React continues from step 3 onward (first 2 are static HTML)
+  const steps = useMemo(
     () => [
-      { message: '> Connection initialized', delay: 200 },
-      { message: '> Detecting user locale...', delay: 400 },
-      { message: `> Selecting proper locale [${detectedLocale}]`, delay: 300 },
-      { message: `> Redirecting to /${detectedLocale}`, delay: 500 },
+      { message: '> Detecting user locale...', delay: 800 }, // Start after static HTML finishes
+      { message: `> Selecting proper locale [${detectedLocale}]`, delay: 200 },
+      {
+        message: `> Loading application chunks for /${detectedLocale}`,
+        delay: 200,
+      },
     ],
     [detectedLocale],
   );
@@ -52,19 +49,47 @@ export default function LoadSequence() {
     }
   }, [currentStep, steps.length, detectedLocale, router]);
 
+  // Shared styling constants
+  const fadeInAnimation =
+    'opacity-0 animate-[showInstant_0s_ease-in-out_forwards]';
+  const stepHeight = 'h-[24px] leading-6'; // line-height: 24px to match height
+
   return (
-    <div className="p-8">
-      <div className="flex flex-col">
-        {steps.slice(0, currentStep).map((step, index) => (
-          <Typography key={`step-${index}-${step.message}`} variant="subtitle2">
-            {step.message}
-          </Typography>
-        ))}
-        {currentStep < steps.length && (
-          <div className="flex items-center">
-            <span className="animate-pulse">█</span>
-          </div>
-        )}
+    <div className="p-8 text-sm font-medium leading-5">
+      <style>{`
+        @keyframes showInstant {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
+      <div className="flex flex-col pt-[24px] relative">
+        {/* Static HTML steps that display immediately */}
+        <div
+          className={`top-0 absolute ${fadeInAnimation}`}
+          style={{ animationDelay: '200ms' }}
+        >
+          <span>&gt; Connected to IPFS</span>
+        </div>
+        <div
+          className={`top-[24px] ${fadeInAnimation} h-0`}
+          style={{ animationDelay: '600ms' }}
+        >
+          <span>&gt; Loading core chunks</span>
+        </div>
+
+        <div className="flex flex-col mt-[24px]">
+          {steps.slice(0, currentStep).map((step, index) => (
+            <div className={stepHeight} key={`step-${index}-${step.message}`}>
+              {step.message}
+            </div>
+          ))}
+        </div>
+        <div
+          className={`${fadeInAnimation}`}
+          style={{ animationDelay: '600ms' }}
+        >
+          <span className="animate-pulse">█</span>
+        </div>
       </div>
     </div>
   );
