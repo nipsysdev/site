@@ -3,6 +3,9 @@ import { getTranslations } from 'next-intl/server';
 import { AppStateProvider } from '@/contexts/AppContext';
 import 'tailwindcss/index.css';
 
+// Initialize chunk retry manager for IPFS deployment
+import '@/utils/chunk-retry';
+
 export async function generateMetadata() {
   const tMeta = await getTranslations({ locale: 'en', namespace: 'Metadata' });
 
