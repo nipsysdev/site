@@ -16,6 +16,10 @@ interface WindowWithWebpack extends Window {
   };
 }
 
+// Error patterns that should trigger retries
+const RETRY_ERROR_NAMES = ['ChunkLoadError', 'NetworkError'];
+const RETRY_ERROR_MESSAGES = ['Loading chunk', 'timeout', 'Failed to fetch'];
+
 const DEFAULT_CONFIG: ChunkRetryConfig = {
   maxRetries: 3,
   baseDelay: 1000,
@@ -23,11 +27,8 @@ const DEFAULT_CONFIG: ChunkRetryConfig = {
   retryOn: (error: Error) => {
     // Retry on network errors, timeouts, and chunk loading failures
     return (
-      error.name === 'ChunkLoadError' ||
-      error.name === 'NetworkError' ||
-      error.message.includes('Loading chunk') ||
-      error.message.includes('timeout') ||
-      error.message.includes('Failed to fetch')
+      RETRY_ERROR_NAMES.includes(error.name) ||
+      RETRY_ERROR_MESSAGES.some((msg) => error.message.includes(msg))
     );
   },
 };
@@ -35,6 +36,7 @@ const DEFAULT_CONFIG: ChunkRetryConfig = {
 class ChunkRetryManager {
   private config: ChunkRetryConfig;
   private retryAttempts: Map<string, number> = new Map();
+  private finalStats: Map<string, number> = new Map();
 
   constructor(config: Partial<ChunkRetryConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
@@ -50,12 +52,19 @@ class ChunkRetryManager {
   ): Promise<unknown> {
     try {
       const result = await loadFn();
+      // Clear successful attempts from tracking
       this.retryAttempts.delete(chunkId);
       return result;
     } catch (error) {
       const err = error as Error;
 
       if (!this.config.retryOn(err) || attempt >= this.config.maxRetries) {
+        // Store final stats before clearing from active tracking
+        const finalAttempts = this.retryAttempts.get(chunkId) || 0;
+        if (finalAttempts > 0) {
+          this.finalStats.set(chunkId, finalAttempts);
+        }
+        this.retryAttempts.delete(chunkId);
         throw error;
       }
 
@@ -83,7 +92,17 @@ class ChunkRetryManager {
    * Get retry statistics for monitoring
    */
   getRetryStats(): Record<string, number> {
-    return Object.fromEntries(this.retryAttempts.entries());
+    return {
+      ...Object.fromEntries(this.retryAttempts.entries()),
+      ...Object.fromEntries(this.finalStats.entries()),
+    };
+  }
+
+  /**
+   * Clear old statistics to prevent memory leaks
+   */
+  clearOldStats(): void {
+    this.finalStats.clear();
   }
 }
 
@@ -98,8 +117,9 @@ if (typeof window !== 'undefined') {
   const originalDynamicImport = webpackWindow.__webpack_require__?.e;
 
   if (originalDynamicImport && webpackWindow.__webpack_require__) {
-    webpackWindow.__webpack_require__.e = function (chunkId: string) {
-      const loadChunk = () => originalDynamicImport.call(this, chunkId);
+    const webpackReq = webpackWindow.__webpack_require__;
+    webpackWindow.__webpack_require__.e = (chunkId: string) => {
+      const loadChunk = () => originalDynamicImport.call(webpackReq, chunkId);
 
       return chunkRetryManager.retryChunkLoad(`chunk-${chunkId}`, loadChunk);
     };
