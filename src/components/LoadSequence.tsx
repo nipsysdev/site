@@ -71,7 +71,7 @@ export default function LoadSequence() {
           <span>&gt; Connected to IPFS</span>
         </div>
         <div
-          className={`top-[24px] ${fadeInAnimation} h-0`}
+          className={`top-[24px] ${currentStep ? '' : fadeInAnimation} h-0`}
           style={{ animationDelay: '600ms' }}
         >
           <span>&gt; Loading core chunks</span>
