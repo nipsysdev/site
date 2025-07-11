@@ -27,7 +27,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="bg-black monospace">
+      <body className="bg-black h-screen w-screen monospace">
         <AppStateProvider>{children}</AppStateProvider>
       </body>
     </html>

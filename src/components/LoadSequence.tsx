@@ -25,7 +25,7 @@ export default function LoadSequence() {
       { message: '> Detecting user locale...', delay: 800 }, // Start after static HTML finishes
       { message: `> Selecting proper locale [${detectedLocale}]`, delay: 200 },
       {
-        message: `> Loading application chunks for /${detectedLocale}`,
+        message: `> Loading chunks for /${detectedLocale}`,
         delay: 200,
       },
     ],
