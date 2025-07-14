@@ -37,6 +37,28 @@
 - Formatting: `pnpm format` (Biome)
 - Git hooks: Lefthook for pre-commit checks
 
+## Deployment
+
+### Decentralized Storage
+
+This site is built specifically for deployment on decentralized storage networks and is currently deployed on IPFS (InterPlanetary File System). The static build output is optimized for distributed hosting without traditional server infrastructure.
+
+### Current Deployment
+
+- **Platform**: IPFS (InterPlanetary File System)
+- **Build target**: Static export
+- **Access**: Accessible via IPFS gateways or dedicated IPFS clients
+
+### Build for Deployment
+
+The project generates a static build suitable for IPFS deployment:
+
+```bash
+pnpm build
+```
+
+This creates an optimized static export that can be pinned to IPFS nodes for decentralized hosting.
+
 ## Coding Conventions
 
 - TypeScript strict mode

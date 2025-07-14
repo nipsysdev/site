@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a personal website project built with Next.js that features an interactive terminal interface as its main user experience.
+This is a personal website project built with Next.js that features an interactive terminal interface as its main user experience. The site is designed to be deployed on decentralized storage networks and is currently hosted on IPFS (InterPlanetary File System).
 
 ## Core Features
 
@@ -10,6 +10,7 @@ This is a personal website project built with Next.js that features an interacti
 - Command-based navigation
 - Internationalization support (English and French)
 - Responsive design
+- Built for decentralized web deployment (IPFS)
 
 ## Quick Start
 
