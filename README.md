@@ -53,6 +53,7 @@ Then navigate to `localhost:3000` and start typing (or clicking).
 
 - **[lsd-react](https://github.com/acid-info/lsd)**
 - **next.js 15**
-- **react 19**
-- **tailwindcss 4**
 - **next-intl**
+- **react 19**
+- **react-icons**
+- **tailwindcss 4**
