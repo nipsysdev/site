@@ -1,4 +1,4 @@
-# nipsys.eth site
+# xav's site
 
 ```
 $ whoami
@@ -7,40 +7,35 @@ $ whoami
 
 ## what is this?
 
-a terminal-based personal website because... well, GUIs are overrated sometimes.
+A terminal looking site because... well, figured if i'm gonna build a personal site, might as well make it feel like home.
 
-built this when i got tired of the usual portfolio sites. figured if i'm gonna spend time on the web, might as well make it feel like home (aka the command line).
+Licensed under GPL-3.0.
 
-licensed under GPL-3.0 because that's how it should be.
+## status
 
-**status**: work in progress. live on IPFS via IPNS `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
+Still a work in progress, but it is live on IPFS:
 
-## why a terminal?
-
-- terminals are timeless
-- reminds me why i fell in love with computers in the first place
-- plus it's kinda fun to type commands instead of clicking buttons
-- you can still click around if typing isn't your thing (content stays terminal-styled)
+- IPNS: `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
+- Through gateway: https://nipsys.eth.limo
 
 ## current state
 
-- ✅ terminal interface works
-- ✅ commands and navigation
-- ✅ responsive design
-- ✅ internationalization
-- ✅ deployed on IPFS
-- 🚧 content still being written
-- 🚧 automatic ipfs deployment setup
-- 🚧 figuring out codex hosting
+- [x] terminal interface works
+- [x] commands and navigation
+- [x] responsive design
+- [x] internationalization
+- [x] automatic deployment on IPFS
+- [_] content is still being written
+- [_] pages are still being added & refined
 
 ## commands
 
 ```
-help     - shows available commands
-whoami   - about me
-contact  - how to reach me
-clear    - cleans the terminal
-setlang  - en/fr language toggle
+help     - Shows available commands
+whoami   - About me
+contact  - How to reach me
+clear    - Cleans the terminal
+setlang  - En/Fr language switch
 ```
 
 ## running locally
@@ -48,11 +43,11 @@ setlang  - en/fr language toggle
 ```bash
 git clone https://github.com/nipsysdev/site.git
 cd site
-pnpm install  # or npm/yarn if that's your thing
+pnpm install
 pnpm dev
 ```
 
-then navigate to `localhost:3000` and start typing (or clicking).
+Then navigate to `localhost:3000` and start typing (or clicking).
 
 ## dependencies
 
@@ -61,11 +56,3 @@ then navigate to `localhost:3000` and start typing (or clicking).
 - **react 19**
 - **tailwindcss 4**
 - **next-intl**
-- **vitest**
-- **biome**
-
-## hosting approach
-
-planning to host this on **IPFS** for now because i haven't figured out how to deploy websites on **Codex** yet (that's the real goal).
-
-codex looks promising for truly decentralized, economically sustainable storage. ipfs is the stepping stone.
