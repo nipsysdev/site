@@ -13,10 +13,11 @@ Licensed under GPL-3.0.
 
 ## status
 
-Still a work in progress, but it is live on IPFS:
+Still a work in progress, but it already lives on the InterPlanerary FileSystem:
 
-- IPNS: `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
-- Through gateway: https://nipsys.eth.limo
+- IPNS Hash: `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
+- [Access through eth.limo](https://nipsys.eth.limo)
+- [Access through dweb.link](https://k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3.ipns.dweb.link/)
 
 ## current state
 
