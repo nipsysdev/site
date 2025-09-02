@@ -158,12 +158,12 @@ describe('CmdLink', () => {
 
   it('prioritizes cmdName over cmdInfo.name', () => {
     const cmdInfo: CommandInfo = {
-      name: Command.Intro,
+      name: Command.Welcome,
     };
 
     render(<CmdLink cmdName="help" cmdInfo={cmdInfo} />);
 
     expect(screen.getByText('help')).toBeInTheDocument();
-    expect(screen.queryByText('intro')).not.toBeInTheDocument();
+    expect(screen.queryByText('welcome')).not.toBeInTheDocument();
   });
 });

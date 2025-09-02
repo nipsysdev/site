@@ -3,7 +3,7 @@ import asciiArt from '@/assets/ascii-art';
 import { Command, type CommandOutputProps } from '@/types/terminal';
 import CmdLink from '../terminal/CmdLink';
 
-export default class IntroOutput extends Component<CommandOutputProps> {
+export default class WelcomeOutput extends Component<CommandOutputProps> {
   render() {
     return (
       <div className="flex flex-col">
@@ -12,14 +12,14 @@ export default class IntroOutput extends Component<CommandOutputProps> {
         </div>
 
         <p className="mb-3">
-          {this.props.t.rich('cmds.intro.welcome', {
+          {this.props.t.rich('cmds.welcome.welcome', {
             name: (name) => <span className="font-bold">{name}</span>,
           })}
         </p>
 
-        <p>{this.props.t('cmds.intro.site_intro_1')}</p>
+        <p>{this.props.t('cmds.welcome.site_intro_1')}</p>
         <p>
-          {this.props.t.rich('cmds.intro.site_intro_2', {
+          {this.props.t.rich('cmds.welcome.site_intro_2', {
             cmd: () => <CmdLink cmdName={Command.Help} />,
           })}
         </p>

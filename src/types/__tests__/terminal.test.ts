@@ -13,7 +13,7 @@ describe('terminal types', () => {
       expect(Command.Clear).toBe('clear');
       expect(Command.Contact).toBe('contact');
       expect(Command.Help).toBe('help');
-      expect(Command.Intro).toBe('intro');
+      expect(Command.Welcome).toBe('welcome');
       expect(Command.Web2work).toBe('web2work');
       expect(Command.Web3work).toBe('web3work');
       expect(Command.Contribs).toBe('contribs');

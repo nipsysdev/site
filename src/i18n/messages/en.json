@@ -45,8 +45,8 @@
       "help": {
         "description": "Print list of commands"
       },
-      "intro": {
-        "description": "Print intro message",
+      "welcome": {
+        "description": "Print welcome message",
         "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
         "site_intro_1": "This site can be browsed by clicking on the tabs above.",
         "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"

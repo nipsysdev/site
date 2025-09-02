@@ -17,7 +17,7 @@ describe('TerminalContext', () => {
       expect(result.current.submission).toBe('');
       expect(result.current.simulatedCmd).toBe('');
       expect(result.current.history).toEqual([]);
-      expect(result.current.hasIntroduced).toBe(false);
+      expect(result.current.hasWelcomed).toBe(false);
       expect(result.current.hasRefreshed).toBe(false);
       expect(result.current.lastRouteReq).toBeNull();
       expect(result.current.oldRouteReq).toBeNull();
@@ -27,7 +27,7 @@ describe('TerminalContext', () => {
       expect(typeof result.current.setSubmission).toBe('function');
       expect(typeof result.current.setSimulatedCmd).toBe('function');
       expect(typeof result.current.setHistory).toBe('function');
-      expect(typeof result.current.setHasIntroduced).toBe('function');
+      expect(typeof result.current.setHasWelcomed).toBe('function');
       expect(typeof result.current.setHasRefreshed).toBe('function');
       expect(typeof result.current.setLastRouteReq).toBe('function');
       expect(typeof result.current.setOldRouteReq).toBe('function');
@@ -76,16 +76,16 @@ describe('TerminalContext', () => {
       expect(result.current.history).toEqual(mockHistory);
     });
 
-    it('should update hasIntroduced when setHasIntroduced is called', () => {
+    it('should update hasWelcomed when setHasWelcomed is called', () => {
       const { result } = renderHook(() => useTerminalContext(), {
         wrapper: TerminalStateProvider,
       });
 
       act(() => {
-        result.current.setHasIntroduced(true);
+        result.current.setHasWelcomed(true);
       });
 
-      expect(result.current.hasIntroduced).toBe(true);
+      expect(result.current.hasWelcomed).toBe(true);
     });
 
     it('should update lastRouteReq when setLastRouteReq is called', () => {
@@ -122,13 +122,13 @@ describe('TerminalContext', () => {
 
       act(() => {
         result.current.setInput('complex input');
-        result.current.setHasIntroduced(true);
+        result.current.setHasWelcomed(true);
         result.current.setHistory(mockHistory);
         result.current.setLastRouteReq(mockRoute);
       });
 
       expect(result.current.input).toBe('complex input');
-      expect(result.current.hasIntroduced).toBe(true);
+      expect(result.current.hasWelcomed).toBe(true);
       expect(result.current.history).toEqual(mockHistory);
       expect(result.current.lastRouteReq).toEqual(mockRoute);
     });

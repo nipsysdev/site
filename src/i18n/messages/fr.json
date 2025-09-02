@@ -45,7 +45,7 @@
       "help": {
         "description": "Afficher la liste des commandes"
       },
-      "intro": {
+      "welcome": {
         "description": "Afficher le message d'introduction",
         "welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
         "site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",

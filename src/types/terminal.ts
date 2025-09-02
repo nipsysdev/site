@@ -6,7 +6,7 @@ export enum Command {
   Clear = 'clear',
   Contact = 'contact',
   Help = 'help',
-  Intro = 'intro',
+  Welcome = 'welcome',
   Web2work = 'web2work',
   Web3work = 'web3work',
   Contribs = 'contribs',

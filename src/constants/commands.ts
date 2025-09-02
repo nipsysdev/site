@@ -10,7 +10,9 @@ const ContactOutput = lazy(
   () => import('@/components/cmd-outputs/ContactOutput'),
 );
 const HelpOutput = lazy(() => import('@/components/cmd-outputs/HelpOutput'));
-const IntroOutput = lazy(() => import('@/components/cmd-outputs/IntroOutput'));
+const WelcomeOutput = lazy(
+  () => import('@/components/cmd-outputs/WelcomeOutput'),
+);
 const Web2workOutput = lazy(
   () => import('@/components/cmd-outputs/Web2workOutput'),
 );
@@ -32,8 +34,8 @@ function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
 
 export const Commands: CommandInfo[] = [
   {
-    name: Command.Intro,
-    output: IntroOutput,
+    name: Command.Welcome,
+    output: WelcomeOutput,
   },
   {
     name: Command.Whoami,

@@ -10,12 +10,12 @@ import TerminalPrompt from './TerminalPrompt';
 
 export default function TerminalEmulator() {
   const {
-    hasIntroduced,
+    hasWelcomed,
     history,
     input,
     simulatedCmd,
     submission,
-    setHasIntroduced,
+    setHasWelcomed,
     setHasRefreshed,
     setHistory,
     setInput,
@@ -38,11 +38,11 @@ export default function TerminalEmulator() {
   useEffect(() => {
     mainPrompt.current?.focus();
 
-    if (!isPrerender && !hasIntroduced && mainPrompt.current) {
-      setHasIntroduced(true);
-      mainPrompt.current?.simulate(Command.Intro);
+    if (!isPrerender && !hasWelcomed && mainPrompt.current) {
+      setHasWelcomed(true);
+      mainPrompt.current?.simulate(Command.Welcome);
     }
-  }, [hasIntroduced, isPrerender, mainPrompt, setHasIntroduced]);
+  }, [hasWelcomed, isPrerender, mainPrompt, setHasWelcomed]);
 
   useEffect(() => {
     if (!submission) return;

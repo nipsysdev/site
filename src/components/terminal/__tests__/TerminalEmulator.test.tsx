@@ -32,9 +32,9 @@ vi.mock('@/utils/terminal-utils', () => ({
         output: () => <div data-testid="help-output">Help Output</div>,
         timestamp: Date.now(),
       },
-      intro: {
-        cmdName: Command.Intro,
-        output: () => <div data-testid="intro-output">Intro Output</div>,
+      welcome: {
+        cmdName: Command.Welcome,
+        output: () => <div data-testid="welcome-output">Welcome Output</div>,
         timestamp: Date.now(),
       },
       contact: {
@@ -95,8 +95,8 @@ vi.mock('../../cmd-outputs/HelpOutput', () => ({
   default: () => <div data-testid="help-output">Help Output</div>,
 }));
 
-vi.mock('../../cmd-outputs/IntroOutput', () => ({
-  default: () => <div data-testid="intro-output">Intro Output</div>,
+vi.mock('../../cmd-outputs/WelcomeOutput', () => ({
+  default: () => <div data-testid="welcome-output">Welcome Output</div>,
 }));
 
 vi.mock('../../cmd-outputs/ContactOutput', () => ({
@@ -113,7 +113,7 @@ vi.mock('../../cmd-outputs/Web2workOutput', () => ({
 
 describe('TerminalEmulator', () => {
   const mockSetIsTerminal = vi.fn();
-  const mockSetHasIntroduced = vi.fn();
+  const mockSetHasWelcomed = vi.fn();
   const mockSetHasRefreshed = vi.fn();
   const mockSetHistory = vi.fn();
   const mockSetInput = vi.fn();
@@ -135,12 +135,12 @@ describe('TerminalEmulator', () => {
 
     (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
       {
-        hasIntroduced: true,
+        hasWelcomed: true,
         history: [],
         input: '',
         simulatedCmd: '',
         submission: '',
-        setHasIntroduced: mockSetHasIntroduced,
+        setHasWelcomed: mockSetHasWelcomed,
         setHasRefreshed: mockSetHasRefreshed,
         setHistory: mockSetHistory,
         setInput: mockSetInput,
@@ -171,15 +171,15 @@ describe('TerminalEmulator', () => {
     expect(mockSetIsTerminal).toHaveBeenCalledWith(true);
   });
 
-  it('sets introduction when not prerendering and not introduced', async () => {
+  it('sets welcome when not prerendering and not welcomed', async () => {
     (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
       {
-        hasIntroduced: false,
+        hasWelcomed: false,
         history: [],
         input: '',
         simulatedCmd: '',
         submission: '',
-        setHasIntroduced: mockSetHasIntroduced,
+        setHasWelcomed: mockSetHasWelcomed,
         setHasRefreshed: mockSetHasRefreshed,
         setHistory: mockSetHistory,
         setInput: mockSetInput,
@@ -195,23 +195,23 @@ describe('TerminalEmulator', () => {
     render(<TerminalEmulator />);
 
     await waitFor(() => {
-      expect(mockSetHasIntroduced).toHaveBeenCalledWith(true);
+      expect(mockSetHasWelcomed).toHaveBeenCalledWith(true);
     });
 
     await waitFor(() => {
-      expect(mockPromptMethods.simulate).toHaveBeenCalledWith(Command.Intro);
+      expect(mockPromptMethods.simulate).toHaveBeenCalledWith(Command.Welcome);
     });
   });
 
   it('handles clear submission command', () => {
     (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
       {
-        hasIntroduced: true,
+        hasWelcomed: true,
         history: [{ cmdName: 'test', timestamp: 123 }],
         input: '',
         simulatedCmd: '',
         submission: 'clear',
-        setHasIntroduced: mockSetHasIntroduced,
+        setHasWelcomed: mockSetHasWelcomed,
         setHasRefreshed: mockSetHasRefreshed,
         setHistory: mockSetHistory,
         setInput: mockSetInput,
@@ -235,8 +235,8 @@ describe('TerminalEmulator', () => {
         timestamp: 123,
       },
       {
-        cmdName: Command.Intro,
-        output: () => <div data-testid="intro-output">Intro Output</div>,
+        cmdName: Command.Welcome,
+        output: () => <div data-testid="welcome-output">Welcome Output</div>,
         timestamp: 456,
       },
       {
@@ -247,12 +247,12 @@ describe('TerminalEmulator', () => {
 
     (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
       {
-        hasIntroduced: true,
+        hasWelcomed: true,
         history: mockHistory,
         input: '',
         simulatedCmd: '',
         submission: '',
-        setHasIntroduced: mockSetHasIntroduced,
+        setHasWelcomed: mockSetHasWelcomed,
         setHasRefreshed: mockSetHasRefreshed,
         setHistory: mockSetHistory,
         setInput: mockSetInput,
@@ -264,7 +264,7 @@ describe('TerminalEmulator', () => {
     render(<TerminalEmulator />);
 
     expect(screen.getByTestId('help-output')).toBeInTheDocument();
-    expect(screen.getByTestId('intro-output')).toBeInTheDocument();
+    expect(screen.getByTestId('welcome-output')).toBeInTheDocument();
     expect(screen.getByTestId('unknown-cmd-output')).toBeInTheDocument();
     expect(screen.getByText('unknown-command')).toBeInTheDocument();
   });
