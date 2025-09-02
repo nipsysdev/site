@@ -127,8 +127,6 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Build and export
-        env:
-          IPNS_HASH: ${{ secrets.IPNS_HASH }}
         run: pnpm export
 
       - name: Upload build artifacts
@@ -168,17 +166,35 @@ jobs:
 
           echo "Deploy response: $RESPONSE"
 
-          # Extract info from response
-          HASH=$(echo "$RESPONSE" | jq -r '.hash')
+          IPFS_HASH=$(echo "$RESPONSE" | jq -r '.hash')
           IPNS_HASH=$(echo "$RESPONSE" | jq -r '.ipns_hash')
           SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
 
           if [ "$SUCCESS" = "true" ]; then
             echo "✅ Deploy successful!"
-            echo "IPFS Hash: $HASH"
+            echo "IPFS Hash: $IPFS_HASH"
             echo "IPNS Name: $IPNS_HASH"
             echo "Site available at: https://nipsys.eth.limo"
           else
             echo "❌ Deploy failed"
             exit 1
           fi
+
+          echo "Pinning to 4EVERLand"
+          LIST_RESP=$(curl --request GET \
+            --url https://api.4everland.dev/pins \
+            --header 'authorization: Bearer ${{ secrets.PIN_4EVER_TOKEN }}')
+
+          REQUESTID=$(echo "$LIST_RESP" | jq '.results[] | select(.pin.name == "site") | .requestid')
+
+          PIN_RESP=$(curl --request POST \
+            --url https://api.4everland.dev/pins/$REQUESTID \
+            --header 'authorization: Bearer ${{ secrets.PIN_4EVER_TOKEN }}' \
+            --header 'content-type: application/json' \
+            --data '{
+            "cid": $IPFS_HASH,
+            "name": "site"
+          }')
+
+          PIN_STATUS=$(echo "$PIN_RESP" | jq -r '.status')
+          echo "PINNING STATUS: $PIN_STATUS"
