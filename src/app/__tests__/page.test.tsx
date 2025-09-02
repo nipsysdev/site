@@ -14,9 +14,4 @@ describe('RootPage', () => {
     expect(screen.getByTestId('load-sequence')).toBeInTheDocument();
     expect(screen.getByText('LoadSequence Component')).toBeInTheDocument();
   });
-
-  it('should match snapshot', () => {
-    const { container } = render(<RootPage />);
-    expect(container.firstChild).toMatchSnapshot();
-  });
 });

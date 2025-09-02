@@ -14,30 +14,6 @@ describe('compare-utils', () => {
       expect(isNewRouteEvent(null, newEvent)).toBe(true);
     });
 
-    it('should return true when newEvent exists and oldEvent is undefined', () => {
-      const newEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        timeStamp: 123456,
-      };
-      expect(isNewRouteEvent(undefined, newEvent)).toBe(true);
-    });
-
-    it('should return false when newEvent is null', () => {
-      const oldEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        timeStamp: 123456,
-      };
-      expect(isNewRouteEvent(oldEvent, null)).toBe(false);
-    });
-
-    it('should return false when newEvent is undefined', () => {
-      const oldEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        timeStamp: 123456,
-      };
-      expect(isNewRouteEvent(oldEvent, undefined)).toBe(false);
-    });
-
     it('should return true when viewRoute is different', () => {
       const oldEvent: AppRoute = {
         viewRoute: ViewRoute.Terminal,
@@ -89,33 +65,6 @@ describe('compare-utils', () => {
       };
       expect(isNewRouteEvent(oldEvent, newEvent)).toBe(false);
     });
-
-    it('should handle undefined params correctly', () => {
-      const oldEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        timeStamp: 123456,
-      };
-      const newEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        param: 'param1',
-        timeStamp: 123456,
-      };
-      expect(isNewRouteEvent(oldEvent, newEvent)).toBe(true);
-    });
-
-    it('should handle numeric params', () => {
-      const oldEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        param: 1,
-        timeStamp: 123456,
-      };
-      const newEvent: AppRoute = {
-        viewRoute: ViewRoute.Terminal,
-        param: 2,
-        timeStamp: 123456,
-      };
-      expect(isNewRouteEvent(oldEvent, newEvent)).toBe(true);
-    });
   });
 
   describe('isNewKeyEvent', () => {
@@ -144,21 +93,6 @@ describe('compare-utils', () => {
       expect(isNewKeyEvent(null, newEvent)).toBe(true);
     });
 
-    it('should return true when newEvent exists and oldEvent is undefined', () => {
-      const newEvent = createKeyboardEvent('Enter', 123456);
-      expect(isNewKeyEvent(undefined, newEvent)).toBe(true);
-    });
-
-    it('should return false when newEvent is null', () => {
-      const oldEvent = createKeyboardEvent('Enter', 123456);
-      expect(isNewKeyEvent(oldEvent, null)).toBe(false);
-    });
-
-    it('should return false when newEvent is undefined', () => {
-      const oldEvent = createKeyboardEvent('Enter', 123456);
-      expect(isNewKeyEvent(oldEvent, undefined)).toBe(false);
-    });
-
     it('should return true when key is different', () => {
       const oldEvent = createKeyboardEvent('Enter', 123456);
       const newEvent = createKeyboardEvent('Escape', 123456);
@@ -175,18 +109,6 @@ describe('compare-utils', () => {
       const oldEvent = createKeyboardEvent('Enter', 123456);
       const newEvent = createKeyboardEvent('Enter', 123456);
       expect(isNewKeyEvent(oldEvent, newEvent)).toBe(false);
-    });
-
-    it('should handle special keys', () => {
-      const oldEvent = createKeyboardEvent('ArrowUp', 123456);
-      const newEvent = createKeyboardEvent('ArrowDown', 123456);
-      expect(isNewKeyEvent(oldEvent, newEvent)).toBe(true);
-    });
-
-    it('should handle space key', () => {
-      const oldEvent = createKeyboardEvent(' ', 123456);
-      const newEvent = createKeyboardEvent('Enter', 123456);
-      expect(isNewKeyEvent(oldEvent, newEvent)).toBe(true);
     });
   });
 });

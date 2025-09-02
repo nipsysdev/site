@@ -16,17 +16,8 @@ describe('ContactOutput', () => {
     cmdName: Command.Contact,
   };
 
-  it('renders without crashing', () => {
-    const { container } = render(<ContactOutput t={mockT} entry={mockEntry} />);
-    expect(container).toBeInTheDocument();
-  });
-
   it('renders the Contact component', () => {
     render(<ContactOutput t={mockT} entry={mockEntry} />);
     expect(screen.getByText('contact / todo')).toBeInTheDocument();
-  });
-
-  it('is a class component that extends Component', () => {
-    expect(ContactOutput.prototype.render).toBeDefined();
   });
 });

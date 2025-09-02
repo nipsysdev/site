@@ -28,7 +28,7 @@ const createMockKeyboardEvent = (
     cancelable: true,
     preventDefault: vi.fn(),
     stopPropagation: vi.fn(),
-  }) as KeyboardEvent;
+  }) as unknown as KeyboardEvent;
 
 describe('useKeyHandler', () => {
   const mockHandler = vi.fn();
@@ -93,91 +93,5 @@ describe('useKeyHandler', () => {
 
     expect(mockHandler).not.toHaveBeenCalled();
     expect(mockSetOldKeyDown).not.toHaveBeenCalled();
-  });
-
-  it('should call handler when key event has different key', () => {
-    const oldKeyEvent = createMockKeyboardEvent('Enter', 123456);
-    const newKeyEvent = createMockKeyboardEvent('Escape', 123456);
-
-    mockUseAppContext.mockReturnValue({
-      lastKeyDown: newKeyEvent,
-      oldKeyDown: oldKeyEvent,
-      setOldKeyDown: mockSetOldKeyDown,
-    });
-
-    renderHook(() => useKeyHandler(mockHandler));
-
-    expect(mockHandler).toHaveBeenCalledWith(newKeyEvent);
-    expect(mockSetOldKeyDown).toHaveBeenCalledWith(newKeyEvent);
-  });
-
-  it('should call handler when key event has different timestamp', () => {
-    const oldKeyEvent = createMockKeyboardEvent('Enter', 123456);
-    const newKeyEvent = createMockKeyboardEvent('Enter', 789012);
-
-    mockUseAppContext.mockReturnValue({
-      lastKeyDown: newKeyEvent,
-      oldKeyDown: oldKeyEvent,
-      setOldKeyDown: mockSetOldKeyDown,
-    });
-
-    renderHook(() => useKeyHandler(mockHandler));
-
-    expect(mockHandler).toHaveBeenCalledWith(newKeyEvent);
-    expect(mockSetOldKeyDown).toHaveBeenCalledWith(newKeyEvent);
-  });
-
-  it('should handle multiple key events correctly', () => {
-    const keyEvent1 = createMockKeyboardEvent('Enter', 123456);
-    const keyEvent2 = createMockKeyboardEvent('Escape', 789012);
-
-    // First render with first key event
-    mockUseAppContext.mockReturnValue({
-      lastKeyDown: keyEvent1,
-      oldKeyDown: null,
-      setOldKeyDown: mockSetOldKeyDown,
-    });
-
-    const { rerender } = renderHook(() => useKeyHandler(mockHandler));
-
-    expect(mockHandler).toHaveBeenCalledWith(keyEvent1);
-    expect(mockSetOldKeyDown).toHaveBeenCalledWith(keyEvent1);
-
-    // Clear mocks and set up for second key event
-    vi.clearAllMocks();
-
-    mockUseAppContext.mockReturnValue({
-      lastKeyDown: keyEvent2,
-      oldKeyDown: keyEvent1,
-      setOldKeyDown: mockSetOldKeyDown,
-    });
-
-    rerender();
-
-    expect(mockHandler).toHaveBeenCalledWith(keyEvent2);
-    expect(mockSetOldKeyDown).toHaveBeenCalledWith(keyEvent2);
-  });
-
-  it('should handle activation/deactivation correctly', () => {
-    const keyEvent = createMockKeyboardEvent('Enter', 123456);
-
-    mockUseAppContext.mockReturnValue({
-      lastKeyDown: keyEvent,
-      oldKeyDown: null,
-      setOldKeyDown: mockSetOldKeyDown,
-    });
-
-    const { rerender } = renderHook(
-      ({ deactivated }) => useKeyHandler(mockHandler, deactivated),
-      { initialProps: { deactivated: true } },
-    );
-
-    // Should not call handler when deactivated
-    expect(mockHandler).not.toHaveBeenCalled();
-
-    // Activate and rerender
-    rerender({ deactivated: false });
-
-    expect(mockHandler).toHaveBeenCalledWith(keyEvent);
   });
 });

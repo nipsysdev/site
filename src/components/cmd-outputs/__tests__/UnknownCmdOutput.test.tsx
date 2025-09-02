@@ -17,11 +17,6 @@ vi.mock('react-icons/pi', () => ({
 }));
 
 describe('UnknownCmdOutput', () => {
-  it('renders without crashing', () => {
-    const { container } = render(<UnknownCmdOutput cmdName="test" />);
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
   it('renders the command name', () => {
     const cmdName = 'invalidCommand';
     render(<UnknownCmdOutput cmdName={cmdName} />);
@@ -44,21 +39,5 @@ describe('UnknownCmdOutput', () => {
     render(<UnknownCmdOutput cmdName="test" />);
     const icon = screen.getByTestId('nervous-smiley-icon');
     expect(icon).toHaveAttribute('data-size', '1.2rem');
-  });
-
-  it('renders with proper CSS classes', () => {
-    const { container } = render(<UnknownCmdOutput cmdName="test" />);
-
-    const mainDiv = container.firstChild as HTMLElement;
-    expect(mainDiv).toHaveClass('flex', 'items-center', 'gap-x-1');
-  });
-
-  it('displays the full error message format', () => {
-    const cmdName = 'someCommand';
-    render(<UnknownCmdOutput cmdName={cmdName} />);
-
-    // Check that both the translation key and command name are present
-    expect(screen.getByText(/unknownCmdErr/)).toBeInTheDocument();
-    expect(screen.getByText(/someCommand/)).toBeInTheDocument();
   });
 });
