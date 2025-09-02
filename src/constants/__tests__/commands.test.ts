@@ -13,7 +13,9 @@ describe('commands', () => {
       expect(commandNames).toContain(Command.Intro);
       expect(commandNames).toContain(Command.SetLang);
       expect(commandNames).toContain(Command.Whoami);
-      expect(commandNames).toContain(Command.Web3Mission);
+      expect(commandNames).toContain(Command.Web2work);
+      expect(commandNames).toContain(Command.Web3work);
+      expect(commandNames).toContain(Command.Contribs);
     });
   });
 });

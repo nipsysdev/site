@@ -13,7 +13,7 @@ vi.mock('@/i18n/intl', () => ({
   Link: ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   ),
-  usePathname: () => '/mission',
+  usePathname: () => '/web2work',
 }));
 
 // Mock LSD React components
@@ -67,7 +67,7 @@ describe('TerminalWindow', () => {
     render(<TerminalWindow>{mockChildren}</TerminalWindow>);
 
     const tabs = screen.getByTestId('tabs');
-    expect(tabs).toHaveAttribute('data-active-tab', 'mission');
+    expect(tabs).toHaveAttribute('data-active-tab', 'web2work');
   });
 
   it('renders tab items for all routes', () => {

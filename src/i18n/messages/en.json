@@ -19,7 +19,9 @@
   "Pages": {
     "terminal": "terminal",
     "whoami": "whoami",
-    "mission": "web3_mission",
+    "web2work": "web2work",
+    "web3work": "web3work",
+    "contribs": "contribs",
     "contact": "contact"
   },
   "Terminal": {
@@ -52,11 +54,17 @@
       "set-lang": {
         "description": "Change language"
       },
-      "web3-mission": {
-        "description": "Discover what I'm working on in the web3 space"
+      "web2work": {
+        "description": "Things I have worked on at web2 companies"
+      },
+      "web3work": {
+        "description": "How I'm helping building web3"
+      },
+      "contribs": {
+        "description": "My contributions to open-source projects"
       },
       "whoami": {
-        "description": "Learn more about me"
+        "description": "Allow me to introduce myself"
       }
     }
   }

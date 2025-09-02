@@ -3,7 +3,6 @@ import type {
   CommandArgument,
   CommandEntry,
   CommandInfo,
-  CommandOutputProps,
 } from '@/types/terminal';
 import { Command } from '@/types/terminal';
 
@@ -15,7 +14,9 @@ describe('terminal types', () => {
       expect(Command.Contact).toBe('contact');
       expect(Command.Help).toBe('help');
       expect(Command.Intro).toBe('intro');
-      expect(Command.Web3Mission).toBe('web3-mission');
+      expect(Command.Web2work).toBe('web2work');
+      expect(Command.Web3work).toBe('web3work');
+      expect(Command.Contribs).toBe('contribs');
       expect(Command.SetLang).toBe('set-lang');
       expect(Command.Whoami).toBe('whoami');
     });

@@ -47,11 +47,9 @@ vi.mock('@/utils/terminal-utils', () => ({
         output: () => <div data-testid="whoami-output">Whoami Output</div>,
         timestamp: Date.now(),
       },
-      'web3-mission': {
-        cmdName: Command.Web3Mission,
-        output: () => (
-          <div data-testid="web3-mission-output">Web3 Mission Output</div>
-        ),
+      web2work: {
+        cmdName: Command.Web2work,
+        output: () => <div data-testid="web2work-output">Web2work Output</div>,
         timestamp: Date.now(),
       },
     };
@@ -109,10 +107,8 @@ vi.mock('../../cmd-outputs/WhoamiOutput', () => ({
   default: () => <div data-testid="whoami-output">Whoami Output</div>,
 }));
 
-vi.mock('../../cmd-outputs/Web3MissionOutput', () => ({
-  default: () => (
-    <div data-testid="web3-mission-output">Web3 Mission Output</div>
-  ),
+vi.mock('../../cmd-outputs/Web2workOutput', () => ({
+  default: () => <div data-testid="web2work-output">Web2work Output</div>,
 }));
 
 describe('TerminalEmulator', () => {

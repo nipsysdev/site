@@ -11,8 +11,14 @@ const ContactOutput = lazy(
 );
 const HelpOutput = lazy(() => import('@/components/cmd-outputs/HelpOutput'));
 const IntroOutput = lazy(() => import('@/components/cmd-outputs/IntroOutput'));
-const Web3MissionOutput = lazy(
-  () => import('@/components/cmd-outputs/Web3MissionOutput'),
+const Web2workOutput = lazy(
+  () => import('@/components/cmd-outputs/Web2workOutput'),
+);
+const Web3workOutput = lazy(
+  () => import('@/components/cmd-outputs/Web3workOutput'),
+);
+const ContribsOutput = lazy(
+  () => import('@/components/cmd-outputs/ContribsOutput'),
 );
 const WhoamiOutput = lazy(
   () => import('@/components/cmd-outputs/WhoamiOutput'),
@@ -26,6 +32,30 @@ function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
 
 export const Commands: CommandInfo[] = [
   {
+    name: Command.Intro,
+    output: IntroOutput,
+  },
+  {
+    name: Command.Whoami,
+    output: WhoamiOutput,
+  },
+  {
+    name: Command.Web2work,
+    output: Web2workOutput,
+  },
+  {
+    name: Command.Web3work,
+    output: Web3workOutput,
+  },
+  {
+    name: Command.Contribs,
+    output: ContribsOutput,
+  },
+  {
+    name: Command.Contact,
+    output: ContactOutput,
+  },
+  {
     name: Command.BuildInfo,
     output: BuildInfoOutput,
   },
@@ -33,28 +63,12 @@ export const Commands: CommandInfo[] = [
     name: Command.Clear,
   },
   {
-    name: Command.Contact,
-    output: ContactOutput,
-  },
-  {
     name: Command.Help,
     output: HelpOutput,
-  },
-  {
-    name: Command.Intro,
-    output: IntroOutput,
   },
   {
     name: Command.SetLang,
     options: enumToArg(Lang),
     // output: SetLangOutput,
-  },
-  {
-    name: Command.Whoami,
-    output: WhoamiOutput,
-  },
-  {
-    name: Command.Web3Mission,
-    output: Web3MissionOutput,
   },
 ];
