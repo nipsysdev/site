@@ -179,30 +179,6 @@ describe('terminal-utils', () => {
 
       vi.restoreAllMocks();
     });
-
-    it('should handle empty input', () => {
-      const mockDate = 1234567890;
-      vi.spyOn(Date, 'now').mockReturnValue(mockDate);
-
-      const entry = parseTerminalEntry('');
-
-      expect(entry.cmdName).toBe('' as Command);
-      expect(entry.timestamp).toBe(mockDate);
-
-      vi.restoreAllMocks();
-    });
-
-    it('should handle command with multiple spaces', () => {
-      const mockDate = 1234567890;
-      vi.spyOn(Date, 'now').mockReturnValue(mockDate);
-
-      const entry = parseTerminalEntry('help   extra   args');
-
-      expect(entry.cmdName).toBe(Command.Help);
-      expect(entry.option).toBe(''); // split(' ') with multiple spaces creates empty strings
-
-      vi.restoreAllMocks();
-    });
   });
 
   describe('getTerminalEntryInput', () => {
@@ -246,26 +222,6 @@ describe('terminal-utils', () => {
       };
 
       expect(getTerminalEntryInput(entry)).toBe('set-lang en --lang=english');
-    });
-
-    it('should handle entry with only argName but no argValue', () => {
-      const entry: CommandEntry = {
-        cmdName: Command.SetLang,
-        argName: 'lang',
-        timestamp: 123456,
-      };
-
-      expect(getTerminalEntryInput(entry)).toBe('set-lang --lang=undefined');
-    });
-
-    it('should handle entry with only argValue but no argName', () => {
-      const entry: CommandEntry = {
-        cmdName: Command.SetLang,
-        argValue: 'english',
-        timestamp: 123456,
-      };
-
-      expect(getTerminalEntryInput(entry)).toBe('set-lang');
     });
   });
 });

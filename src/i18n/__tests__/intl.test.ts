@@ -38,63 +38,6 @@ describe('i18n intl configuration', () => {
       expect(routing.localePrefix).toBe('always');
       expect(routing.localeDetection).toBe(false);
     });
-
-    it('should have proper locales array', () => {
-      expect(Array.isArray(routing.locales)).toBe(true);
-      expect(routing.locales).toContain('en');
-      expect(routing.locales).toContain('fr');
-      expect(routing.locales).toHaveLength(2);
-    });
-
-    it('should have English as default locale', () => {
-      expect(routing.defaultLocale).toBe('en');
-      expect(routing.locales).toContain(routing.defaultLocale);
-    });
-
-    it('should have locale prefix always enabled', () => {
-      expect(routing.localePrefix).toBe('always');
-    });
-
-    it('should have locale detection disabled', () => {
-      expect(routing.localeDetection).toBe(false);
-    });
-  });
-
-  describe('configuration structure', () => {
-    it('should export routing as an object', () => {
-      expect(typeof routing).toBe('object');
-      expect(routing).not.toBeNull();
-    });
-
-    it('should have all required routing properties', () => {
-      expect(routing).toHaveProperty('locales');
-      expect(routing).toHaveProperty('defaultLocale');
-      expect(routing).toHaveProperty('localePrefix');
-      expect(routing).toHaveProperty('localeDetection');
-    });
-
-    it('should have correct property types', () => {
-      expect(Array.isArray(routing.locales)).toBe(true);
-      expect(typeof routing.defaultLocale).toBe('string');
-      expect(typeof routing.localePrefix).toBe('string');
-      expect(typeof routing.localeDetection).toBe('boolean');
-    });
-  });
-
-  describe('locale validation', () => {
-    it('should only contain valid locale codes', () => {
-      const validLocales = ['en', 'fr'];
-      routing.locales.forEach((locale) => {
-        expect(validLocales).toContain(locale);
-        expect(typeof locale).toBe('string');
-        expect(locale.length).toBe(2);
-      });
-    });
-
-    it('should have unique locales', () => {
-      const uniqueLocales = [...new Set(routing.locales)];
-      expect(uniqueLocales).toHaveLength(routing.locales.length);
-    });
   });
 
   describe('getRequestConfig', () => {

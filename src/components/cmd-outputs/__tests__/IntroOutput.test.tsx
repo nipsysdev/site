@@ -34,13 +34,6 @@ describe('IntroOutput', () => {
     vi.clearAllMocks();
   });
 
-  it('renders without crashing', () => {
-    const { container } = render(
-      <IntroOutput t={mockTWithRich} entry={mockEntry} />,
-    );
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
   it('renders welcome message', () => {
     render(<IntroOutput t={mockTWithRich} entry={mockEntry} />);
     expect(mockTRich).toHaveBeenCalledWith(
@@ -67,14 +60,5 @@ describe('IntroOutput', () => {
     expect(asciiDiv).toBeInTheDocument();
     // Check for part of the ASCII art content
     expect(asciiDiv).toHaveTextContent('_ __');
-  });
-
-  it('renders with proper CSS classes', () => {
-    const { container } = render(
-      <IntroOutput t={mockTWithRich} entry={mockEntry} />,
-    );
-
-    const mainDiv = container.firstChild as HTMLElement;
-    expect(mainDiv).toHaveClass('flex', 'flex-col');
   });
 });

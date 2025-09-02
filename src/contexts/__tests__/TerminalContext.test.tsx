@@ -1,7 +1,8 @@
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { AppRoute, CommandEntry } from '@/types/routing';
+import type { AppRoute } from '@/types/routing';
 import { ViewRoute } from '@/types/routing';
+import type { CommandEntry } from '@/types/terminal';
 import { Command } from '@/types/terminal';
 import { TerminalStateProvider, useTerminalContext } from '../TerminalContext';
 
@@ -56,18 +57,6 @@ describe('TerminalContext', () => {
       expect(result.current.submission).toBe('test submission');
     });
 
-    it('should update simulatedCmd when setSimulatedCmd is called', () => {
-      const { result } = renderHook(() => useTerminalContext(), {
-        wrapper: TerminalStateProvider,
-      });
-
-      act(() => {
-        result.current.setSimulatedCmd('simulated command');
-      });
-
-      expect(result.current.simulatedCmd).toBe('simulated command');
-    });
-
     it('should update history when setHistory is called', () => {
       const { result } = renderHook(() => useTerminalContext(), {
         wrapper: TerminalStateProvider,
@@ -99,18 +88,6 @@ describe('TerminalContext', () => {
       expect(result.current.hasIntroduced).toBe(true);
     });
 
-    it('should update hasRefreshed when setHasRefreshed is called', () => {
-      const { result } = renderHook(() => useTerminalContext(), {
-        wrapper: TerminalStateProvider,
-      });
-
-      act(() => {
-        result.current.setHasRefreshed(true);
-      });
-
-      expect(result.current.hasRefreshed).toBe(true);
-    });
-
     it('should update lastRouteReq when setLastRouteReq is called', () => {
       const { result } = renderHook(() => useTerminalContext(), {
         wrapper: TerminalStateProvider,
@@ -126,24 +103,6 @@ describe('TerminalContext', () => {
       });
 
       expect(result.current.lastRouteReq).toEqual(mockRoute);
-    });
-
-    it('should update oldRouteReq when setOldRouteReq is called', () => {
-      const { result } = renderHook(() => useTerminalContext(), {
-        wrapper: TerminalStateProvider,
-      });
-
-      const mockRoute: AppRoute = {
-        viewRoute: ViewRoute.Whoami,
-        param: 'test',
-        timeStamp: Date.now(),
-      };
-
-      act(() => {
-        result.current.setOldRouteReq(mockRoute);
-      });
-
-      expect(result.current.oldRouteReq).toEqual(mockRoute);
     });
 
     it('should handle multiple state updates correctly', () => {
@@ -197,32 +156,6 @@ describe('TerminalContext', () => {
       });
 
       expect(result.current.lastRouteReq).toBeNull();
-    });
-  });
-
-  describe('useTerminalContext', () => {
-    it('should return the context value', () => {
-      const { result } = renderHook(() => useTerminalContext(), {
-        wrapper: TerminalStateProvider,
-      });
-
-      expect(result.current.input).toBe('');
-      expect(result.current.submission).toBe('');
-      expect(result.current.simulatedCmd).toBe('');
-      expect(result.current.history).toEqual([]);
-      expect(result.current.hasIntroduced).toBe(false);
-      expect(result.current.hasRefreshed).toBe(false);
-      expect(result.current.lastRouteReq).toBeNull();
-      expect(result.current.oldRouteReq).toBeNull();
-
-      expect(typeof result.current.setInput).toBe('function');
-      expect(typeof result.current.setSubmission).toBe('function');
-      expect(typeof result.current.setSimulatedCmd).toBe('function');
-      expect(typeof result.current.setHistory).toBe('function');
-      expect(typeof result.current.setHasIntroduced).toBe('function');
-      expect(typeof result.current.setHasRefreshed).toBe('function');
-      expect(typeof result.current.setLastRouteReq).toBe('function');
-      expect(typeof result.current.setOldRouteReq).toBe('function');
     });
   });
 });

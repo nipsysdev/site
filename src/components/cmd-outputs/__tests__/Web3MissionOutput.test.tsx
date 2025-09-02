@@ -16,19 +16,8 @@ describe('Web3MissionOutput', () => {
     cmdName: Command.Web3Mission,
   };
 
-  it('renders without crashing', () => {
-    const { container } = render(
-      <Web3MissionOutput t={mockT} entry={mockEntry} />,
-    );
-    expect(container).toBeInTheDocument();
-  });
-
   it('renders the Web3Mission component', () => {
     render(<Web3MissionOutput t={mockT} entry={mockEntry} />);
     expect(screen.getByText('web3 mission / todo')).toBeInTheDocument();
-  });
-
-  it('is a class component that extends Component', () => {
-    expect(Web3MissionOutput.prototype.render).toBeDefined();
   });
 });

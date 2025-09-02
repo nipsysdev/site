@@ -15,7 +15,7 @@ Licensed under GPL-3.0.
 
 Still a work in progress, but it already lives on the InterPlanetary FileSystem:
 
-- IPNS Hash: `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
+- IPNS Name: `k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3`
 - [Access through eth.limo](https://nipsys.eth.limo)
 - [Access through dweb.link](https://k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3.ipns.dweb.link/)
 
@@ -26,8 +26,8 @@ Still a work in progress, but it already lives on the InterPlanetary FileSystem:
 - [x] responsive design
 - [x] internationalization
 - [x] automatic deployment on IPFS
-- [_] content is still being written
-- [_] pages are still being added & refined
+- [] content is still being written
+- [] pages are still being added & refined
 
 ## commands
 

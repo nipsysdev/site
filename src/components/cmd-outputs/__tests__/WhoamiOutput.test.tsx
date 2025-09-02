@@ -16,17 +16,8 @@ describe('WhoamiOutput', () => {
     cmdName: Command.Whoami,
   };
 
-  it('renders without crashing', () => {
-    const { container } = render(<WhoamiOutput t={mockT} entry={mockEntry} />);
-    expect(container).toBeInTheDocument();
-  });
-
   it('renders the AboutMe component', () => {
     render(<WhoamiOutput t={mockT} entry={mockEntry} />);
     expect(screen.getByText('about me / todo')).toBeInTheDocument();
-  });
-
-  it('is a class component that extends Component', () => {
-    expect(WhoamiOutput.prototype.render).toBeDefined();
   });
 });

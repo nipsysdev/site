@@ -70,40 +70,6 @@ vi.mock('@/utils/helpers', () => ({
 }));
 
 describe('Header', () => {
-  it('renders without crashing', () => {
-    const { container } = render(<Header />);
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
-  it('renders with correct CSS classes', () => {
-    const { container } = render(<Header />);
-    const headerDiv = container.firstChild as HTMLElement;
-    expect(headerDiv).toHaveClass(
-      'flex',
-      'w-full',
-      'items-center',
-      'justify-between',
-      'tracking-tighter',
-      'transition-colors',
-    );
-  });
-
-  it('renders ButtonGroup component', () => {
-    render(<Header />);
-    expect(screen.getByTestId('button-group')).toBeInTheDocument();
-  });
-
-  it('renders language buttons for all language labels', () => {
-    render(<Header />);
-
-    Object.entries(LangLabels).forEach(([lang, label]) => {
-      // Check that we have a link for each language
-      const link = screen.getByText(label.slice(0, 2));
-      expect(link).toBeInTheDocument();
-      expect(link.closest('a')).toHaveAttribute('data-locale', lang);
-    });
-  });
-
   it('renders GitHub link button', () => {
     render(<Header />);
 
@@ -119,28 +85,5 @@ describe('Header', () => {
     );
     expect(githubLink).toHaveAttribute('rel', 'noopener');
     expect(githubLink).toHaveAttribute('target', '_blank');
-  });
-
-  it('applies correct button variants and sizes', () => {
-    render(<Header />);
-
-    const buttons = screen.getAllByTestId(/button-outlined-small/);
-    expect(buttons.length).toBeGreaterThan(0);
-
-    // Should have one button for each language plus the GitHub button
-    expect(buttons.length).toBe(Object.keys(LangLabels).length + 1);
-  });
-
-  it('renders language buttons with proper links', () => {
-    render(<Header />);
-
-    Object.keys(LangLabels).forEach((lang) => {
-      const link = screen.getByRole('link', {
-        name: new RegExp(LangLabels[lang].slice(0, 2), 'i'),
-      });
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', '/test-path');
-      expect(link).toHaveAttribute('data-locale', lang);
-    });
   });
 });

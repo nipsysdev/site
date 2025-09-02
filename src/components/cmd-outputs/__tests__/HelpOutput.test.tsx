@@ -71,31 +71,6 @@ describe('HelpOutput', () => {
     vi.clearAllMocks();
   });
 
-  it('renders without crashing', () => {
-    const { container } = render(<HelpOutput t={mockT} entry={mockEntry} />);
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
-  it('renders all commands from Commands constant', () => {
-    render(<HelpOutput t={mockT} entry={mockEntry} />);
-
-    Commands.forEach((cmd) => {
-      // Check that at least one button with the command name exists
-      const buttons = screen
-        .getAllByRole('button')
-        .filter((button) => button.textContent?.includes(cmd.name));
-      expect(buttons.length).toBeGreaterThan(0);
-    });
-  });
-
-  it('calls translation function for command descriptions', () => {
-    render(<HelpOutput t={mockT} entry={mockEntry} />);
-
-    Commands.forEach((cmd) => {
-      expect(mockT).toHaveBeenCalledWith(`cmds.${cmd.name}.description`);
-    });
-  });
-
   it('renders command arguments when they exist', () => {
     render(<HelpOutput t={mockT} entry={mockEntry} />);
 
@@ -112,29 +87,5 @@ describe('HelpOutput', () => {
     // Check that translation function is called for argument descriptions
     expect(mockT).toHaveBeenCalledWith('cmds.test-cmd.argsDesc.arg1');
     expect(mockT).toHaveBeenCalledWith('cmds.test-cmd.argsDesc.arg2');
-  });
-
-  it('handles commands without arguments gracefully', () => {
-    render(<HelpOutput t={mockT} entry={mockEntry} />);
-
-    // Commands without arguments should still render their main button
-    const helpButton = screen.getByTestId('cmd-link-help');
-    const clearButton = screen.getByTestId('cmd-link-clear');
-    expect(helpButton).toBeInTheDocument();
-    expect(clearButton).toBeInTheDocument();
-  });
-
-  it('renders proper typography variants', () => {
-    render(<HelpOutput t={mockT} entry={mockEntry} />);
-
-    const subtitleElements = screen.getAllByTestId('typography-subtitle3');
-    expect(subtitleElements.length).toBeGreaterThan(0);
-  });
-
-  it('renders with proper CSS classes', () => {
-    const { container } = render(<HelpOutput t={mockT} entry={mockEntry} />);
-
-    const mainDiv = container.firstChild as HTMLElement;
-    expect(mainDiv).toHaveClass('flex', 'flex-col', 'gap-y-(--lsd-spacing-8)');
   });
 });

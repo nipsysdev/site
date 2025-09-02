@@ -231,7 +231,7 @@ describe('TerminalEmulator', () => {
     expect(mockSetHistory).toHaveBeenCalledWith([]);
   });
 
-  it('renders history items', () => {
+  it('renders history items with different command types', () => {
     const mockHistory = [
       {
         cmdName: Command.Help,
@@ -243,6 +243,10 @@ describe('TerminalEmulator', () => {
         output: () => <div data-testid="intro-output">Intro Output</div>,
         timestamp: 456,
       },
+      {
+        cmdName: 'unknown-command',
+        timestamp: 789,
+      },
     ];
 
     (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
@@ -265,86 +269,7 @@ describe('TerminalEmulator', () => {
 
     expect(screen.getByTestId('help-output')).toBeInTheDocument();
     expect(screen.getByTestId('intro-output')).toBeInTheDocument();
-  });
-
-  it('renders unknown command for unrecognized commands', () => {
-    const mockHistory = [{ cmdName: 'unknown-command', timestamp: 123 }];
-
-    (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
-      {
-        hasIntroduced: true,
-        history: mockHistory,
-        input: '',
-        simulatedCmd: '',
-        submission: '',
-        setHasIntroduced: mockSetHasIntroduced,
-        setHasRefreshed: mockSetHasRefreshed,
-        setHistory: mockSetHistory,
-        setInput: mockSetInput,
-        setSimulatedCmd: mockSetSimulatedCmd,
-        setSubmission: mockSetSubmission,
-      },
-    );
-
-    render(<TerminalEmulator />);
-
     expect(screen.getByTestId('unknown-cmd-output')).toBeInTheDocument();
     expect(screen.getByText('unknown-command')).toBeInTheDocument();
-  });
-
-  it('handles all supported command types', () => {
-    const allCommands = [
-      {
-        cmdName: Command.Help,
-        output: () => <div data-testid="help-output">Help Output</div>,
-        timestamp: 1,
-      },
-      {
-        cmdName: Command.Intro,
-        output: () => <div data-testid="intro-output">Intro Output</div>,
-        timestamp: 2,
-      },
-      {
-        cmdName: Command.Contact,
-        output: () => <div data-testid="contact-output">Contact Output</div>,
-        timestamp: 3,
-      },
-      {
-        cmdName: Command.Whoami,
-        output: () => <div data-testid="whoami-output">Whoami Output</div>,
-        timestamp: 4,
-      },
-      {
-        cmdName: Command.Web3Mission,
-        output: () => (
-          <div data-testid="web3-mission-output">Web3 Mission Output</div>
-        ),
-        timestamp: 5,
-      },
-    ];
-
-    (useTerminalContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
-      {
-        hasIntroduced: true,
-        history: allCommands,
-        input: '',
-        simulatedCmd: '',
-        submission: '',
-        setHasIntroduced: mockSetHasIntroduced,
-        setHasRefreshed: mockSetHasRefreshed,
-        setHistory: mockSetHistory,
-        setInput: mockSetInput,
-        setSimulatedCmd: mockSetSimulatedCmd,
-        setSubmission: mockSetSubmission,
-      },
-    );
-
-    render(<TerminalEmulator />);
-
-    expect(screen.getByTestId('help-output')).toBeInTheDocument();
-    expect(screen.getByTestId('intro-output')).toBeInTheDocument();
-    expect(screen.getByTestId('contact-output')).toBeInTheDocument();
-    expect(screen.getByTestId('whoami-output')).toBeInTheDocument();
-    expect(screen.getByTestId('web3-mission-output')).toBeInTheDocument();
   });
 });

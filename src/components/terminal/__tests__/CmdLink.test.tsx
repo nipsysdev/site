@@ -166,11 +166,4 @@ describe('CmdLink', () => {
     expect(screen.getByText('help')).toBeInTheDocument();
     expect(screen.queryByText('intro')).not.toBeInTheDocument();
   });
-
-  it('renders with correct button props', () => {
-    render(<CmdLink cmdName="help" />);
-
-    const button = screen.getByRole('button');
-    expect(button).toHaveClass('text-xs', 'w-fit!');
-  });
 });

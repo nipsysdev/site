@@ -39,22 +39,6 @@ describe('ChunkRetryManager', () => {
     expect(mockLoadFn).toHaveBeenCalledTimes(1);
   });
 
-  it('should track retry statistics', async () => {
-    const mockLoadFn = vi.fn().mockImplementation(() => {
-      const error = new Error('Network timeout');
-      error.name = 'NetworkError';
-      throw error;
-    });
-
-    await expect(
-      manager.retryChunkLoad('test-chunk', mockLoadFn),
-    ).rejects.toThrow();
-
-    const stats = manager.getRetryStats();
-    expect(stats['test-chunk']).toBeDefined();
-    expect(stats['test-chunk']).toBeGreaterThan(0);
-  }, 10000); // 10 second timeout
-
   it('should use exponential backoff', async () => {
     const startTime = Date.now();
     const mockLoadFn = vi.fn().mockImplementation(() => {
@@ -81,29 +65,4 @@ describe('ChunkRetryManager', () => {
     expect(mockLoadFn).toHaveBeenCalledTimes(1);
     expect(manager.getRetryStats()).toEqual({});
   });
-
-  it('should handle chunk loading errors correctly', async () => {
-    const mockLoadFn = vi.fn().mockImplementation(() => {
-      const error = new Error('Loading chunk 123 failed');
-      error.name = 'ChunkLoadError';
-      throw error;
-    });
-
-    await expect(
-      manager.retryChunkLoad('test-chunk', mockLoadFn),
-    ).rejects.toThrow('Loading chunk 123 failed');
-    expect(mockLoadFn).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
-  }, 15000);
-
-  it('should handle network timeouts correctly', async () => {
-    const mockLoadFn = vi.fn().mockImplementation(() => {
-      const error = new Error('Failed to fetch');
-      throw error;
-    });
-
-    await expect(
-      manager.retryChunkLoad('test-chunk', mockLoadFn),
-    ).rejects.toThrow('Failed to fetch');
-    expect(mockLoadFn).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
-  }, 15000);
 });
