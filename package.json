@@ -30,7 +30,7 @@
     "postinstall": "lefthook install"
   },
   "dependencies": {
-    "@acid-info/lsd-react": "0.2.0-beta.4",
+    "@nipsysdev/lsd-react": "0.2.0-beta.4-dev1",
     "next": "^15.5.2",
     "next-intl": "^4.3.5",
     "postcss": "^8.5.6",

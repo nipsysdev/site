@@ -1,4 +1,4 @@
-import { Typography } from '@acid-info/lsd-react/client/Typography';
+import { Typography } from '@nipsysdev/lsd-react/client/Typography';
 import {
   Component,
   createRef,

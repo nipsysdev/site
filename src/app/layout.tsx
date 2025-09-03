@@ -1,11 +1,9 @@
-import { LsdThemeStyles } from '@acid-info/lsd-react/theme';
 import { getTranslations } from 'next-intl/server';
 import { AppStateProvider } from '@/contexts/AppContext';
 import 'tailwindcss/index.css';
-import '@acid-info/lsd-react/css';
-
-// Initialize chunk retry manager for IPFS deployment
+import '@nipsysdev/lsd-react/css';
 import '@/utils/chunk-retry';
+import { LsdThemeStyles } from '@nipsysdev/lsd-react/theme';
 
 export async function generateMetadata() {
   const tMeta = await getTranslations({ locale: 'en', namespace: 'Metadata' });

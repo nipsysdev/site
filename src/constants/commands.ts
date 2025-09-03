@@ -34,6 +34,15 @@ function enumToArg(o: { [s: string]: string } | ArrayLike<string>): string[] {
 
 export const Commands: CommandInfo[] = [
   {
+    name: Command.Help,
+    output: HelpOutput,
+  },
+  {
+    name: Command.SetLang,
+    options: enumToArg(Lang),
+    // output: SetLangOutput,
+  },
+  {
     name: Command.Welcome,
     output: WelcomeOutput,
   },
@@ -58,19 +67,10 @@ export const Commands: CommandInfo[] = [
     output: ContactOutput,
   },
   {
-    name: Command.BuildInfo,
-    output: BuildInfoOutput,
-  },
-  {
     name: Command.Clear,
   },
   {
-    name: Command.Help,
-    output: HelpOutput,
-  },
-  {
-    name: Command.SetLang,
-    options: enumToArg(Lang),
-    // output: SetLangOutput,
+    name: Command.BuildInfo,
+    output: BuildInfoOutput,
   },
 ];

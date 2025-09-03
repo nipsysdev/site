@@ -79,7 +79,7 @@ export default function TerminalEmulator() {
 
   return (
     hasWindow && (
-      <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize) pt-(--lsd-spacing-8)">
+      <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize)">
         {/** biome-ignore lint/a11y/useSemanticElements: terminal container needs to be clickable and listen to inputs while still displaying as a div */}
         <div
           role="button"

@@ -4,6 +4,7 @@
     "description": "My personal website"
   },
   "Core": {
+    "menu": "menu",
     "web2": "Web2 hosted version.",
     "web3": "Web3 hosted version 🌐",
     "goWeb3": "Go Web3",

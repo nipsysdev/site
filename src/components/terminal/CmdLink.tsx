@@ -1,4 +1,4 @@
-import { Button } from '@acid-info/lsd-react/client/Button';
+import { Button } from '@nipsysdev/lsd-react/client/Button';
 import type { JSX } from 'react';
 import { useTerminalContext } from '@/contexts/TerminalContext';
 import type { CommandArgument, CommandInfo } from '@/types/terminal';

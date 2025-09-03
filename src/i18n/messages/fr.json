@@ -4,6 +4,7 @@
     "description": "Mon site personnel"
   },
   "Core": {
+    "menu": "menu",
     "web2": "Web2 héberge cette version.",
     "web3": "Web3 héberge cette version 🌐",
     "goWeb3": "Aller sur Web3",

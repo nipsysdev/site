@@ -28,3 +28,12 @@
   color: rgba(var(--lsd-text-tertiary));
   font-weight: bold;
 }
+
+.ghostButton {
+  border: none;
+}
+
+.modal > div {
+  min-width: auto !important;
+  max-width: 100vw;
+}

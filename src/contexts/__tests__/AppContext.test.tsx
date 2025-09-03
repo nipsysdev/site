@@ -7,9 +7,11 @@ import { AppStateProvider, useAppContext } from '@/contexts/AppContext';
 const TestComponent = () => {
   const {
     isTerminal,
+    isMenuDisplayed,
     lastKeyDown,
     oldKeyDown,
     setIsTerminal,
+    setIsMenuDisplayed,
     setLastKeyDown,
     setOldKeyDown,
   } = useAppContext();
@@ -29,6 +31,9 @@ const TestComponent = () => {
   return (
     <div>
       <div data-testid="is-terminal">{isTerminal ? 'true' : 'false'}</div>
+      <div data-testid="is-menu-displayed">
+        {isMenuDisplayed ? 'true' : 'false'}
+      </div>
       <div data-testid="last-key">{lastKeyDown?.key || 'none'}</div>
       <div data-testid="old-key">{oldKeyDown?.key || 'none'}</div>
       <button
@@ -44,6 +49,20 @@ const TestComponent = () => {
         onClick={() => setIsTerminal(false)}
       >
         Set Terminal False
+      </button>
+      <button
+        type="button"
+        data-testid="set-menu-displayed-true"
+        onClick={() => setIsMenuDisplayed(true)}
+      >
+        Set Menu Displayed True
+      </button>
+      <button
+        type="button"
+        data-testid="set-menu-displayed-false"
+        onClick={() => setIsMenuDisplayed(false)}
+      >
+        Set Menu Displayed False
       </button>
       <button
         type="button"
@@ -76,6 +95,7 @@ describe('AppContext', () => {
     );
 
     expect(screen.getByTestId('is-terminal')).toHaveTextContent('false');
+    expect(screen.getByTestId('is-menu-displayed')).toHaveTextContent('false');
     expect(screen.getByTestId('last-key')).toHaveTextContent('none');
     expect(screen.getByTestId('old-key')).toHaveTextContent('none');
   });
@@ -142,5 +162,28 @@ describe('AppContext', () => {
     });
 
     expect(screen.getByTestId('old-key')).toHaveTextContent('Enter');
+  });
+
+  it('should update isMenuDisplayed state', () => {
+    render(
+      <AppStateProvider>
+        <TestComponent />
+      </AppStateProvider>,
+    );
+
+    const setMenuTrueButton = screen.getByTestId('set-menu-displayed-true');
+    const setMenuFalseButton = screen.getByTestId('set-menu-displayed-false');
+
+    act(() => {
+      fireEvent.click(setMenuTrueButton);
+    });
+
+    expect(screen.getByTestId('is-menu-displayed')).toHaveTextContent('true');
+
+    act(() => {
+      fireEvent.click(setMenuFalseButton);
+    });
+
+    expect(screen.getByTestId('is-menu-displayed')).toHaveTextContent('false');
   });
 });
