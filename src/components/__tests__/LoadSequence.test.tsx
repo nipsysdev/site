@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoadSequence from '../LoadSequence';
 
 // Mock Typography component
-vi.mock('@acid-info/lsd-react/client/Typography', () => ({
+vi.mock('@nipsysdev/lsd-react/client/Typography', () => ({
   Typography: ({ children, ...props }: { children: React.ReactNode }) => (
     <div {...props}>{children}</div>
   ),

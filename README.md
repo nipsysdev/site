@@ -26,8 +26,9 @@ Still a work in progress, but it already lives on the InterPlanetary FileSystem:
 - [x] responsive design
 - [x] internationalization
 - [x] automatic deployment on IPFS
-- [] content is still being written
-- [] pages are still being added & refined
+- [ ] UI still needs to be improved
+- [ ] content is still being written
+- [ ] pages are still being added & refined
 
 ## commands
 

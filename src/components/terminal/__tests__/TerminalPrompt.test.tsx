@@ -3,7 +3,6 @@ import type React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Translator } from '@/i18n/intl';
 import { Command, type CommandEntry } from '@/types/terminal';
-import { isNewKeyEvent } from '@/utils/compare-utils';
 import { getTerminalEntryInput } from '@/utils/terminal-utils';
 import TerminalPrompt from '../TerminalPrompt';
 
@@ -16,7 +15,7 @@ vi.mock('@/utils/terminal-utils', () => ({
   getTerminalEntryInput: vi.fn(),
 }));
 
-vi.mock('@acid-info/lsd-react/client/Typography', () => ({
+vi.mock('@nipsysdev/lsd-react/client/Typography', () => ({
   Typography: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div {...props}>{children}</div>
   ),

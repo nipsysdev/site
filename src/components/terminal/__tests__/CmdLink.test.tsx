@@ -14,7 +14,7 @@ vi.mock('@/contexts/TerminalContext', () => ({
 }));
 
 // Mock the LSD Button component
-vi.mock('@acid-info/lsd-react/client/Button', () => ({
+vi.mock('@nipsysdev/lsd-react/client/Button', () => ({
   Button: ({ children, onClick, ...props }: React.ComponentProps<'button'>) => (
     <button onClick={onClick} {...props}>
       {children}
@@ -81,7 +81,7 @@ describe('CmdLink', () => {
 
   it('handles click with command argument', () => {
     const cmdInfo: CommandInfo = {
-      name: Command.Web3Mission,
+      name: Command.Web2work,
     };
     const arg: CommandArgument = {
       name: 'framework',
@@ -92,7 +92,7 @@ describe('CmdLink', () => {
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
-    expect(mockSetInput).toHaveBeenCalledWith('web3-mission --framework=');
+    expect(mockSetInput).toHaveBeenCalledWith('web2work --framework=');
     expect(mockSetSimulatedCmd).not.toHaveBeenCalled();
   });
 
@@ -109,7 +109,7 @@ describe('CmdLink', () => {
 
   it('renders argument options when arg has options', () => {
     const cmdInfo: CommandInfo = {
-      name: Command.Web3Mission,
+      name: Command.Web2work,
     };
     const arg: CommandArgument = {
       name: 'framework',
@@ -123,7 +123,7 @@ describe('CmdLink', () => {
 
   it('truncates argument options when more than 6', () => {
     const cmdInfo: CommandInfo = {
-      name: Command.Web3Mission,
+      name: Command.Web2work,
     };
     const arg: CommandArgument = {
       name: 'framework',
@@ -158,12 +158,12 @@ describe('CmdLink', () => {
 
   it('prioritizes cmdName over cmdInfo.name', () => {
     const cmdInfo: CommandInfo = {
-      name: Command.Intro,
+      name: Command.Welcome,
     };
 
     render(<CmdLink cmdName="help" cmdInfo={cmdInfo} />);
 
     expect(screen.getByText('help')).toBeInTheDocument();
-    expect(screen.queryByText('intro')).not.toBeInTheDocument();
+    expect(screen.queryByText('welcome')).not.toBeInTheDocument();
   });
 });

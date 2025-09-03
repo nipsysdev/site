@@ -1,4 +1,4 @@
-import { Typography } from '@acid-info/lsd-react/client/Typography';
+import { Typography } from '@nipsysdev/lsd-react/client/Typography';
 import { Component } from 'react';
 import { Commands } from '@/constants/commands';
 import type { CommandOutputProps } from '@/types/terminal';

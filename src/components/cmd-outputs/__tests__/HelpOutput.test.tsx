@@ -49,7 +49,7 @@ vi.mock('@/contexts/TerminalContext', () => ({
 }));
 
 // Mock LSD React Typography component
-vi.mock('@acid-info/lsd-react/client/Typography', () => ({
+vi.mock('@nipsysdev/lsd-react/client/Typography', () => ({
   Typography: ({
     children,
     variant,

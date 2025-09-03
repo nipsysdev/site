@@ -6,7 +6,9 @@ describe('routes', () => {
     it('should have all expected routes', () => {
       expect(Routes.terminal).toBe('/');
       expect(Routes.whoami).toBe('/whoami');
-      expect(Routes.mission).toBe('/mission');
+      expect(Routes.web2work).toBe('/web2work');
+      expect(Routes.web3work).toBe('/web3work');
+      expect(Routes.contribs).toBe('/contribs');
       expect(Routes.contact).toBe('/contact');
     });
   });

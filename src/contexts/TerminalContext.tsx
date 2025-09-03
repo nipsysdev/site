@@ -7,7 +7,7 @@ interface TerminalState {
   submission: string;
   simulatedCmd: string;
   history: CommandEntry[];
-  hasIntroduced: boolean;
+  hasWelcomed: boolean;
   hasRefreshed: boolean;
   lastRouteReq: AppRoute | null;
   oldRouteReq: AppRoute | null;
@@ -15,7 +15,7 @@ interface TerminalState {
   setSubmission: (value: string) => void;
   setSimulatedCmd: (value: string) => void;
   setHistory: (value: CommandEntry[]) => void;
-  setHasIntroduced: (value: boolean) => void;
+  setHasWelcomed: (value: boolean) => void;
   setHasRefreshed: (value: boolean) => void;
   setLastRouteReq: (value: AppRoute | null) => void;
   setOldRouteReq: (value: AppRoute | null) => void;
@@ -26,7 +26,7 @@ const initialState: TerminalState = {
   submission: '',
   simulatedCmd: '',
   history: [],
-  hasIntroduced: false,
+  hasWelcomed: false,
   hasRefreshed: false,
   lastRouteReq: null,
   oldRouteReq: null,
@@ -34,7 +34,7 @@ const initialState: TerminalState = {
   setSubmission: () => {},
   setSimulatedCmd: () => {},
   setHistory: () => {},
-  setHasIntroduced: () => {},
+  setHasWelcomed: () => {},
   setHasRefreshed: () => {},
   setLastRouteReq: () => {},
   setOldRouteReq: () => {},
@@ -70,8 +70,8 @@ export const TerminalStateProvider = ({
     [],
   );
 
-  const setHasIntroduced = useCallback(
-    (value: boolean) => setState((prev) => ({ ...prev, hasIntroduced: value })),
+  const setHasWelcomed = useCallback(
+    (value: boolean) => setState((prev) => ({ ...prev, hasWelcomed: value })),
     [],
   );
 
@@ -98,7 +98,7 @@ export const TerminalStateProvider = ({
     setSubmission,
     setSimulatedCmd,
     setHistory,
-    setHasIntroduced,
+    setHasWelcomed,
     setHasRefreshed,
     setLastRouteReq,
     setOldRouteReq,

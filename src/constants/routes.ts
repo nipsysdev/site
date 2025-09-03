@@ -1,6 +1,8 @@
 export const Routes = {
   terminal: '/',
   whoami: '/whoami',
-  mission: '/mission',
+  web2work: '/web2work',
+  web3work: '/web3work',
+  contribs: '/contribs',
   contact: '/contact',
 };

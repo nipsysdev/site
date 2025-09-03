@@ -10,12 +10,12 @@ import TerminalPrompt from './TerminalPrompt';
 
 export default function TerminalEmulator() {
   const {
-    hasIntroduced,
+    hasWelcomed,
     history,
     input,
     simulatedCmd,
     submission,
-    setHasIntroduced,
+    setHasWelcomed,
     setHasRefreshed,
     setHistory,
     setInput,
@@ -38,11 +38,11 @@ export default function TerminalEmulator() {
   useEffect(() => {
     mainPrompt.current?.focus();
 
-    if (!isPrerender && !hasIntroduced && mainPrompt.current) {
-      setHasIntroduced(true);
-      mainPrompt.current?.simulate(Command.Intro);
+    if (!isPrerender && !hasWelcomed && mainPrompt.current) {
+      setHasWelcomed(true);
+      mainPrompt.current?.simulate(Command.Welcome);
     }
-  }, [hasIntroduced, isPrerender, mainPrompt, setHasIntroduced]);
+  }, [hasWelcomed, isPrerender, mainPrompt, setHasWelcomed]);
 
   useEffect(() => {
     if (!submission) return;
@@ -79,7 +79,7 @@ export default function TerminalEmulator() {
 
   return (
     hasWindow && (
-      <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize) pt-(--lsd-spacing-8)">
+      <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize)">
         {/** biome-ignore lint/a11y/useSemanticElements: terminal container needs to be clickable and listen to inputs while still displaying as a div */}
         <div
           role="button"
