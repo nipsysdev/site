@@ -355,19 +355,19 @@ describe('TerminalPrompt', () => {
       ).toBeInTheDocument();
     });
 
-    it('returns full host for short IPFS hosts', () => {
+    it('removes the first subdomain for IPFS hosts with two parts', () => {
       Object.defineProperty(window, 'location', {
-        value: { host: 'short.ipfs.dweb.link' },
+        value: { host: 'cid.ipfs.dweb.link' },
         writable: true,
       });
 
       render(<TerminalPrompt {...defaultProps} />);
       expect(
-        screen.getByText('translated_visitor@short.ipfs.dweb.link:~$'),
+        screen.getByText('translated_visitor@ipfs.dweb.link:~$'),
       ).toBeInTheDocument();
     });
 
-    it('shortens long IPNS hosts correctly', () => {
+    it('removes the first subdomain for IPNS hosts with multiple parts', () => {
       Object.defineProperty(window, 'location', {
         value: {
           host: 'k2k4r8ng8uzrtqb5ham8kao889m8qezu96z4w3lpinyqghum43veb6n3.ipns.dweb.link',
@@ -376,17 +376,12 @@ describe('TerminalPrompt', () => {
       });
 
       render(<TerminalPrompt {...defaultProps} />);
-
-      const promptSpan = screen.getByText((content, element) => {
-        return (
-          element?.tagName.toLowerCase() === 'span' &&
-          content.includes('k2k4r8ng...43veb6n3.ipns.dweb.link')
-        );
-      });
-      expect(promptSpan).toBeInTheDocument();
+      expect(
+        screen.getByText('translated_visitor@ipns.dweb.link:~$'),
+      ).toBeInTheDocument();
     });
 
-    it('shortens long IPFS hosts correctly', () => {
+    it('removes the first subdomain for IPFS hosts with multiple parts', () => {
       Object.defineProperty(window, 'location', {
         value: {
           host: 'QmYjtig7VJQ6XsnUjqqJvj7QaMcCAwtrgNdahSiFofrE7o.ipfs.dweb.link',
@@ -395,17 +390,12 @@ describe('TerminalPrompt', () => {
       });
 
       render(<TerminalPrompt {...defaultProps} />);
-
-      const promptSpan = screen.getByText((content, element) => {
-        return (
-          element?.tagName.toLowerCase() === 'span' &&
-          content.includes('QmYjtig7...iFofrE7o.ipfs.dweb.link')
-        );
-      });
-      expect(promptSpan).toBeInTheDocument();
+      expect(
+        screen.getByText('translated_visitor@ipfs.dweb.link:~$'),
+      ).toBeInTheDocument();
     });
 
-    it('handles hosts with port numbers', () => {
+    it('handles hosts with port numbers by removing the port', () => {
       Object.defineProperty(window, 'location', {
         value: { host: 'localhost:3000' },
         writable: true,
@@ -417,15 +407,43 @@ describe('TerminalPrompt', () => {
       ).toBeInTheDocument();
     });
 
-    it('handles CID shorter than 16 characters', () => {
+    it('removes the first subdomain for IPNS hosts with two parts', () => {
       Object.defineProperty(window, 'location', {
-        value: { host: 'shortcid.ipfs.dweb.link' },
+        value: { host: 'cid.ipns.dweb.link' },
         writable: true,
       });
 
       render(<TerminalPrompt {...defaultProps} />);
       expect(
-        screen.getByText('translated_visitor@shortcid.ipfs.dweb.link:~$'),
+        screen.getByText('translated_visitor@ipns.dweb.link:~$'),
+      ).toBeInTheDocument();
+    });
+
+    it('handles a complex subdomain for IPFS', () => {
+      Object.defineProperty(window, 'location', {
+        value: {
+          host: 'bafybeiemxf5abkkw7dne2qz6jxqj4v6q6jqtjzg6c44yvxs5kzquu3zqy.ipfs.dweb.link',
+        },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@ipfs.dweb.link:~$'),
+      ).toBeInTheDocument();
+    });
+
+    it('handles a complex subdomain for IPNS', () => {
+      Object.defineProperty(window, 'location', {
+        value: {
+          host: 'k51qzi5uqu5djdc6tg7g3k1e7d7j8jx7l6d5k4z3x2y1w0v9u8i7o6p.ipns.dweb.link',
+        },
+        writable: true,
+      });
+
+      render(<TerminalPrompt {...defaultProps} />);
+      expect(
+        screen.getByText('translated_visitor@ipns.dweb.link:~$'),
       ).toBeInTheDocument();
     });
   });
