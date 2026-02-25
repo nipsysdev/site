@@ -15,7 +15,7 @@ vi.mock('@/utils/terminal-utils', () => ({
   getTerminalEntryInput: vi.fn(),
 }));
 
-vi.mock('@nipsysdev/lsd-react/client/Typography', () => ({
+vi.mock('@nipsys/shadcn-lsd', () => ({
   Typography: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div {...props}>{children}</div>
   ),

@@ -13,8 +13,8 @@ vi.mock('@/contexts/TerminalContext', () => ({
   useTerminalContext: vi.fn(),
 }));
 
-// Mock the LSD Button component
-vi.mock('@nipsysdev/lsd-react/client/Button', () => ({
+// Mock the shadcn-lsd Button component
+vi.mock('@nipsys/shadcn-lsd', () => ({
   Button: ({ children, onClick, ...props }: React.ComponentProps<'button'>) => (
     <button onClick={onClick} {...props}>
       {children}

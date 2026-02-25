@@ -48,8 +48,8 @@ vi.mock('@/contexts/TerminalContext', () => ({
   }),
 }));
 
-// Mock LSD React Typography component
-vi.mock('@nipsysdev/lsd-react/client/Typography', () => ({
+// Mock shadcn-lsd Typography component
+vi.mock('@nipsys/shadcn-lsd', () => ({
   Typography: ({
     children,
     variant,

@@ -1,4 +1,4 @@
-import { Typography } from '@nipsysdev/lsd-react/client/Typography';
+import { Typography } from '@nipsys/shadcn-lsd';
 import {
   Component,
   createRef,

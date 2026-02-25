@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Mock CSS imports from @nipsys/shadcn-lsd
+vi.mock('@nipsys/shadcn-lsd/css', () => ({}));
+
 // Mock next-intl
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(() => vi.fn((key: string) => key)),

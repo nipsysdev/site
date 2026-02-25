@@ -1,4 +1,4 @@
-import { Button } from '@nipsysdev/lsd-react/client/Button';
+import { Button } from '@nipsys/shadcn-lsd';
 import type { JSX } from 'react';
 import { useTerminalContext } from '@/contexts/TerminalContext';
 import type { CommandArgument, CommandInfo } from '@/types/terminal';
@@ -52,7 +52,7 @@ export default function CmdLink(props: Props) {
   return (
     <Button
       variant="outlined"
-      size="small"
+      size="sm"
       onClick={submitCmd}
       className="text-xs w-fit!"
     >

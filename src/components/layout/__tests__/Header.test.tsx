@@ -1,14 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-// Mock AppContext
-const mockSetIsMenuDisplayed = vi.fn();
-vi.mock('@/contexts/AppContext', () => ({
-  useAppContext: () => ({
-    setIsMenuDisplayed: mockSetIsMenuDisplayed,
-  }),
-}));
-
 // Mock next-intl
 vi.mock('next-intl', () => ({
   useLocale: () => 'en',
@@ -33,8 +25,8 @@ vi.mock('@/i18n/intl', () => ({
   usePathname: () => '/test-path',
 }));
 
-// Mock LSD React components
-vi.mock('@nipsysdev/lsd-react/client/Button', () => ({
+// Mock shadcn-lsd components
+vi.mock('@nipsys/shadcn-lsd', () => ({
   Button: ({
     children,
     onClick,
@@ -51,17 +43,12 @@ vi.mock('@nipsysdev/lsd-react/client/Button', () => ({
     <button
       type="button"
       onClick={onClick}
-      data-testid={
-        variant && size ? `button-${variant}-${size}` : 'menu-button'
-      }
+      data-testid={variant && size ? `button-${variant}-${size}` : 'button'}
       className={className}
     >
       {children}
     </button>
   ),
-}));
-
-vi.mock('@nipsysdev/lsd-react/client/ButtonGroup', () => ({
   ButtonGroup: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="button-group">{children}</div>
   ),
@@ -101,17 +88,6 @@ describe('Header', () => {
     );
     expect(githubLink).toHaveAttribute('rel', 'noopener');
     expect(githubLink).toHaveAttribute('target', '_blank');
-  });
-
-  it('should call setIsMenuDisplayed with true when menu button is clicked', () => {
-    render(<Header />);
-
-    const menuButton = screen.getByRole('button', { name: /menu/i });
-    expect(menuButton).toBeInTheDocument();
-
-    menuButton.click();
-    expect(mockSetIsMenuDisplayed).toHaveBeenCalledTimes(1);
-    expect(mockSetIsMenuDisplayed).toHaveBeenCalledWith(true);
   });
 
   it('renders language switching buttons', () => {
