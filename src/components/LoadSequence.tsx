@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useAppContext } from '@/contexts/AppContext';
 
 interface LoadSequenceProps {
   children?: React.ReactNode;
@@ -8,8 +9,8 @@ interface LoadSequenceProps {
 
 export default function LoadSequence({ children }: LoadSequenceProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const { isDarkMode, setIsDarkMode } = useAppContext();
 
   useEffect(() => {
     const prefersDark = window.matchMedia(
@@ -20,7 +21,15 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
     if (!prefersDark) {
       document.documentElement.classList.remove('dark');
     }
-  }, []);
+  }, [setIsDarkMode]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const steps = useMemo(
     () => [

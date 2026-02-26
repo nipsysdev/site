@@ -6,10 +6,12 @@ import { createContext, useCallback, useContext, useState } from 'react';
 interface AppState {
   isTerminal: boolean;
   isMenuDisplayed: boolean;
+  isDarkMode: boolean;
   lastKeyDown: KeyboardEvent | null;
   oldKeyDown: KeyboardEvent | null;
   setIsTerminal: (value: boolean) => void;
   setIsMenuDisplayed: (value: boolean) => void;
+  setIsDarkMode: (value: boolean) => void;
   setLastKeyDown: (value: KeyboardEvent | null) => void;
   setOldKeyDown: (value: KeyboardEvent | null) => void;
 }
@@ -17,10 +19,12 @@ interface AppState {
 const initialState: AppState = {
   isTerminal: false,
   isMenuDisplayed: false,
+  isDarkMode: true,
   lastKeyDown: null,
   oldKeyDown: null,
   setIsTerminal: () => {},
   setIsMenuDisplayed: () => {},
+  setIsDarkMode: () => {},
   setLastKeyDown: () => {},
   setOldKeyDown: () => {},
 };
@@ -43,6 +47,10 @@ export const AppStateProvider = ({
       setState((prev) => ({ ...prev, isMenuDisplayed: value })),
     [],
   );
+  const setIsDarkMode = useCallback(
+    (value: boolean) => setState((prev) => ({ ...prev, isDarkMode: value })),
+    [],
+  );
   const setLastKeyDown = useCallback(
     (value: KeyboardEvent | null) =>
       setState((prev) => ({ ...prev, lastKeyDown: value })),
@@ -58,6 +66,7 @@ export const AppStateProvider = ({
     ...state,
     setIsTerminal,
     setIsMenuDisplayed,
+    setIsDarkMode,
     setLastKeyDown,
     setOldKeyDown,
   };

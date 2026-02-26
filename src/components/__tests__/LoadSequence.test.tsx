@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { AppStateProvider } from '@/contexts/AppContext';
 import LoadSequence from '../LoadSequence';
 
 vi.mock('@/i18n/intl', () => ({
@@ -29,7 +30,11 @@ describe('LoadSequence', () => {
   });
 
   it('should render the component with cursor', () => {
-    render(<LoadSequence />);
+    render(
+      <AppStateProvider>
+        <LoadSequence />
+      </AppStateProvider>,
+    );
 
     const cursor = screen.getByText('█');
     expect(cursor).toBeInTheDocument();
@@ -48,7 +53,11 @@ describe('LoadSequence', () => {
       dispatchEvent: vi.fn(),
     }));
 
-    render(<LoadSequence />);
+    render(
+      <AppStateProvider>
+        <LoadSequence />
+      </AppStateProvider>,
+    );
 
     await waitFor(
       () => {
@@ -70,7 +79,11 @@ describe('LoadSequence', () => {
       dispatchEvent: vi.fn(),
     }));
 
-    render(<LoadSequence />);
+    render(
+      <AppStateProvider>
+        <LoadSequence />
+      </AppStateProvider>,
+    );
 
     await waitFor(
       () => {
@@ -94,7 +107,11 @@ describe('LoadSequence', () => {
 
     document.documentElement.classList.add('dark');
 
-    render(<LoadSequence />);
+    render(
+      <AppStateProvider>
+        <LoadSequence />
+      </AppStateProvider>,
+    );
 
     await waitFor(
       () => {
@@ -118,7 +135,11 @@ describe('LoadSequence', () => {
 
     document.documentElement.classList.add('dark');
 
-    render(<LoadSequence />);
+    render(
+      <AppStateProvider>
+        <LoadSequence />
+      </AppStateProvider>,
+    );
 
     await waitFor(
       () => {
@@ -130,9 +151,11 @@ describe('LoadSequence', () => {
 
   it('should show children after loading completes', async () => {
     render(
-      <LoadSequence>
-        <div>Test Content</div>
-      </LoadSequence>,
+      <AppStateProvider>
+        <LoadSequence>
+          <div>Test Content</div>
+        </LoadSequence>
+      </AppStateProvider>,
     );
 
     await waitFor(
@@ -145,9 +168,11 @@ describe('LoadSequence', () => {
 
   it('should not show children during loading', () => {
     render(
-      <LoadSequence>
-        <div>Test Content</div>
-      </LoadSequence>,
+      <AppStateProvider>
+        <LoadSequence>
+          <div>Test Content</div>
+        </LoadSequence>
+      </AppStateProvider>,
     );
 
     expect(screen.queryByText('Test Content')).not.toBeInTheDocument();

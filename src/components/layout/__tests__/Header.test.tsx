@@ -1,6 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
+vi.mock('@/contexts/AppContext', () => ({
+  useAppContext: () => ({
+    isDarkMode: true,
+    setIsDarkMode: vi.fn(),
+  }),
+  AppStateProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
 // Mock next-intl
 vi.mock('next-intl', () => ({
   useLocale: () => 'en',
@@ -61,6 +69,16 @@ vi.mock('react-icons/pi', () => ({
       GitHub
     </div>
   ),
+  PiSunFill: ({ size }: { size: string }) => (
+    <div data-testid="sun-icon" data-size={size}>
+      Sun
+    </div>
+  ),
+  PiMoonFill: ({ size }: { size: string }) => (
+    <div data-testid="moon-icon" data-size={size}>
+      Moon
+    </div>
+  ),
 }));
 
 // Mock helper function
@@ -88,6 +106,14 @@ describe('Header', () => {
     );
     expect(githubLink).toHaveAttribute('rel', 'noopener');
     expect(githubLink).toHaveAttribute('target', '_blank');
+  });
+
+  it('renders theme toggle button with sun icon in dark mode', () => {
+    render(<Header />);
+
+    const sunIcon = screen.getByTestId('sun-icon');
+    expect(sunIcon).toBeInTheDocument();
+    expect(sunIcon).toHaveAttribute('data-size', '1rem');
   });
 
   it('renders language switching buttons', () => {

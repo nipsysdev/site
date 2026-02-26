@@ -3,6 +3,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Routes } from '@/constants/routes';
 import Sidenav from '../Sidenav';
 
+vi.mock('@/contexts/AppContext', () => ({
+  useAppContext: () => ({
+    isDarkMode: true,
+    setIsDarkMode: vi.fn(),
+  }),
+  AppStateProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
 // Mock variables
 let mockUsePathname: () => string;
 let mockLink: ReturnType<typeof vi.fn>;
@@ -28,6 +36,16 @@ vi.mock('react-icons/pi', () => ({
   PiGithubLogoFill: ({ size }: { size: string }) => (
     <div data-testid="github-icon" data-size={size}>
       GitHub
+    </div>
+  ),
+  PiSunFill: ({ size }: { size: string }) => (
+    <div data-testid="sun-icon" data-size={size}>
+      Sun
+    </div>
+  ),
+  PiMoonFill: ({ size }: { size: string }) => (
+    <div data-testid="moon-icon" data-size={size}>
+      Moon
     </div>
   ),
 }));

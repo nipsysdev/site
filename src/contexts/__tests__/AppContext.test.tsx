@@ -8,10 +8,12 @@ const TestComponent = () => {
   const {
     isTerminal,
     isMenuDisplayed,
+    isDarkMode,
     lastKeyDown,
     oldKeyDown,
     setIsTerminal,
     setIsMenuDisplayed,
+    setIsDarkMode,
     setLastKeyDown,
     setOldKeyDown,
   } = useAppContext();
@@ -34,6 +36,7 @@ const TestComponent = () => {
       <div data-testid="is-menu-displayed">
         {isMenuDisplayed ? 'true' : 'false'}
       </div>
+      <div data-testid="is-dark-mode">{isDarkMode ? 'true' : 'false'}</div>
       <div data-testid="last-key">{lastKeyDown?.key || 'none'}</div>
       <div data-testid="old-key">{oldKeyDown?.key || 'none'}</div>
       <button
@@ -63,6 +66,20 @@ const TestComponent = () => {
         onClick={() => setIsMenuDisplayed(false)}
       >
         Set Menu Displayed False
+      </button>
+      <button
+        type="button"
+        data-testid="set-dark-mode-true"
+        onClick={() => setIsDarkMode(true)}
+      >
+        Set Dark Mode True
+      </button>
+      <button
+        type="button"
+        data-testid="set-dark-mode-false"
+        onClick={() => setIsDarkMode(false)}
+      >
+        Set Dark Mode False
       </button>
       <button
         type="button"
@@ -96,6 +113,7 @@ describe('AppContext', () => {
 
     expect(screen.getByTestId('is-terminal')).toHaveTextContent('false');
     expect(screen.getByTestId('is-menu-displayed')).toHaveTextContent('false');
+    expect(screen.getByTestId('is-dark-mode')).toHaveTextContent('true');
     expect(screen.getByTestId('last-key')).toHaveTextContent('none');
     expect(screen.getByTestId('old-key')).toHaveTextContent('none');
   });
@@ -185,5 +203,28 @@ describe('AppContext', () => {
     });
 
     expect(screen.getByTestId('is-menu-displayed')).toHaveTextContent('false');
+  });
+
+  it('should update isDarkMode state', () => {
+    render(
+      <AppStateProvider>
+        <TestComponent />
+      </AppStateProvider>,
+    );
+
+    const setDarkModeTrueButton = screen.getByTestId('set-dark-mode-true');
+    const setDarkModeFalseButton = screen.getByTestId('set-dark-mode-false');
+
+    act(() => {
+      fireEvent.click(setDarkModeFalseButton);
+    });
+
+    expect(screen.getByTestId('is-dark-mode')).toHaveTextContent('false');
+
+    act(() => {
+      fireEvent.click(setDarkModeTrueButton);
+    });
+
+    expect(screen.getByTestId('is-dark-mode')).toHaveTextContent('true');
   });
 });
