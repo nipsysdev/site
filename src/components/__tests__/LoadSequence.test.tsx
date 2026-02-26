@@ -2,22 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoadSequence from '../LoadSequence';
 
-// Mock Typography component
-vi.mock('@nipsys/shadcn-lsd', () => ({
-  Typography: ({ children, ...props }: { children: React.ReactNode }) => (
-    <div {...props}>{children}</div>
-  ),
-}));
-
-// Mock next/navigation
-const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-}));
-
-// Mock the i18n routing
 vi.mock('@/i18n/intl', () => ({
   routing: {
     locales: ['en', 'fr'],
@@ -25,120 +9,148 @@ vi.mock('@/i18n/intl', () => ({
   },
 }));
 
-// Store original navigator.language
-const originalLanguage = navigator.language;
-
 describe('LoadSequence', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset to default English
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'en-US',
-    });
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
   });
 
   afterEach(() => {
-    // Restore original navigator.language
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: originalLanguage,
-    });
+    document.documentElement.classList.remove('dark');
   });
 
   it('should render the component with cursor', () => {
     render(<LoadSequence />);
 
-    // Should show the blinking cursor initially
     const cursor = screen.getByText('█');
     expect(cursor).toBeInTheDocument();
     expect(cursor).toHaveClass('animate-pulse');
   });
 
-  it('should detect English locale from browser by default', async () => {
+  it('should detect dark theme preference', async () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
     render(<LoadSequence />);
 
-    // Wait for locale selection step
     await waitFor(
       () => {
-        expect(
-          screen.getByText('> Selecting proper locale [en]'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('> Theme set to [dark]')).toBeInTheDocument();
       },
       { timeout: 2000 },
     );
   });
 
-  it('should detect French locale when set', async () => {
-    // Set navigator.language to French before rendering
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'fr-FR',
-    });
+  it('should detect light theme preference', async () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(prefers-color-scheme: light)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
 
     render(<LoadSequence />);
 
-    // Wait for locale selection step with French
     await waitFor(
       () => {
-        expect(
-          screen.getByText('> Selecting proper locale [fr]'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('> Theme set to [light]')).toBeInTheDocument();
       },
       { timeout: 2000 },
     );
   });
 
-  it('should fallback to English for unsupported language', async () => {
-    // Set navigator.language to unsupported language
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'es-ES',
-    });
+  it('should remove dark class from html when light mode preferred', async () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(prefers-color-scheme: light)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    document.documentElement.classList.add('dark');
 
     render(<LoadSequence />);
 
-    // Should fallback to English
     await waitFor(
       () => {
-        expect(
-          screen.getByText('> Selecting proper locale [en]'),
-        ).toBeInTheDocument();
+        expect(document.documentElement.classList.contains('dark')).toBe(false);
       },
       { timeout: 2000 },
     );
   });
 
-  it('should eventually redirect to detected locale', async () => {
+  it('should keep dark class on html when dark mode preferred', async () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    document.documentElement.classList.add('dark');
+
     render(<LoadSequence />);
 
-    // Wait for redirect to happen
     await waitFor(
       () => {
-        expect(mockPush).toHaveBeenCalledWith('/en');
+        expect(document.documentElement.classList.contains('dark')).toBe(true);
+      },
+      { timeout: 2000 },
+    );
+  });
+
+  it('should show children after loading completes', async () => {
+    render(
+      <LoadSequence>
+        <div>Test Content</div>
+      </LoadSequence>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByText('Test Content')).toBeInTheDocument();
       },
       { timeout: 3000 },
     );
   });
 
-  it('should redirect to French locale when detected', async () => {
-    // Clear previous calls
-    mockPush.mockClear();
-
-    // Set navigator.language to French
-    Object.defineProperty(navigator, 'language', {
-      writable: true,
-      value: 'fr-CA',
-    });
-
-    render(<LoadSequence />);
-
-    // Wait for French redirect
-    await waitFor(
-      () => {
-        expect(mockPush).toHaveBeenCalledWith('/fr');
-      },
-      { timeout: 3000 },
+  it('should not show children during loading', () => {
+    render(
+      <LoadSequence>
+        <div>Test Content</div>
+      </LoadSequence>,
     );
+
+    expect(screen.queryByText('Test Content')).not.toBeInTheDocument();
+    expect(screen.getByText('█')).toBeInTheDocument();
   });
 });

@@ -1,35 +1,40 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import type { Lang } from '@/constants/lang';
-import { routing } from '@/i18n/intl';
 
-export default function LoadSequence() {
+interface LoadSequenceProps {
+  children?: React.ReactNode;
+}
+
+export default function LoadSequence({ children }: LoadSequenceProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [detectedLocale, setDetectedLocale] = useState<string>('en');
-  const router = useRouter();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Detect user locale
   useEffect(() => {
-    const browserLocale = navigator.language.split('-')[0];
-    const supportedLocale = routing.locales.includes(browserLocale as Lang)
-      ? browserLocale
-      : routing.defaultLocale;
-    setDetectedLocale(supportedLocale);
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+    setIsDarkMode(prefersDark);
+
+    if (!prefersDark) {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
-  // React continues from step 3 onward (first 2 are static HTML)
   const steps = useMemo(
     () => [
-      { message: '> Detecting user locale...', delay: 800 }, // Start after static HTML finishes
-      { message: `> Selecting proper locale [${detectedLocale}]`, delay: 200 },
+      { message: '> Detecting theme preference...', delay: 600 },
       {
-        message: `> Loading chunks for /${detectedLocale}`,
+        message: `> Theme set to [${isDarkMode ? 'dark' : 'light'}]`,
+        delay: 200,
+      },
+      {
+        message: '> Initializing application...',
         delay: 200,
       },
     ],
-    [detectedLocale],
+    [isDarkMode],
   );
 
   useEffect(() => {
@@ -39,20 +44,18 @@ export default function LoadSequence() {
       }, steps[currentStep].delay);
 
       return () => clearTimeout(timer);
+    } else {
+      setIsLoading(false);
     }
   }, [currentStep, steps]);
 
-  // Separate effect for redirect to avoid dependency issues
-  useEffect(() => {
-    if (currentStep >= steps.length) {
-      router.push(`/${detectedLocale}`);
-    }
-  }, [currentStep, steps.length, detectedLocale, router]);
-
-  // Shared styling constants
   const fadeInAnimation =
     'opacity-0 animate-[showInstant_0s_ease-in-out_forwards]';
-  const stepHeight = 'h-[24px] leading-6'; // line-height: 24px to match height
+  const stepHeight = 'h-[24px] leading-6';
+
+  if (!isLoading && children) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="p-8 text-sm font-medium leading-5">
