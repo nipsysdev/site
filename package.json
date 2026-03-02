@@ -21,7 +21,7 @@
     "export": "next build",
     "analyze": "ANALYZE=true next build",
     "serve": "npx serve@latest out",
-    "test": "vitest run",
+    "test:unit": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest run --watch",
     "lint": "biome check .",

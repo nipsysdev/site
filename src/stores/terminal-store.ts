@@ -92,7 +92,7 @@ export function simulateInput(input: string) {
 export function setPreviousHistoryEntry() {
   const history = $terminalHistory.get();
   const historyIdx = $terminalHistoryIdx.get();
-  if (!history || historyIdx === 0) return;
+  if (!history.length || historyIdx === 0) return;
   const idx = historyIdx === -1 ? history.length - 1 : historyIdx - 1;
   const inputStr = getPastInputStr(history[idx]);
   $terminalInput.set(inputStr);
@@ -103,7 +103,7 @@ export function setPreviousHistoryEntry() {
 export function setNextHistoryEntry() {
   const history = $terminalHistory.get();
   const historyIdx = $terminalHistoryIdx.get();
-  if (!history || historyIdx === -1) return;
+  if (!history.length || historyIdx === -1) return;
   let idx = historyIdx;
 
   if (idx === history.length - 1) {
