@@ -27,7 +27,6 @@
   },
   "Terminal": {
     "unknownCmdErr": "command not recognized",
-    "autocomplete": "autocomplete:",
     "noMatch": "no match",
     "visitor": "visitor",
     "cmds": {
@@ -51,9 +50,6 @@
         "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
         "site_intro_1": "This site can be browsed by clicking on the tabs above.",
         "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
-      },
-      "set-lang": {
-        "description": "Change language"
       },
       "web2work": {
         "description": "Things I have worked on at web2 companies"

@@ -60,3 +60,26 @@ export function getTerminalEntryInput(entry: CommandEntry) {
   }
   return pastInput;
 }
+
+export function getDisplayHost(): string {
+  if (typeof window === 'undefined') {
+    return 'localhost';
+  }
+  const fullHost = window.location.host.split(':')[0];
+  if (fullHost.includes('ipns') || fullHost.includes('ipfs')) {
+    const parts = fullHost.split('.');
+    return parts.length > 1 ? parts.slice(1).join('.') : fullHost;
+  }
+  return fullHost;
+}
+
+export function getPastInputStr(entry: CommandEntry): string {
+  let pastInput = entry.cmdName as string;
+  if (entry.option) {
+    pastInput += ` ${entry.option}`;
+  }
+  if (entry.argName) {
+    pastInput += ` --${entry.argName}=${entry.argValue}`;
+  }
+  return pastInput;
+}

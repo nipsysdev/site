@@ -27,7 +27,6 @@
   },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",
-    "autocomplete": "autocomplétion :",
     "noMatch": "aucune correspondance",
     "visitor": "visiteur",
     "cmds": {
@@ -51,9 +50,6 @@
         "welcome": "Salut, je suis <name>Xav</name>. Bienvenue dans mon \"petit coin\" du web !",
         "site_intro_1": "Ce site peut être parcouru en cliquant sur les onglets ci-dessus.",
         "site_intro_2": "Ou, pour une expérience CLI, commencez par : <cmd></cmd>"
-      },
-      "set-lang": {
-        "description": "Changer la langue"
       },
       "web2work": {
         "description": "Projets sur lesquels j'ai travaillé dans des entreprises web2"

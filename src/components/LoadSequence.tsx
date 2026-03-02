@@ -1,7 +1,8 @@
 'use client';
 
+import { useStore } from '@nanostores/react';
 import { useEffect, useMemo, useState } from 'react';
-import { useAppContext } from '@/contexts/AppContext';
+import { $isDarkMode, setTheme } from '@/stores/theme-store';
 
 interface LoadSequenceProps {
   children?: React.ReactNode;
@@ -10,18 +11,18 @@ interface LoadSequenceProps {
 export default function LoadSequence({ children }: LoadSequenceProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const { isDarkMode, setIsDarkMode } = useAppContext();
+  const isDarkMode = useStore($isDarkMode);
 
   useEffect(() => {
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)',
     ).matches;
-    setIsDarkMode(prefersDark);
+    setTheme(prefersDark);
 
     if (!prefersDark) {
       document.documentElement.classList.remove('dark');
     }
-  }, [setIsDarkMode]);
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -80,13 +81,13 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
           className={`top-0 absolute ${fadeInAnimation}`}
           style={{ animationDelay: '200ms' }}
         >
-          <span>&gt; Connected to IPFS</span>
+          <span>{'> Connected to IPFS'}</span>
         </div>
         <div
           className={`top-[24px] ${currentStep ? '' : fadeInAnimation} h-0`}
           style={{ animationDelay: '600ms' }}
         >
-          <span>&gt; Loading core chunks</span>
+          <span>{'> Loading core chunks'}</span>
         </div>
 
         <div className="flex flex-col mt-[24px]">

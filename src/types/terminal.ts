@@ -10,7 +10,6 @@ export enum Command {
   Web2work = 'web2work',
   Web3work = 'web3work',
   Contribs = 'contribs',
-  SetLang = 'set-lang',
   Whoami = 'whoami',
 }
 
