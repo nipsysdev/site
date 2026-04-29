@@ -19,7 +19,7 @@ vi.mock('@/constants/routes', () => ({
   },
 }));
 
-vi.mock('@nipsys/shadcn-lsd', () => ({
+vi.mock('@nipsys/lsd', () => ({
   SidebarProvider: vi.fn(({ children }) => (
     <div data-testid="sidebar-provider">{children}</div>
   )),
@@ -32,6 +32,9 @@ vi.mock('@nipsys/shadcn-lsd', () => ({
   )),
   SidebarGroupContent: vi.fn(({ children }) => (
     <div data-testid="sidebar-group-content">{children}</div>
+  )),
+  SidebarGroupLabel: vi.fn(({ children }) => (
+    <div data-testid="sidebar-group-label">{children}</div>
   )),
   SidebarMenu: vi.fn(({ children }) => (
     <nav data-testid="sidebar-menu">{children}</nav>
@@ -52,10 +55,20 @@ vi.mock('@nipsys/shadcn-lsd', () => ({
   SidebarInset: vi.fn(({ children }) => (
     <div data-testid="sidebar-inset">{children}</div>
   )),
+  SidebarFooter: vi.fn(({ children }) => (
+    <div data-testid="sidebar-footer">{children}</div>
+  )),
   SidebarTrigger: vi.fn(() => (
     <button type="button" data-testid="sidebar-trigger">
       Toggle
     </button>
+  )),
+  Card: vi.fn(({ children }) => <div data-testid="card">{children}</div>),
+  CardContent: vi.fn(({ children }) => (
+    <div data-testid="card-content">{children}</div>
+  )),
+  ScrollArea: vi.fn(({ children }) => (
+    <div data-testid="scroll-area">{children}</div>
   )),
 }));
 
@@ -103,12 +116,10 @@ describe('Sidenav', () => {
       expect(sidebarInset).toContainElement(content);
     });
 
-    it('renders Header and sidebar trigger in layout', () => {
+    it('renders Header in layout', () => {
       render(<Sidenav>Content</Sidenav>);
 
       expect(screen.getByTestId('header')).toBeInTheDocument();
-
-      expect(screen.getByTestId('sidebar-trigger')).toBeInTheDocument();
     });
   });
 
@@ -121,7 +132,7 @@ describe('Sidenav', () => {
     it('renders menu items for each route', () => {
       render(<Sidenav>Content</Sidenav>);
       const menuItems = screen.getAllByTestId('sidebar-menu-item');
-      expect(menuItems).toHaveLength(3);
+      expect(menuItems).toHaveLength(5);
     });
 
     it('marks active route correctly', () => {

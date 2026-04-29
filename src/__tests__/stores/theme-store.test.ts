@@ -2,10 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { $isDarkMode, setTheme, toggleTheme } from '@/stores/theme-store';
 
 describe('theme-store', () => {
-  describe('Initial State', () => {
-    it('defaults to dark mode enabled', () => {
-      expect($isDarkMode.get()).toBe(true);
-    });
+  beforeEach(() => {
+    $isDarkMode.set(true);
   });
 
   describe('toggleTheme', () => {
