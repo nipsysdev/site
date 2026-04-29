@@ -16,7 +16,7 @@ export default defineConfig({
     exclude: ['node_modules', 'dist', '.next', 'coverage'],
     server: {
       deps: {
-        inline: ['@nipsys/shadcn-lsd'],
+        inline: ['@nipsys/lsd'],
       },
     },
     coverage: {
