@@ -1,45 +1,63 @@
 'use client';
 import { useStore } from '@nanostores/react';
-import { Button, ButtonGroup } from '@nipsys/shadcn-lsd';
-import { PiGithubLogoFill, PiMoonFill, PiSunFill } from 'react-icons/pi';
+import {
+  Button,
+  SidebarTrigger,
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@nipsys/lsd';
+import { useLocale } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { PiMoonFill, PiSunFill } from 'react-icons/pi';
 import { LangLabels } from '@/constants/lang';
-import { Link, usePathname } from '@/i18n/intl';
+import { usePathname, useRouter } from '@/i18n/intl';
 import { $isDarkMode, toggleTheme } from '@/stores/theme-store';
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const currentLocale = useLocale();
   const isDarkMode = useStore($isDarkMode);
+  const [activeLang, setActiveLang] = useState('en');
+
+  useEffect(() => {
+    setActiveLang(currentLocale);
+  }, [currentLocale]);
 
   return (
-    <div className="flex w-full items-center justify-end tracking-tighter transition-colors text-(length:--lsd-body1-fontSize) gap-x-(--lsd-spacing-24)">
-      <ButtonGroup>
-        {Object.entries(LangLabels).map(([lang, label]) => (
-          <Button key={lang} variant="outlined" size="sm">
-            <Link href={pathname} locale={lang}>
-              {label.slice(0, 2)}
-            </Link>
-          </Button>
-        ))}
-      </ButtonGroup>
+    <div className="flex w-full items-center justify-between">
+      <SidebarTrigger />
 
-      <Button
-        variant="outlined"
-        size="sm"
-        onClick={toggleTheme}
-        aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {isDarkMode ? <PiSunFill size="1rem" /> : <PiMoonFill size="1rem" />}
-      </Button>
-
-      <Button variant="outlined" size="sm">
-        <a
-          href="https://github.com/nipsysdev/site"
-          rel="noopener"
-          target="_blank"
+      <div className="flex gap-(--lsd-spacing-small)">
+        <ToggleGroup
+          type="single"
+          size="sm"
+          value={activeLang}
+          onValueChange={(value) => {
+            if (value && value !== activeLang) {
+              router.replace(pathname, { locale: value });
+            }
+          }}
+          aria-label="Language selector"
         >
-          <PiGithubLogoFill size="1rem" />
-        </a>
-      </Button>
+          {Object.entries(LangLabels).map(([lang, label]) => (
+            <ToggleGroupItem key={lang} value={lang}>
+              {label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        <Button
+          variant="outlined"
+          size="sm"
+          onClick={toggleTheme}
+          aria-label={
+            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+        >
+          {isDarkMode ? <PiSunFill size="1rem" /> : <PiMoonFill size="1rem" />}
+        </Button>
+      </div>
     </div>
   );
 }

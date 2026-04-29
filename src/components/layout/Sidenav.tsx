@@ -1,18 +1,23 @@
 'use client';
 
 import {
+  Card,
+  CardContent,
+  ScrollArea,
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
-} from '@nipsys/shadcn-lsd';
+} from '@nipsys/lsd';
 import { useTranslations } from 'next-intl';
+import { PiBracketsCurlyDuotone, PiPaletteDuotone } from 'react-icons/pi';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
 import Header from './Header';
@@ -44,16 +49,50 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
+
+        <SidebarFooter>
+          <SidebarGroup>
+            <SidebarGroupLabel>About this site</SidebarGroupLabel>
+            <SidebarGroupContent className="list-none">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a
+                    href="https://github.com/nipsysdev/site"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PiBracketsCurlyDuotone size="0.7rem" /> Check out its code
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a
+                    href="https://lsd.nipsys.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PiPaletteDuotone size="0.7rem" /> and its UI!
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarFooter>
       </Sidebar>
+
       <SidebarInset>
-        <main className="flex flex-col gap-y-(--lsd-spacing-24) w-5xl mx-auto max-w-full p-3 sm:p-5 h-screen">
+        <main className="flex flex-col gap-y-(--lsd-spacing-larger) w-full mx-auto p-3 sm:p-5 h-screen overflow-hidden">
           <div className="flex items-center justify-between">
-            <SidebarTrigger />
             <Header />
           </div>
-          <div className="flex-auto border border-white p-(--lsd-spacing-8)">
-            {children}
-          </div>
+          <Card className="flex-auto overflow-hidden">
+            <CardContent className="h-full">
+              <ScrollArea className="h-full">
+                <div className="size-full">{children}</div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </main>
       </SidebarInset>
     </SidebarProvider>
