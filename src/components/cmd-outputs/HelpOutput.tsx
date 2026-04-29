@@ -1,4 +1,4 @@
-import { Typography } from '@nipsys/shadcn-lsd';
+import { Typography } from '@nipsys/lsd';
 import { Component } from 'react';
 import { Commands } from '@/constants/commands';
 import type { CommandOutputProps } from '@/types/terminal';

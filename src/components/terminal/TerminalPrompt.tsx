@@ -1,5 +1,5 @@
 import { useStore } from '@nanostores/react';
-import { Typography } from '@nipsys/shadcn-lsd';
+import { Typography } from '@nipsys/lsd';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { Translator } from '@/i18n/intl';
 import {

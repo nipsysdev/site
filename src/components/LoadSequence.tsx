@@ -2,7 +2,7 @@
 
 import { useStore } from '@nanostores/react';
 import { useEffect, useMemo, useState } from 'react';
-import { $isDarkMode, setTheme } from '@/stores/theme-store';
+import { $isDarkMode } from '@/stores/theme-store';
 
 interface LoadSequenceProps {
   children?: React.ReactNode;
@@ -14,23 +14,8 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
   const isDarkMode = useStore($isDarkMode);
 
   useEffect(() => {
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
-    setTheme(prefersDark);
-
-    if (!prefersDark) {
-      document.documentElement.classList.remove('dark');
-    }
+    document.body.style.visibility = 'visible';
   }, []);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
 
   const steps = useMemo(
     () => [

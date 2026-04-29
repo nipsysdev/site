@@ -1,4 +1,4 @@
-import { Button } from '@nipsys/shadcn-lsd';
+import { Button } from '@nipsys/lsd';
 import type { JSX } from 'react';
 import { $terminalInput, simulateInput } from '@/stores/terminal-store';
 import type { CommandArgument, CommandInfo } from '@/types/terminal';
