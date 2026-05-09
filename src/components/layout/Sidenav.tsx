@@ -1,5 +1,6 @@
 'use client';
 
+import { useStore } from '@nanostores/react';
 import {
   Card,
   CardContent,
@@ -20,6 +21,7 @@ import { useTranslations } from 'next-intl';
 import { PiBracketsCurlyDuotone, PiPaletteDuotone } from 'react-icons/pi';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
+import { $scrollY, $terminalPromptRef } from '@/stores/terminal-store';
 import Header from './Header';
 
 export default function Sidenav({ children }: { children: React.ReactNode }) {
@@ -27,10 +29,15 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const activePath = pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
+  const terminalPromptRef = useStore($terminalPromptRef);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    $scrollY.set(e.currentTarget.scrollTop);
+  };
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar triggerStyle={{ top: '15px' }}>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupContent>
@@ -87,8 +94,11 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
             <Header />
           </div>
           <Card className="flex-auto overflow-hidden">
-            <CardContent className="h-full">
-              <ScrollArea className="h-full">
+            <CardContent
+              className="h-full"
+              onClick={() => terminalPromptRef?.current?.focus()}
+            >
+              <ScrollArea className="h-full" onScroll={handleScroll}>
                 <div className="size-full">{children}</div>
               </ScrollArea>
             </CardContent>

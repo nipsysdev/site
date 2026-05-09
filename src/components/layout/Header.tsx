@@ -5,6 +5,7 @@ import {
   SidebarTrigger,
   ToggleGroup,
   ToggleGroupItem,
+  useIsMobile,
 } from '@nipsys/lsd';
 import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ export default function Header() {
   const router = useRouter();
   const currentLocale = useLocale();
   const isDarkMode = useStore($isDarkMode);
+  const isMobile = useIsMobile();
   const [activeLang, setActiveLang] = useState('en');
 
   useEffect(() => {
@@ -25,9 +27,10 @@ export default function Header() {
   }, [currentLocale]);
 
   return (
-    <div className="flex w-full items-center justify-between">
-      <SidebarTrigger />
-
+    <div
+      className={`flex w-full items-center justify-between ${isMobile ? 'justify-between' : 'justify-end'}`}
+    >
+      {isMobile && <SidebarTrigger />}
       <div className="flex gap-(--lsd-spacing-small)">
         <ToggleGroup
           type="single"
