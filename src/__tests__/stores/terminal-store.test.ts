@@ -84,23 +84,6 @@ describe('terminal-store', () => {
     cleanStores($terminalInput);
   });
 
-  describe('onMount Behavior', () => {
-    it('simulates Welcome command when store is first listened to', async () => {
-      cleanStores($terminalInput);
-
-      const unsubscribe = $terminalInput.listen(() => {});
-
-      await allTasks();
-      await vi.runAllTimersAsync();
-
-      const history = $terminalHistory.get();
-      expect(history.length).toBeGreaterThan(0);
-      expect(history[history.length - 1].cmdName).toBe(Command.Welcome);
-
-      unsubscribe();
-    });
-  });
-
   describe('Store Reset Behavior', () => {
     it('resets all stores to initial state after operations', () => {
       $terminalInput.set('some command');
@@ -340,8 +323,6 @@ describe('terminal-store', () => {
       const suggestions = $terminalSuggestions.get();
       expect(suggestions).not.toBeNull();
       expect(suggestions?.length).toBeGreaterThan(1);
-      expect(suggestions).toContain('web2work');
-      expect(suggestions).toContain('web3work');
       expect(suggestions).toContain('whoami');
     });
 

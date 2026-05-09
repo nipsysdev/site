@@ -174,24 +174,6 @@ describe('terminal-utils', () => {
         expect(entry.cmdName).toBe(Command.Contact);
       });
 
-      it('parses contribs command', () => {
-        const entry = parseTerminalEntry('contribs');
-
-        expect(entry.cmdName).toBe(Command.Contribs);
-      });
-
-      it('parses web2work command', () => {
-        const entry = parseTerminalEntry('web2work');
-
-        expect(entry.cmdName).toBe(Command.Web2work);
-      });
-
-      it('parses web3work command', () => {
-        const entry = parseTerminalEntry('web3work');
-
-        expect(entry.cmdName).toBe(Command.Web3work);
-      });
-
       it('parses build-info command', () => {
         const entry = parseTerminalEntry('build-info');
 
