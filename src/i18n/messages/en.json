@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "xav / nipsysdev",
+    "title": "xav/nipsys.eth",
     "description": "My personal website"
   },
   "Core": {
@@ -47,9 +47,9 @@
       },
       "welcome": {
         "description": "Print welcome message",
-        "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
-        "site_intro_1": "This site can be browsed by clicking on the tabs above.",
-        "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
+        "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
+        "site_intro_1": "This site can be browsed by clicking on the links in the side navigation.",
+        "site_intro_2": "Or, for a CLI experience... Get started with <cmd></cmd>"
       },
       "web2work": {
         "description": "Things I have worked on at web2 companies"
