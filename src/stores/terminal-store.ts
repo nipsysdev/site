@@ -15,9 +15,15 @@ export const $terminalSuggestions = atom<string[] | null>(null);
 export const $terminalKeyEvent = atom<KeyboardEvent | null>(null);
 export const $terminalPromptRef =
   atom<RefObject<TerminalPromptRef | null> | null>(null);
+export const $scrollY = atom(0);
+
+const $hasGreeted = atom(false);
 
 onMount($terminalInput, () => {
-  simulateInput(Command.Welcome);
+  if (!$hasGreeted.get()) {
+    $hasGreeted.set(true);
+    simulateInput(Command.Welcome);
+  }
 });
 
 effect($terminalKeyEvent, (event) => {
@@ -57,12 +63,17 @@ export function resetTerminalInput() {
 export function submitTerminalInput() {
   const currentInput = $terminalInput.get();
   const currentHistory = $terminalHistory.get();
+  const terminalPromptRef = $terminalPromptRef.get();
+
   if (currentInput !== 'clear') {
     $terminalHistory.set([...currentHistory, parseTerminalEntry(currentInput)]);
   } else {
     $terminalHistoryVisibleIdx.set(currentHistory.length);
   }
   $terminalInput.set('');
+  setTimeout(() => {
+    terminalPromptRef?.current?.scrollIntoView();
+  }, 100);
 }
 
 export function simulateInput(input: string) {

@@ -21,20 +21,17 @@ export default function TerminalEmulator() {
 
   useEffect(() => {
     setHasWindow(typeof window !== 'undefined');
-    $terminalPromptRef.set(mainPrompt);
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      mainPrompt.current?.scrollIntoView();
-    }, 100);
-  }, []);
-
-  /* useEffect(() => {
-    if (!inputState.simulatedCmd) return;
-    mainPrompt.current?.simulate(inputState.simulatedCmd);
-    setSimulatedCmd('');
-  }, [inputState.simulatedCmd]); */
+    if (hasWindow) {
+      setTimeout(() => {
+        $terminalPromptRef.set(mainPrompt);
+        mainPrompt.current?.scrollIntoView();
+        mainPrompt.current?.focus();
+      }, 100);
+    }
+  }, [hasWindow]);
 
   return (
     hasWindow && (
