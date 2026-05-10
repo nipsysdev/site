@@ -154,20 +154,6 @@ jobs:
         with:
           name: build-output
           path: ./out
-      
-      - name: Test Kubo network access
-        run: |
-          # Test basic connectivity
-          echo "Testing DNS resolution..."
-          nslookup ipfs.nipsys.dev
-
-          echo "Testing HTTPS connectivity..."
-          curl -v https://ipfs.nipsys.dev/api/v0/version -u "${{ secrets.KUBO_API_AUTH }}"
-
-          echo "Testing IPFS CLI connection..."
-          ipfs id --api /dns/ipfs.nipsys.dev/tcp/443/https --api-auth "${{ secrets.KUBO_API_AUTH }}"
-        env:
-          KUBO_API_AUTH: ${{ secrets.KUBO_API_AUTH }}
 
       - name: Deploy to IPFS
         id: deploy
