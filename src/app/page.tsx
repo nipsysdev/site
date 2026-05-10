@@ -1,5 +1,5 @@
-import LoadSequence from '@/components/LoadSequence';
+import LocaleRedirect from '@/components/LocaleRedirect';
 
 export default function RootPage() {
-  return <LoadSequence />;
+  return <LocaleRedirect />;
 }

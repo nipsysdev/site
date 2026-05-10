@@ -1,6 +1,6 @@
-import { Button } from '@nipsysdev/lsd-react/client/Button';
+import { Button } from '@nipsys/lsd';
 import type { JSX } from 'react';
-import { useTerminalContext } from '@/contexts/TerminalContext';
+import { $terminalInput, simulateInput } from '@/stores/terminal-store';
 import type { CommandArgument, CommandInfo } from '@/types/terminal';
 
 interface Props {
@@ -10,22 +10,20 @@ interface Props {
 }
 
 export default function CmdLink(props: Props) {
-  const { setInput, setSimulatedCmd } = useTerminalContext();
-
   const submitCmd = () => {
     const cmd = props.cmdName ?? props.cmdInfo?.name ?? '';
     if (!cmd) return;
 
     if (props.cmdInfo?.options?.length) {
-      setInput(`${cmd} `);
+      $terminalInput.set(`${cmd} `);
       return;
     }
     if (props.arg) {
-      setInput(`${cmd} --${props.arg.name}=`);
+      $terminalInput.set(`${cmd} --${props.arg.name}=`);
       return;
     }
 
-    setSimulatedCmd(cmd);
+    simulateInput(cmd);
   };
 
   const cmdArgOptionRender = (): JSX.Element | undefined => {
@@ -52,7 +50,7 @@ export default function CmdLink(props: Props) {
   return (
     <Button
       variant="outlined"
-      size="small"
+      size="sm"
       onClick={submitCmd}
       className="text-xs w-fit!"
     >

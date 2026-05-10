@@ -1,58 +1,110 @@
 'use client';
-import { Button } from '@nipsysdev/lsd-react/client/Button';
-import { Modal } from '@nipsysdev/lsd-react/client/Modal';
-import { ModalBody } from '@nipsysdev/lsd-react/client/ModalBody';
-import { useTranslations } from 'next-intl';
-import { Routes } from '@/constants/routes';
-import { useAppContext } from '@/contexts/AppContext';
-import { Link, usePathname } from '@/i18n/intl';
-import styles from '@/styles/components.module.css';
 
-export default function Sidenav() {
+import { useStore } from '@nanostores/react';
+import {
+  Card,
+  CardContent,
+  ScrollArea,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from '@nipsys/lsd';
+import { useTranslations } from 'next-intl';
+import { PiBracketsCurlyDuotone, PiPaletteDuotone } from 'react-icons/pi';
+import { Routes } from '@/constants/routes';
+import { Link, usePathname } from '@/i18n/intl';
+import { $scrollY, $terminalPromptRef } from '@/stores/terminal-store';
+import Header from './Header';
+
+export default function Sidenav({ children }: { children: React.ReactNode }) {
   const t = useTranslations('Pages');
-  const { isMenuDisplayed, setIsMenuDisplayed } = useAppContext();
   const pathname = usePathname();
 
   const activePath = pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
-  const notfound = '404';
-  const activeRouteName =
-    Object.entries(Routes)
-      .filter(([, routePath]) => routePath === activePath)
-      .map(([routeName]) => routeName)
-      .find(Boolean) ?? notfound;
+  const terminalPromptRef = useStore($terminalPromptRef);
 
-  const btnList = (
-    <>
-      {Object.entries(Routes).map(([routeName, routePath]) => (
-        <Button
-          key={routeName}
-          variant={activeRouteName === routeName ? 'filled' : 'outlined'}
-          className={styles.ghostButton}
-        >
-          <Link href={routePath} onClick={() => setIsMenuDisplayed(false)}>
-            {t(routeName)}
-          </Link>
-        </Button>
-      ))}
-    </>
-  );
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    $scrollY.set(e.currentTarget.scrollTop);
+  };
 
   return (
-    <div>
-      <div className="hidden sm:flex flex-col gap-y-5 border border-white h-fit py-5 mr-5">
-        {btnList}
-      </div>
+    <SidebarProvider>
+      <Sidebar triggerStyle={{ top: '15px' }}>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {Object.entries(Routes).map(([routeName, routePath]) => (
+                  <SidebarMenuItem key={routeName}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={activePath === routePath}
+                    >
+                      <Link href={routePath}>{t(routeName)}</Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-      <Modal
-        size="xsmall"
-        isOpen={isMenuDisplayed}
-        onClose={() => setIsMenuDisplayed(false)}
-        className={styles.modal}
-      >
-        <ModalBody>
-          <div className="grid grid-cols-3 h-fit">{btnList}</div>
-        </ModalBody>
-      </Modal>
-    </div>
+        <SidebarFooter>
+          <SidebarGroup>
+            <SidebarGroupLabel>About this site</SidebarGroupLabel>
+            <SidebarGroupContent className="list-none">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a
+                    href="https://github.com/nipsysdev/site"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PiBracketsCurlyDuotone size="0.7rem" /> Check out its code
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a
+                    href="https://lsd.nipsys.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PiPaletteDuotone size="0.7rem" /> and its UI!
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarFooter>
+      </Sidebar>
+
+      <SidebarInset>
+        <main className="flex flex-col gap-y-(--lsd-spacing-larger) w-full mx-auto p-3 sm:p-5 h-screen overflow-hidden">
+          <div className="flex items-center justify-between">
+            <Header />
+          </div>
+          <Card className="flex-auto overflow-hidden">
+            <CardContent
+              className="h-full"
+              onClick={() => terminalPromptRef?.current?.focus()}
+            >
+              <ScrollArea className="h-full" onScroll={handleScroll}>
+                <div className="size-full">{children}</div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

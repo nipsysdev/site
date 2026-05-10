@@ -1,49 +1,66 @@
 'use client';
-import { Button } from '@nipsysdev/lsd-react/client/Button';
-import { ButtonGroup } from '@nipsysdev/lsd-react/client/ButtonGroup';
-import { useLocale, useTranslations } from 'next-intl';
-import { PiGithubLogoFill } from 'react-icons/pi';
+import { useStore } from '@nanostores/react';
+import {
+  Button,
+  SidebarTrigger,
+  ToggleGroup,
+  ToggleGroupItem,
+  useIsMobile,
+} from '@nipsys/lsd';
+import { useLocale } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { PiMoonFill, PiSunFill } from 'react-icons/pi';
 import { LangLabels } from '@/constants/lang';
-import { useAppContext } from '@/contexts/AppContext';
-import { Link, usePathname } from '@/i18n/intl';
-import styles from '@/styles/components.module.css';
-import { cx } from '@/utils/helpers';
+import { usePathname, useRouter } from '@/i18n/intl';
+import { $isDarkMode, toggleTheme } from '@/stores/theme-store';
 
 export default function Header() {
-  const t = useTranslations('Core');
-  const { setIsMenuDisplayed } = useAppContext();
   const pathname = usePathname();
-  const locale = useLocale();
+  const router = useRouter();
+  const currentLocale = useLocale();
+  const isDarkMode = useStore($isDarkMode);
+  const isMobile = useIsMobile();
+  const [activeLang, setActiveLang] = useState('en');
+
+  useEffect(() => {
+    setActiveLang(currentLocale);
+  }, [currentLocale]);
 
   return (
-    <div className="flex w-full items-center justify-between tracking-tighter transition-colors text-(length:--lsd-body1-fontSize) gap-x-(--lsd-spacing-24)">
-      <div className="flex-auto sm:hidden">
-        <Button onClick={() => setIsMenuDisplayed(true)}>{t('menu')}</Button>
-      </div>
-      <ButtonGroup>
-        {Object.entries(LangLabels).map(([lang, label]) => (
-          <Button
-            key={lang}
-            variant="outlined"
-            className={cx(locale === lang && 'underline', styles.smallBtnLink)}
-            size="small"
-          >
-            <Link href={pathname} locale={lang}>
-              {label.slice(0, 2)}
-            </Link>
-          </Button>
-        ))}
-      </ButtonGroup>
-
-      <Button variant="outlined" size="small" className={styles.smallBtnLink}>
-        <a
-          href="https://github.com/nipsysdev/site"
-          rel="noopener"
-          target="_blank"
+    <div
+      className={`flex w-full items-center justify-between ${isMobile ? 'justify-between' : 'justify-end'}`}
+    >
+      {isMobile && <SidebarTrigger />}
+      <div className="flex gap-(--lsd-spacing-small)">
+        <ToggleGroup
+          type="single"
+          size="sm"
+          value={activeLang}
+          onValueChange={(value) => {
+            if (value && value !== activeLang) {
+              router.replace(pathname, { locale: value });
+            }
+          }}
+          aria-label="Language selector"
         >
-          <PiGithubLogoFill size="1rem" />
-        </a>
-      </Button>
+          {Object.entries(LangLabels).map(([lang, label]) => (
+            <ToggleGroupItem key={lang} value={lang}>
+              {label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        <Button
+          variant="outlined"
+          size="sm"
+          onClick={toggleTheme}
+          aria-label={
+            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+        >
+          {isDarkMode ? <PiSunFill size="1rem" /> : <PiMoonFill size="1rem" />}
+        </Button>
+      </div>
     </div>
   );
 }

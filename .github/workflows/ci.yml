@@ -13,6 +13,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -122,9 +127,9 @@ jobs:
           path: |
             ~/.next/cache
             .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-
 
       - name: Build and export
         run: pnpm export
@@ -151,39 +156,35 @@ jobs:
           path: ./out
 
       - name: Deploy to IPFS
+        id: deploy
+        uses: ipshipyard/ipfs-deploy-action@v1
+        with:
+          path-to-deploy: ./out
+          kubo-api-url: https://ipfs.nipsys.dev/api/v0
+          kubo-api-auth: ${{ secrets.KUBO_API_AUTH }}
+          github-token: ${{ github.token }}
+
+      - name: Publish to IPNS
         env:
-          IPFS_DEPLOY_URL: https://ipfs.nipsys.dev/api/deploy
-          IPFS_API_KEY: ${{ secrets.IPFS_API_KEY }}
+          KUBO_API_AUTH: ${{ secrets.KUBO_API_AUTH }}
+        run: |
+          # Publish CID to 'site' IPNS key
+          PUBLISH_RESP=$(curl -X POST \
+            -u "$KUBO_API_AUTH" \
+            "https://ipfs.nipsys.dev/api/v0/name/publish?arg=${{ steps.deploy.outputs.cid }}&key=site")
+
+          echo "IPNS publish response: $PUBLISH_RESP"
+
+          IPNS_NAME=$(echo "$PUBLISH_RESP" | jq -r '.Name')
+          echo "IPNS Name: $IPNS_NAME"
+          echo "IPNS published successfully!"
+          echo "Site available at: https://nipsys.eth.limo"
+
+      - name: Pin to 4EVERLand
+        env:
           PIN_4EVER_TOKEN: ${{ secrets.PIN_4EVER_TOKEN }}
         run: |
-          # Create tar.gz of the site
-          tar -czf site.tar.gz -C out .
-
-          # Upload to IPFS deploy endpoint
-          RESPONSE=$(curl -X POST \
-            -H "X-API-Key: $IPFS_API_KEY" \
-            --data-binary @site.tar.gz \
-            "$IPFS_DEPLOY_URL")
-
-          echo "Deploy response: $RESPONSE"
-
-          IPFS_HASH=$(echo "$RESPONSE" | jq -r '.hash')
-          IPNS_HASH=$(echo "$RESPONSE" | jq -r '.ipns_hash')
-          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
-
-          if [ "$SUCCESS" = "true" ]; then
-            echo "✅ Deploy successful!"
-            echo "IPFS Hash: $IPFS_HASH"
-            echo "IPNS Name: $IPNS_HASH"
-            echo "Site available at: https://nipsys.eth.limo"
-          else
-            echo "❌ Deploy failed"
-            exit 1
-          fi
-
-          # Pinning attempt on 3rd party gateways
-          echo "Pinning to 4EVERLand"
-
+          # Find existing pin by name 'site'
           LIST_RESP=$(curl --request GET \
             --url https://api.4everland.dev/pins \
             --header "authorization: Bearer $PIN_4EVER_TOKEN")
@@ -191,18 +192,58 @@ jobs:
           REQUESTID=$(echo "$LIST_RESP" | jq -r '.results[] | select(.pin.name == "site") | .requestid')
 
           if [ -z "$REQUESTID" ]; then
-            echo "⚠️ WARNING: No matching pin found for name 'site' in 4EVERLand. Skipping pin request."
-            exit 0
+            echo "No existing pin found, creating new pin..."
+
+            PIN_RESP=$(curl --request POST \
+              --url https://api.4everland.dev/pins \
+              --header "authorization: Bearer $PIN_4EVER_TOKEN" \
+              --header "content-type: application/json" \
+              --data "{
+                \"cid\": \"${{ steps.deploy.outputs.cid }}\",
+                \"name\": \"site\"
+              }")
+
+            REQUESTID=$(echo "$PIN_RESP" | jq -r '.requestid')
+            STATUS=$(echo "$PIN_RESP" | jq -r '.status')
+            echo "Created pin: REQUESTID=$REQUESTID, STATUS=$STATUS"
+          else
+            echo "Found existing pin, updating CID..."
+
+            PIN_RESP=$(curl --request POST \
+              --url https://api.4everland.dev/pins/$REQUESTID \
+              --header "authorization: Bearer $PIN_4EVER_TOKEN" \
+              --header "content-type: application/json" \
+              --data "{
+                \"cid\": \"${{ steps.deploy.outputs.cid }}\",
+                \"name\": \"site\"
+              }")
+
+            REQUESTID=$(echo "$PIN_RESP" | jq -r '.requestid')
+            STATUS=$(echo "$PIN_RESP" | jq -r '.status')
+            echo "Updated pin: REQUESTID=$REQUESTID, STATUS=$STATUS"
           fi
 
-          PIN_RESP=$(curl --request POST \
-            --url https://api.4everland.dev/pins/$REQUESTID \
-            --header "authorization: Bearer $PIN_4EVER_TOKEN" \
-            --header "content-type: application/json" \
-            --data '{
-            "cid": "'$IPFS_HASH'",
-            "name": "site"
-          }')
+          # Poll for pinned status (max 60 seconds)
+          echo "Waiting for pin to finalize..."
+          for i in {1..12}; do
+            STATUS_RESP=$(curl --request GET \
+              --url https://api.4everland.dev/pins/$REQUESTID \
+              --header "authorization: Bearer $PIN_4EVER_TOKEN")
 
-          PIN_STATUS=$(echo "$PIN_RESP" | jq -r '.status')
-          echo "PINNING STATUS: $PIN_STATUS"
+            PIN_STATUS=$(echo "$STATUS_RESP" | jq -r '.status')
+            echo "Poll $i: STATUS=$PIN_STATUS"
+
+            if [ "$PIN_STATUS" = "pinned" ]; then
+              echo "✅ Pin successful!"
+              exit 0
+            elif [ "$PIN_STATUS" = "failed" ]; then
+              echo "❌ Pin failed!"
+              echo "$STATUS_RESP" | jq -r '.info'
+              exit 1
+            fi
+
+            sleep 5
+          done
+
+          echo "⚠️ TIMEOUT: Pin did not reach 'pinned' status within 60 seconds"
+          exit 1

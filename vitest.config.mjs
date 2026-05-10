@@ -3,12 +3,22 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    modules: {
+      classNameStrategy: 'non-scoped',
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/__tests__/setup.ts'],
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.next', 'coverage'],
+    server: {
+      deps: {
+        inline: ['@nipsys/lsd'],
+      },
+    },
     coverage: {
       provider: 'v8',
       include: ['src/**/*'],

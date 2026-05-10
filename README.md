@@ -37,7 +37,6 @@ help     - Shows available commands
 whoami   - About me
 contact  - How to reach me
 clear    - Cleans the terminal
-setlang  - En/Fr language switch
 ```
 
 ## running locally

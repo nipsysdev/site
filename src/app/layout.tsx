@@ -1,9 +1,10 @@
 import { getTranslations } from 'next-intl/server';
-import { AppStateProvider } from '@/contexts/AppContext';
+import LoadSequence from '@/components/LoadSequence';
+import ThemeProvider from '@/components/ThemeProvider';
 import 'tailwindcss/index.css';
-import '@nipsysdev/lsd-react/css';
+import '@nipsys/lsd/css';
+import '@/app/globals.css';
 import '@/utils/chunk-retry';
-import { LsdThemeStyles } from '@nipsysdev/lsd-react/theme';
 
 export async function generateMetadata() {
   const tMeta = await getTranslations({ locale: 'en', namespace: 'Metadata' });
@@ -23,14 +24,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="nord" suppressHydrationWarning>
       <head>
-        <LsdThemeStyles />
         <meta name="theme-color" content="#000000" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="bg-black h-dvh w-screen monospace">
-        <AppStateProvider>{children}</AppStateProvider>
+      <body className="h-dvh w-screen monospace">
+        <ThemeProvider>
+          <LoadSequence>{children}</LoadSequence>
+        </ThemeProvider>
       </body>
     </html>
   );

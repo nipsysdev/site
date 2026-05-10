@@ -45,4 +45,7 @@ next-env.d.ts
 *.code-workspace
 
 # LLM
-.ai
+.agents
+.kilocode
+.playwright-mcp
+skills-lock.json

@@ -1,33 +1,24 @@
 {
   "Metadata": {
-    "title": "xav / nipsysdev",
+    "title": "xav/nipsys.eth",
     "description": "My personal website"
   },
   "Core": {
     "menu": "menu",
-    "web2": "Web2 hosted version.",
-    "web3": "Web3 hosted version 🌐",
-    "goWeb3": "Go Web3",
     "exit": "exit",
     "or": "or",
     "na": "N/A",
     "back": "back",
     "backspace": "BACKSPACE",
-    "ctrlc": "CTRL+C",
-    "web2Loading": "Loading from a centralized server",
-    "web3Loading": "Loading from the Swarm network"
+    "ctrlc": "CTRL+C"
   },
   "Pages": {
     "terminal": "terminal",
     "whoami": "whoami",
-    "web2work": "web2work",
-    "web3work": "web3work",
-    "contribs": "contribs",
     "contact": "contact"
   },
   "Terminal": {
     "unknownCmdErr": "command not recognized",
-    "autocomplete": "autocomplete:",
     "noMatch": "no match",
     "visitor": "visitor",
     "cmds": {
@@ -48,21 +39,9 @@
       },
       "welcome": {
         "description": "Print welcome message",
-        "welcome": "Hi there, I'm <name>Xav</name>. Welcome to my own little corner of the web!",
-        "site_intro_1": "This site can be browsed by clicking on the tabs above.",
-        "site_intro_2": "Or, for a CLI experience, get started with <cmd></cmd>"
-      },
-      "set-lang": {
-        "description": "Change language"
-      },
-      "web2work": {
-        "description": "Things I have worked on at web2 companies"
-      },
-      "web3work": {
-        "description": "How I'm helping building web3"
-      },
-      "contribs": {
-        "description": "My contributions to open-source projects"
+        "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
+        "site_intro_1": "This site can be browsed by clicking on the links in the side navigation.",
+        "site_intro_2": "Or, for a CLI experience... Get started with <cmd></cmd>"
       },
       "whoami": {
         "description": "Allow me to introduce myself"

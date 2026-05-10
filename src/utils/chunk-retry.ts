@@ -151,6 +151,3 @@ if (typeof window !== 'undefined') {
     }
   });
 }
-
-export { ChunkRetryManager, chunkRetryManager };
-export type { ChunkRetryConfig };
