@@ -150,13 +150,16 @@ describe('TerminalEmulator', () => {
 
   describe('interactions', () => {
     it('calls focus on the prompt ref when container is clicked', async () => {
+      vi.useFakeTimers();
       render(<TerminalEmulator />);
       const container = screen.getByRole('button');
 
+      vi.advanceTimersByTime(100);
       expect(mockPromptRefSet).toHaveBeenCalled();
 
       fireEvent.click(container);
       expect(container).toBeInTheDocument();
+      vi.useRealTimers();
     });
 
     it('handles keyboard events on container', () => {
@@ -176,8 +179,12 @@ describe('TerminalEmulator', () => {
 
   describe('store integration', () => {
     it('sets prompt ref on mount', () => {
+      vi.useFakeTimers();
       render(<TerminalEmulator />);
+
+      vi.advanceTimersByTime(100);
       expect(mockPromptRefSet).toHaveBeenCalled();
+      vi.useRealTimers();
     });
 
     it('uses history from store', () => {

@@ -61,8 +61,13 @@ vi.mock('@nipsys/lsd', () => ({
   )),
   Icon: vi.fn(() => <span data-testid="icon" />),
   Typography: vi.fn(({ children }) => <span>{children}</span>),
-  ToggleGroup: vi.fn(({ children, value, ...props }) => (
-    <fieldset {...props} data-testid="toggle-group" data-value={value}>
+  ToggleGroup: vi.fn(({ children, value, onValueChange, ...props }) => (
+    <fieldset
+      {...props}
+      data-testid="toggle-group"
+      data-value={value}
+      onValueChange={onValueChange}
+    >
       {children}
     </fieldset>
   )),
@@ -94,6 +99,7 @@ vi.mock('@nipsys/lsd', () => ({
       </div>
     ),
   ),
+  useIsMobile: vi.fn(() => false),
 }));
 
 Object.defineProperty(window, 'matchMedia', {
