@@ -7,9 +7,9 @@ import {
   ToggleGroupItem,
   useIsMobile,
 } from '@nipsys/lsd';
+import { MoonIcon, SunIcon } from '@phosphor-icons/react';
 import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { PiMoonFill, PiSunFill } from 'react-icons/pi';
 import { LangLabels } from '@/constants/lang';
 import { usePathname, useRouter } from '@/i18n/intl';
 import { $isDarkMode, toggleTheme } from '@/stores/theme-store';
@@ -58,7 +58,11 @@ export default function Header() {
             isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
           }
         >
-          {isDarkMode ? <PiSunFill size="1rem" /> : <PiMoonFill size="1rem" />}
+          {isDarkMode ? (
+            <SunIcon weight="fill" size="1rem" />
+          ) : (
+            <MoonIcon weight="fill" size="1rem" />
+          )}
         </Button>
       </div>
     </div>
