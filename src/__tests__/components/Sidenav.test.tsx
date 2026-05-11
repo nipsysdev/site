@@ -70,6 +70,7 @@ vi.mock('@nipsys/lsd', () => ({
   ScrollArea: vi.fn(({ children }) => (
     <div data-testid="scroll-area">{children}</div>
   )),
+  Typography: vi.fn(({ children }) => <span>{children}</span>),
 }));
 
 vi.mock('@/components/layout/Header', () => ({
@@ -132,7 +133,7 @@ describe('Sidenav', () => {
     it('renders menu items for each route', () => {
       render(<Sidenav>Content</Sidenav>);
       const menuItems = screen.getAllByTestId('sidebar-menu-item');
-      expect(menuItems).toHaveLength(5);
+      expect(menuItems).toHaveLength(6);
     });
 
     it('marks active route correctly', () => {
