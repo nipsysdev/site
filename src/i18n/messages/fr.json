@@ -41,10 +41,20 @@
         "description": "Afficher le message d'introduction",
         "welcome": "Hey salut, je suis <name>Xav</name>! Bienvenue dans mon pti chez moi en plein cyberspace :)",
         "site_intro_1": "Ce site peut être parcouru en cliquant sur les liens présents dans la navigation latérale.",
-        "site_intro_2": "Ou, pour une expérience CLI.. Commencez en cliquant sur <cmd></cmd>"
+        "site_intro_2": "Ou, pour une expérience CLI... Commencez en cliquant sur <cmd></cmd>"
       },
       "whoami": {
         "description": "Permettez-moi de me présenter"
+      },
+      "services": {
+        "description": "Afficher l'état de mes services auto-hébergés",
+        "title": "Services que j'héberge avec fierté",
+        "connectionStatus": "État de la connexion",
+        "loading": "(Chargement...)",
+        "errorLabel": "Erreur",
+        "noServices": "Aucun service configuré",
+        "lastUpdated": "Dernière mise à jour :",
+        "noStatusMessage": "Aucun message de statut disponible"
       }
     }
   }
