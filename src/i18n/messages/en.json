@@ -48,11 +48,11 @@
       },
       "services": {
         "description": "Display my self-hosted services status",
-        "title": "Services that I proudly self-host",
+        "title": "Services that I proudly self-host:",
         "connectionStatus": "Connection Status",
         "loading": "(Loading...)",
+        "waitingForHeartbeats": "Waiting for heartbeats...",
         "errorLabel": "Error",
-        "noServices": "No services configured",
         "lastUpdated": "Last updated:",
         "noStatusMessage": "No status message available"
       }

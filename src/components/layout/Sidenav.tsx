@@ -21,13 +21,14 @@ import {
 import {
   BracketsCurlyIcon,
   PaletteIcon,
+  UsersIcon,
   WarningIcon,
 } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
+import { $connectionStatus, $error, $peerCount } from '@/lib/dpulse/stores';
 import { getConnectionMeta } from '@/lib/dpulse/utils/status';
-import { $connectionStatus, $error } from '@/stores/dpulseStore';
 import { $scrollY, $terminalPromptRef } from '@/stores/terminal-store';
 import Header from './Header';
 
@@ -36,6 +37,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const connectionStatus = useStore($connectionStatus);
   const error = useStore($error);
+  const peerCount = useStore($peerCount);
 
   const activePath = pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
   const terminalPromptRef = useStore($terminalPromptRef);
@@ -71,7 +73,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
 
         <SidebarFooter>
           <SidebarGroup>
-            <SidebarGroupLabel>Logos Delivery Status</SidebarGroupLabel>
+            <SidebarGroupLabel>P2P Messaging</SidebarGroupLabel>
             <SidebarGroupContent className="list-none">
               <SidebarMenuItem>
                 <SidebarMenuButton>
@@ -82,6 +84,21 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                   <Typography variant="body3" className="flex-1">
                     {statusMeta.text}
                   </Typography>
+                  {peerCount > 0 && (
+                    <>
+                      <UsersIcon
+                        weight="duotone"
+                        className="size-4"
+                        style={{ color: 'var(--lsd-muted-foreground)' }}
+                      />
+                      <Typography
+                        variant="body3"
+                        style={{ color: 'var(--lsd-muted-foreground)' }}
+                      >
+                        {peerCount}
+                      </Typography>
+                    </>
+                  )}
                   {error && (
                     <WarningIcon
                       weight="duotone"
