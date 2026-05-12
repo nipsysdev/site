@@ -1,6 +1,6 @@
 import {
   CheckCircleIcon,
-  SpinnerIcon,
+  CircleNotchIcon,
   WarningIcon,
   XCircleIcon,
 } from '@phosphor-icons/react';
@@ -18,7 +18,7 @@ export const STATUS_META = {
   },
   degraded: {
     variant: 'warning' as const,
-    icon: SpinnerIcon,
+    icon: CircleNotchIcon,
     text: 'Degraded',
     className: 'animate-spin',
   },
@@ -43,7 +43,7 @@ export const CONNECTION_META = {
     className: '',
   },
   connecting: {
-    icon: SpinnerIcon,
+    icon: CircleNotchIcon,
     text: 'Connecting...',
     className: 'animate-spin',
   },

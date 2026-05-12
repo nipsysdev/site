@@ -1,7 +1,7 @@
 'use client';
 import { useStore } from '@nanostores/react';
 import { useEffect, useState } from 'react';
-import { initWaku } from '@/stores/dpulseStore';
+import { initWaku } from '@/lib/dpulse/manager';
 import { $isDarkMode } from '@/stores/theme-store';
 
 export default function ThemeProvider({
