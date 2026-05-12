@@ -76,8 +76,8 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
         </div>
 
         <div className="flex flex-col mt-[24px]">
-          {steps.slice(0, currentStep).map((step, index) => (
-            <div className={stepHeight} key={`step-${index}-${step.message}`}>
+          {steps.slice(0, currentStep).map((step) => (
+            <div className={stepHeight} key={step.message}>
               {step.message}
             </div>
           ))}
