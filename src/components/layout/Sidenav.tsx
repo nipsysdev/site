@@ -16,17 +16,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  Typography,
 } from '@nipsys/lsd';
+import {
+  BracketsCurlyIcon,
+  PaletteIcon,
+  UsersIcon,
+  WarningIcon,
+} from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
-import { PiBracketsCurlyDuotone, PiPaletteDuotone } from 'react-icons/pi';
 import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
+import { $connectionStatus, $error, $peerCount } from '@/lib/dpulse/stores';
+import { getConnectionMeta } from '@/lib/dpulse/utils/status';
 import { $scrollY, $terminalPromptRef } from '@/stores/terminal-store';
 import Header from './Header';
 
 export default function Sidenav({ children }: { children: React.ReactNode }) {
   const t = useTranslations('Pages');
+  const tSidebar = useTranslations('Sidebar');
+  const tStatus = useTranslations('Status');
   const pathname = usePathname();
+  const connectionStatus = useStore($connectionStatus);
+  const error = useStore($error);
+  const peerCount = useStore($peerCount);
 
   const activePath = pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
   const terminalPromptRef = useStore($terminalPromptRef);
@@ -34,6 +47,9 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     $scrollY.set(e.currentTarget.scrollTop);
   };
+
+  const statusMeta = getConnectionMeta(connectionStatus);
+  const StatusIcon = statusMeta.icon;
 
   return (
     <SidebarProvider>
@@ -59,7 +75,45 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
 
         <SidebarFooter>
           <SidebarGroup>
-            <SidebarGroupLabel>About this site</SidebarGroupLabel>
+            <SidebarGroupLabel>{tSidebar('p2pMessaging')}</SidebarGroupLabel>
+            <SidebarGroupContent className="list-none">
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <StatusIcon
+                    weight="duotone"
+                    className={`size-4 ${statusMeta.className}`}
+                  />
+                  <Typography variant="body3" className="flex-1">
+                    {tStatus(statusMeta.textKey.split('.')[1])}
+                  </Typography>
+                  {peerCount > 0 && (
+                    <>
+                      <UsersIcon
+                        weight="duotone"
+                        className="size-4"
+                        style={{ color: 'var(--lsd-muted-foreground)' }}
+                      />
+                      <Typography
+                        variant="body3"
+                        style={{ color: 'var(--lsd-muted-foreground)' }}
+                      >
+                        {peerCount}
+                      </Typography>
+                    </>
+                  )}
+                  {error && (
+                    <WarningIcon
+                      weight="duotone"
+                      className="size-4 text-yellow-500"
+                      aria-label={error}
+                    />
+                  )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>{tSidebar('aboutSite')}</SidebarGroupLabel>
             <SidebarGroupContent className="list-none">
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
@@ -68,7 +122,8 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <PiBracketsCurlyDuotone size="0.7rem" /> Check out its code
+                    <BracketsCurlyIcon weight="duotone" size="0.7rem" />{' '}
+                    {tSidebar('checkOutCode')}
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -79,7 +134,8 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <PiPaletteDuotone size="0.7rem" /> and its UI!
+                    <PaletteIcon weight="duotone" size="0.7rem" />{' '}
+                    {tSidebar('andItsUI')}
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>

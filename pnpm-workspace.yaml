@@ -1,7 +1,12 @@
+allowBuilds:
+  '@ipshipyard/node-datachannel': true
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  iso-constants: true
+  lefthook: true
+  node-datachannel: true
+  protobufjs: true
+  sharp: true
 onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - lefthook
-  - sharp
+  - '@ipshipyard/node-datachannel'

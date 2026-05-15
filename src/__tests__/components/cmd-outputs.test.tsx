@@ -11,8 +11,8 @@ vi.mock('next-intl', () => ({
   }),
 }));
 
-vi.mock('react-icons/pi', () => ({
-  PiSmileyNervousFill: vi.fn(() => <span data-testid="nervous-icon">😰</span>),
+vi.mock('@phosphor-icons/react', () => ({
+  SmileyNervousIcon: vi.fn(() => <span data-testid="nervous-icon">😰</span>),
 }));
 
 describe('UnknownCmdOutput', () => {

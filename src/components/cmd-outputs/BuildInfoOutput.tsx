@@ -12,11 +12,11 @@ export default function BuildInfoOutput({ t }: CommandOutputProps) {
           <span>{t('cmds.build-info.timeLabel')}</span>{' '}
           {buildTimestamp
             ? new Date(buildTimestamp).toLocaleString()
-            : 'Unknown'}
+            : t('cmds.build-info.unknown')}
         </div>
         <div>
           <span>{t('cmds.build-info.ipnsLabel')}</span>{' '}
-          {ipnsHash || 'Not configured'}
+          {ipnsHash || t('cmds.build-info.notConfigured')}
         </div>
       </div>
     </div>

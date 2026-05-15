@@ -33,6 +33,14 @@ vi.mock('@/i18n/intl', () => ({
 
 vi.mock('next-intl', () => ({
   useLocale: vi.fn(() => 'en'),
+  useTranslations: vi.fn(() => (key: string) => {
+    const translations: Record<string, string> = {
+      languageSelector: 'Language selector',
+      switchToDarkMode: 'Switch to dark mode',
+      switchToLightMode: 'Switch to light mode',
+    };
+    return translations[key] || key;
+  }),
 }));
 
 vi.mock('@/constants/lang', () => ({

@@ -7,9 +7,9 @@ import {
   ToggleGroupItem,
   useIsMobile,
 } from '@nipsys/lsd';
-import { useLocale } from 'next-intl';
+import { MoonIcon, SunIcon } from '@phosphor-icons/react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { PiMoonFill, PiSunFill } from 'react-icons/pi';
 import { LangLabels } from '@/constants/lang';
 import { usePathname, useRouter } from '@/i18n/intl';
 import { $isDarkMode, toggleTheme } from '@/stores/theme-store';
@@ -18,6 +18,7 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = useLocale();
+  const t = useTranslations('Header');
   const isDarkMode = useStore($isDarkMode);
   const isMobile = useIsMobile();
   const [activeLang, setActiveLang] = useState('en');
@@ -41,7 +42,7 @@ export default function Header() {
               router.replace(pathname, { locale: value });
             }
           }}
-          aria-label="Language selector"
+          aria-label={t('languageSelector')}
         >
           {Object.entries(LangLabels).map(([lang, label]) => (
             <ToggleGroupItem key={lang} value={lang}>
@@ -55,10 +56,14 @@ export default function Header() {
           size="sm"
           onClick={toggleTheme}
           aria-label={
-            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+            isDarkMode ? t('switchToLightMode') : t('switchToDarkMode')
           }
         >
-          {isDarkMode ? <PiSunFill size="1rem" /> : <PiMoonFill size="1rem" />}
+          {isDarkMode ? (
+            <SunIcon weight="fill" size="1rem" />
+          ) : (
+            <MoonIcon weight="fill" size="1rem" />
+          )}
         </Button>
       </div>
     </div>

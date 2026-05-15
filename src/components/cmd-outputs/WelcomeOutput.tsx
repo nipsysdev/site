@@ -22,7 +22,7 @@ export default function WelcomeOutput({ t }: CommandOutputProps) {
       <div className="flex flex-col py-(--lsd-spacing-largest)">
         <Tooltip open={showTooltip}>
           <TooltipTrigger asChild>
-            <Image src={avatar} width={70} alt="Avatar" />
+            <Image src={avatar} width={70} alt="Avatar" priority={true} />
           </TooltipTrigger>
           <TooltipContent side="right" className="max-w-[70vw]">
             <p className="mb-(--lsd-spacing-base)">
@@ -34,7 +34,7 @@ export default function WelcomeOutput({ t }: CommandOutputProps) {
             <p>{t('cmds.welcome.site_intro_1')}</p>
             <p>
               {t.rich('cmds.welcome.site_intro_2', {
-                cmd: () => <CmdLink cmdName={Command.Help} />,
+                cmd: () => <CmdLink cmdName={Command.Help} primary />,
               })}
             </p>
           </TooltipContent>
