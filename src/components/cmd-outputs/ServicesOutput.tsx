@@ -136,14 +136,18 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
       ) : (
         <div className="space-y-(--lsd-spacing-large)">
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-(--lsd-spacing-base) mt-(--lsd-spacing-small)">
-            {serviceCards.map(({ service, statusMsg }) => (
-              <ServiceCard
-                key={service}
-                statusMsg={statusMsg}
-                t={t}
-                dayjs={dayjs}
-              />
-            ))}
+            {serviceCards
+              .sort((a, b) =>
+                a.statusMsg.displayName.localeCompare(b.statusMsg.displayName),
+              )
+              .map(({ service, statusMsg }) => (
+                <ServiceCard
+                  key={service}
+                  statusMsg={statusMsg}
+                  t={t}
+                  dayjs={dayjs}
+                />
+              ))}
           </div>
 
           <div className="flex flex-col space-y-(--lsd-spacing-smallest)">
