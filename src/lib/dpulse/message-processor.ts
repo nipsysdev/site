@@ -1,10 +1,10 @@
 import { DPULSE_CONFIG } from './constants';
-import { decodeAndVerifyStatusMessage } from './protobuf/codec';
+import { validateAndDecodeStatusMessage } from './protobuf/codec';
 import { ServiceState } from './protobuf/schema';
 import { $statusMessages } from './stores';
 import type { HealthStatus } from './types';
 
-export function mapServiceStateToStatus(state: ServiceState): HealthStatus {
+function mapServiceState(state: number): HealthStatus {
   switch (state) {
     case ServiceState.OPERATIONAL:
       return 'healthy';
@@ -13,17 +13,19 @@ export function mapServiceStateToStatus(state: ServiceState): HealthStatus {
     case ServiceState.DOWN:
       return 'down';
     default:
-      return 'unknown';
+      throw new Error(`Invalid ServiceState: ${state}`);
   }
 }
 
-export function updateStatusMessageAtomic(
+function updateStatusMessageAtomic(
   serviceName: string,
+  displayName: string,
+  description: string,
   status: HealthStatus,
-  message: string,
   timestamp: number,
+  iconCid: string | undefined,
   source: 'store' | 'filter',
-  hasSignature: boolean,
+  signature: string,
 ): void {
   const current = $statusMessages.get();
   const existing = current.get(serviceName);
@@ -31,13 +33,15 @@ export function updateStatusMessageAtomic(
   if (!existing || timestamp > existing.timestamp) {
     const updated = new Map(current);
     updated.set(serviceName, {
-      service: serviceName,
+      serviceName,
+      displayName,
+      description,
       status,
-      message,
       timestamp,
+      iconCid,
       metadata: {
-        hasSignature,
         source,
+        signature,
       },
     });
     $statusMessages.set(updated);
@@ -48,25 +52,33 @@ export async function processMessagePayload(
   payload: Uint8Array,
   source: 'store' | 'filter',
 ): Promise<boolean> {
-  const verifiedMessage = await decodeAndVerifyStatusMessage(
-    payload,
-    DPULSE_CONFIG.publicKey,
-  );
+  try {
+    const message = await validateAndDecodeStatusMessage(
+      payload,
+      DPULSE_CONFIG.publicKey,
+    );
 
-  if (!verifiedMessage) {
+    if (!message) {
+      return false;
+    }
+
+    const status = mapServiceState(message.status);
+    const iconCid = message.iconCid;
+
+    updateStatusMessageAtomic(
+      message.serviceName,
+      message.displayName,
+      message.description,
+      status,
+      message.timestamp,
+      iconCid,
+      source,
+      message.signature ?? '',
+    );
+
+    return true;
+  } catch (error) {
+    console.error('Failed to process StatusMessage:', error);
     return false;
   }
-
-  const status = mapServiceStateToStatus(verifiedMessage.state);
-
-  updateStatusMessageAtomic(
-    verifiedMessage.serviceName,
-    status,
-    verifiedMessage.message || '',
-    verifiedMessage.timestamp,
-    source,
-    !!verifiedMessage.signature,
-  );
-
-  return true;
 }

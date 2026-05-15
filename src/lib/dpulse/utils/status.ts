@@ -1,11 +1,10 @@
 import {
   CheckCircleIcon,
   CircleNotchIcon,
-  WarningIcon,
   XCircleIcon,
 } from '@phosphor-icons/react';
 
-export type HealthStatus = 'healthy' | 'degraded' | 'down' | 'unknown';
+import type { HealthStatus } from '../types';
 
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';
 
@@ -13,25 +12,19 @@ export const STATUS_META = {
   healthy: {
     variant: 'success' as const,
     icon: CheckCircleIcon,
-    text: 'Healthy',
+    textKey: 'cmds.services.status.healthy',
     className: '',
   },
   degraded: {
     variant: 'warning' as const,
     icon: CircleNotchIcon,
-    text: 'Degraded',
+    textKey: 'cmds.services.status.degraded',
     className: 'animate-spin',
   },
   down: {
     variant: 'destructive' as const,
     icon: XCircleIcon,
-    text: 'Down',
-    className: '',
-  },
-  unknown: {
-    variant: 'outlined' as const,
-    icon: WarningIcon,
-    text: 'Unknown',
+    textKey: 'cmds.services.status.down',
     className: '',
   },
 };
@@ -39,17 +32,17 @@ export const STATUS_META = {
 export const CONNECTION_META = {
   connected: {
     icon: CheckCircleIcon,
-    text: 'Connected',
+    textKey: 'Status.connected',
     className: '',
   },
   connecting: {
     icon: CircleNotchIcon,
-    text: 'Connecting...',
+    textKey: 'Status.connecting',
     className: 'animate-spin',
   },
   disconnected: {
     icon: XCircleIcon,
-    text: 'Disconnected',
+    textKey: 'Status.disconnected',
     className: '',
   },
 };

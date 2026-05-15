@@ -5,7 +5,6 @@ import {
   $isLoading,
   $statusMessages,
 } from './stores';
-import type { ConnectionStatus, ServiceStatus } from './types';
 import { cleanup, createAndStartNode, setWakuNode } from './waku-node';
 
 export async function initWaku(): Promise<void> {
@@ -39,17 +38,6 @@ export async function shutdownWaku(): Promise<void> {
   $connectionStatus.set('disconnected');
   $statusMessages.set(new Map());
   console.log('[dpulse] Shutdown complete');
-}
-
-export function setConnectionStatus(status: ConnectionStatus): void {
-  $connectionStatus.set(status);
-}
-
-export function updateStatusMessage(message: ServiceStatus): void {
-  const currentMessages = $statusMessages.get();
-  const newMessages = new Map(currentMessages);
-  newMessages.set(message.service, message);
-  $statusMessages.set(newMessages);
 }
 
 export function setError(error: string | null): void {
