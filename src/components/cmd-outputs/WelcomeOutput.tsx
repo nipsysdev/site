@@ -34,7 +34,7 @@ export default function WelcomeOutput({ t }: CommandOutputProps) {
             <p>{t('cmds.welcome.site_intro_1')}</p>
             <p>
               {t.rich('cmds.welcome.site_intro_2', {
-                cmd: () => <CmdLink cmdName={Command.Help} />,
+                cmd: () => <CmdLink cmdName={Command.Help} primary />,
               })}
             </p>
           </TooltipContent>

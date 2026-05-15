@@ -7,6 +7,7 @@ interface Props {
   cmdName?: string;
   cmdInfo?: CommandInfo;
   arg?: CommandArgument;
+  primary?: boolean;
 }
 
 export default function CmdLink(props: Props) {
@@ -49,7 +50,7 @@ export default function CmdLink(props: Props) {
 
   return (
     <Button
-      variant="outlined"
+      variant={props.primary ? 'filled' : 'outlined'}
       size="sm"
       onClick={submitCmd}
       className="text-xs w-fit!"
