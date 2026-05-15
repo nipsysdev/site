@@ -13,9 +13,25 @@
     "ctrlc": "CTRL+C"
   },
   "Pages": {
-    "terminal": "terminal",
+    "terminal": "accueil",
     "whoami": "qui_suis_je",
     "contact": "contact"
+  },
+  "Status": {
+    "connected": "Connecté",
+    "connecting": "Connexion...",
+    "disconnected": "Déconnecté"
+  },
+  "Header": {
+    "languageSelector": "Sélecteur de langue",
+    "switchToLightMode": "Passer au mode jour",
+    "switchToDarkMode": "Passer au mode nuit"
+  },
+  "Sidebar": {
+    "p2pMessaging": "Messagerie P2P",
+    "aboutSite": "À propos de ce site",
+    "checkOutCode": "Voir son code",
+    "andItsUI": "et sa lib UI !"
   },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",
@@ -26,7 +42,9 @@
         "description": "Afficher la date du build et les informations de déploiement",
         "title": "Informations du build",
         "timeLabel": "Date du build :",
-        "ipnsLabel": "Nom IPNS :"
+        "ipnsLabel": "Nom IPNS :",
+        "unknown": "Inconnu",
+        "notConfigured": "Non configuré"
       },
       "clear": {
         "description": "Effacer l'écran du terminal"
@@ -53,8 +71,17 @@
         "loading": "(Chargement...)",
         "waitingForHeartbeats": "En attente de heartbeats...",
         "errorLabel": "Erreur",
-        "lastUpdated": "Dernière mise à jour :",
-        "noStatusMessage": "Aucun message de statut disponible"
+        "lastChecked": "Vu",
+        "noStatusMessage": "Aucun message de statut disponible",
+        "healthcheckPrefix": "Les vérifications de l'état des services sont exécutées par",
+        "healthcheckSuffix": ". Qui fonctionne en tant que service systemd sur un serveur.",
+        "dpulseSignsPrefix": "signe et publie les résultats qui sont ensuite récupérés par ce site statique via",
+        "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
+        "status": {
+          "healthy": "Stable",
+          "degraded": "Dégradé",
+          "down": "H.S."
+        }
       }
     }
   }

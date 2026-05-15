@@ -13,9 +13,25 @@
     "ctrlc": "CTRL+C"
   },
   "Pages": {
-    "terminal": "terminal",
+    "terminal": "home",
     "whoami": "whoami",
     "contact": "contact"
+  },
+  "Status": {
+    "connected": "Connected",
+    "connecting": "Connecting...",
+    "disconnected": "Disconnected"
+  },
+  "Header": {
+    "languageSelector": "Language selector",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode"
+  },
+  "Sidebar": {
+    "p2pMessaging": "P2P Messaging",
+    "aboutSite": "About this site",
+    "checkOutCode": "Check out its code",
+    "andItsUI": "and its UI!"
   },
   "Terminal": {
     "unknownCmdErr": "command not recognized",
@@ -26,7 +42,9 @@
         "description": "Show build timestamp and deployment info",
         "title": "Build Information",
         "timeLabel": "Build Time:",
-        "ipnsLabel": "IPNS Name:"
+        "ipnsLabel": "IPNS Name:",
+        "unknown": "Unknown",
+        "notConfigured": "Not configured"
       },
       "clear": {
         "description": "Clear the terminal screen"
@@ -53,8 +71,17 @@
         "loading": "(Loading...)",
         "waitingForHeartbeats": "Waiting for heartbeats...",
         "errorLabel": "Error",
-        "lastUpdated": "Last updated:",
-        "noStatusMessage": "No status message available"
+        "lastChecked": "Seen",
+        "noStatusMessage": "No status message available",
+        "healthcheckPrefix": "Healthchecks are executed by",
+        "healthcheckSuffix": ". Which runs as a systemd service on some server.",
+        "dpulseSignsPrefix": "signs, and publishes the results which are then retrieved by this static site via",
+        "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
+        "status": {
+          "healthy": "Stable",
+          "degraded": "Degraded",
+          "down": "Down"
+        }
       }
     }
   }
