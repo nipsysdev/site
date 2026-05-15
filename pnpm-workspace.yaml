@@ -8,4 +8,5 @@ allowBuilds:
   node-datachannel: true
   protobufjs: true
   sharp: true
-onlyBuiltDependencies: '@ipshipyard/node-datachannel'
+onlyBuiltDependencies:
+  - '@ipshipyard/node-datachannel'
