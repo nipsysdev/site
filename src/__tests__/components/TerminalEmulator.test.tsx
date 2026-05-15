@@ -18,6 +18,7 @@ vi.mock('@/stores/terminal-store', () => ({
   $terminalPromptRef: {
     set: vi.fn(),
   },
+  initializeTerminal: vi.fn(),
 }));
 
 vi.mock('next-intl', () => ({
@@ -46,12 +47,14 @@ import {
   $terminalHistory,
   $terminalHistoryVisibleIdx,
   $terminalPromptRef,
+  initializeTerminal,
 } from '@/stores/terminal-store';
 
 describe('TerminalEmulator', () => {
   const mockHistoryGet = vi.mocked($terminalHistory.get);
   const mockHistoryVisibleIdxGet = vi.mocked($terminalHistoryVisibleIdx.get);
   const mockPromptRefSet = vi.mocked($terminalPromptRef.set);
+  const _mockInitializeTerminal = vi.mocked(initializeTerminal);
 
   beforeEach(() => {
     vi.clearAllMocks();
