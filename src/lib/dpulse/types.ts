@@ -1,9 +1,16 @@
-export type { ConnectionStatus, HealthStatus } from './utils/status';
+export type HealthStatus = 'healthy' | 'degraded' | 'down';
+
+export type { ConnectionStatus } from './utils/status';
 
 export interface ServiceStatus {
-  service: string;
-  status: import('./utils/status').HealthStatus;
-  message: string;
+  serviceName: string;
+  displayName: string;
+  description: string;
+  status: HealthStatus;
   timestamp: number;
-  metadata?: Record<string, unknown>;
+  iconCid?: string;
+  metadata: {
+    source: 'store' | 'filter';
+    signature: string;
+  };
 }

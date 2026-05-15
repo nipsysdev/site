@@ -40,7 +40,3 @@ export async function attemptConnection(): Promise<void> {
   const node = await createAndStartNode();
   setWakuNode(node);
 }
-
-export function getRetryCount(): number {
-  return retryCount;
-}
