@@ -1,5 +1,6 @@
 export const Routes = {
-  terminal: '/',
+  welcome: '/',
   whoami: '/whoami',
+  services: '/services',
   contact: '/contact',
 };

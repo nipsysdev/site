@@ -1,9 +1,9 @@
-import { atom, effect, onMount } from 'nanostores';
+import { atom, effect } from 'nanostores';
 import type { KeyboardEvent, RefObject } from 'react';
 import type { TerminalPromptRef } from '@/components/terminal/TerminalPrompt';
 import { Commands } from '@/constants/commands';
 import { Key } from '@/types/keyboard';
-import { Command, type CommandEntry } from '@/types/terminal';
+import type { CommandEntry } from '@/types/terminal';
 import { getPastInputStr, parseTerminalEntry } from '@/utils/terminal-utils';
 
 export const $terminalInput = atom('');
@@ -16,15 +16,6 @@ export const $terminalKeyEvent = atom<KeyboardEvent | null>(null);
 export const $terminalPromptRef =
   atom<RefObject<TerminalPromptRef | null> | null>(null);
 export const $scrollY = atom(0);
-
-const $hasGreeted = atom(false);
-
-onMount($terminalInput, () => {
-  if (!$hasGreeted.get()) {
-    $hasGreeted.set(true);
-    simulateInput(Command.Welcome);
-  }
-});
 
 effect($terminalKeyEvent, (event) => {
   const isReadOnly = $terminalInputReadOnly.get();
@@ -98,6 +89,13 @@ export function simulateInput(input: string) {
 
   $terminalInput.set('');
   addChar(input);
+}
+
+export function initializeTerminal(command: string) {
+  $terminalHistory.set([]);
+  $terminalHistoryIdx.set(-1);
+  $terminalHistoryVisibleIdx.set(0);
+  simulateInput(command);
 }
 
 export function setPreviousHistoryEntry() {

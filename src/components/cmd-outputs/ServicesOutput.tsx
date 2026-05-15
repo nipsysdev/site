@@ -76,10 +76,7 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
           </Typography>
 
           <div className="flex items-center justify-end gap-(--lsd-spacing-smaller) mt-(--lsd-spacing-large)">
-            <RecordIcon
-              weight="duotone"
-              className="animate-pulse text-(--lsd-text-destructive)"
-            />
+            <RecordIcon weight="duotone" className="animate-pulse" />
             <Typography variant="body3">
               {t('cmds.services.lastChecked')}{' '}
               {dayjs(statusMsg.timestamp).fromNow()}
@@ -123,7 +120,7 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
 
   return (
     <div className="py-(--lsd-spacing-small)">
-      <Typography variant="body1">{t('cmds.services.title')}</Typography>
+      <Typography variant="body2">{t('cmds.services.title')}</Typography>
 
       {isWaitingForHeartbeats ? (
         <div className="flex items-center gap-(--lsd-spacing-small) mt-(--lsd-spacing-small)">

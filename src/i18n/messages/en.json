@@ -13,8 +13,9 @@
     "ctrlc": "CTRL+C"
   },
   "Pages": {
-    "terminal": "home",
+    "welcome": "welcome",
     "whoami": "whoami",
+    "services": "services",
     "contact": "contact"
   },
   "Status": {
@@ -66,7 +67,7 @@
       },
       "services": {
         "description": "Display my self-hosted services status",
-        "title": "Services that I proudly self-host:",
+        "title": "Services that I proudly self-host",
         "connectionStatus": "Connection Status",
         "loading": "(Loading...)",
         "waitingForHeartbeats": "Waiting for heartbeats...",

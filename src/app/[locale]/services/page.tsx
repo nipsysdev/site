@@ -1,13 +1,18 @@
 import { getTranslations } from 'next-intl/server';
 import StaticOutput from '@/components/StaticOutput';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
+import type { RouteData } from '@/types/routing';
 import { Command } from '@/types/terminal';
+import { setPageMeta } from '@/utils/metadata-utils';
 
-interface HomePageProps {
+interface ServicesPageProps {
   params: Promise<{ locale: string }>;
 }
 
-export default async function HomePage({ params }: HomePageProps) {
+export const generateMetadata = async (routeData: RouteData) =>
+  await setPageMeta(routeData, 'services');
+
+export default async function ServicesPage({ params }: ServicesPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Terminal' });
 
@@ -15,20 +20,11 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       <StaticOutput>
         <div>
-          <p>
-            {t.rich('cmds.welcome.welcome', {
-              name: (name) => name,
-            })}
-          </p>
-          <p>{t('cmds.welcome.site_intro_1')}</p>
-          <p>
-            {t.rich('cmds.welcome.site_intro_2', {
-              cmd: () => 'help',
-            })}
-          </p>
+          <p>{t('cmds.services.title')}</p>
+          <p>{t('cmds.services.description')}</p>
         </div>
       </StaticOutput>
-      <TerminalEmulator initialCommand={Command.Welcome} />
+      <TerminalEmulator initialCommand={Command.Services} />
     </>
   );
 }

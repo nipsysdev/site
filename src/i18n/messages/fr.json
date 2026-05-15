@@ -13,8 +13,9 @@
     "ctrlc": "CTRL+C"
   },
   "Pages": {
-    "terminal": "accueil",
-    "whoami": "qui_suis_je",
+    "welcome": "bienvenue",
+    "whoami": "qui suis-je",
+    "services": "services",
     "contact": "contact"
   },
   "Status": {
@@ -66,7 +67,7 @@
       },
       "services": {
         "description": "Afficher l'état de mes services auto-hébergés",
-        "title": "Services que j'héberge avec fierté :",
+        "title": "Services que j'héberge avec fierté",
         "connectionStatus": "État de la connexion",
         "loading": "(Chargement...)",
         "waitingForHeartbeats": "En attente de heartbeats...",
