@@ -20,14 +20,6 @@ let wakuNode: LightNode | null = null;
 let healthListener: ((event: CustomEvent) => void) | null = null;
 let peerCountInterval: ReturnType<typeof setInterval> | null = null;
 
-export function getWakuNode(): LightNode | null {
-  return wakuNode;
-}
-
-export function getHealthListener(): ((event: CustomEvent) => void) | null {
-  return healthListener;
-}
-
 async function updatePeerCount(): Promise<void> {
   if (!wakuNode) return;
   try {
