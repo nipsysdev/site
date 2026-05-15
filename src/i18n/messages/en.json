@@ -73,8 +73,8 @@
         "errorLabel": "Error",
         "lastChecked": "Seen",
         "noStatusMessage": "No status message available",
-        "healthcheckPrefix": "Healthchecks are executed by",
-        "healthcheckSuffix": ". Which runs as a systemd service on some server.",
+        "healthcheckPrefix": "Healthchecks are performed by",
+        "healthcheckSuffix": ". Which runs every 5min as a systemd service on a VPS.",
         "dpulseSignsPrefix": "signs, and publishes the results which are then retrieved by this static site via",
         "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
         "status": {

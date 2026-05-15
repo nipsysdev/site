@@ -73,8 +73,8 @@
         "errorLabel": "Erreur",
         "lastChecked": "Vu",
         "noStatusMessage": "Aucun message de statut disponible",
-        "healthcheckPrefix": "Les vérifications de l'état des services sont exécutées par",
-        "healthcheckSuffix": ". Qui fonctionne en tant que service systemd sur un serveur.",
+        "healthcheckPrefix": "Les vérifications de l'état des services sont effectuées par",
+        "healthcheckSuffix": ". Qui est lancé toutes les 5min en tant que service systemd sur un VPS.",
         "dpulseSignsPrefix": "signe et publie les résultats qui sont ensuite récupérés par ce site statique via",
         "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
         "status": {
