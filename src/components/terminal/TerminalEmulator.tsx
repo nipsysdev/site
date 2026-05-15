@@ -1,3 +1,5 @@
+'use client';
+
 import { useStore } from '@nanostores/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
@@ -5,11 +7,18 @@ import {
   $terminalHistory,
   $terminalHistoryVisibleIdx,
   $terminalPromptRef,
+  initializeTerminal,
 } from '@/stores/terminal-store';
 import UnknownCmdOutput from '../cmd-outputs/UnknownCmdOutput';
 import TerminalPrompt, { type TerminalPromptRef } from './TerminalPrompt';
 
-export default function TerminalEmulator() {
+interface TerminalEmulatorProps {
+  initialCommand?: string;
+}
+
+export default function TerminalEmulator({
+  initialCommand = 'welcome',
+}: TerminalEmulatorProps) {
   const history = useStore($terminalHistory);
   const historyVisibleIdx = useStore($terminalHistoryVisibleIdx);
 
@@ -32,6 +41,12 @@ export default function TerminalEmulator() {
       }, 100);
     }
   }, [hasWindow]);
+
+  useEffect(() => {
+    if (hasWindow) {
+      initializeTerminal(initialCommand);
+    }
+  }, [hasWindow, initialCommand]);
 
   return (
     hasWindow && (
