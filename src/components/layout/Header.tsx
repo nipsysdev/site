@@ -8,7 +8,7 @@ import {
   useIsMobile,
 } from '@nipsys/lsd';
 import { MoonIcon, SunIcon } from '@phosphor-icons/react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { LangLabels } from '@/constants/lang';
 import { usePathname, useRouter } from '@/i18n/intl';
@@ -18,6 +18,7 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = useLocale();
+  const t = useTranslations('Header');
   const isDarkMode = useStore($isDarkMode);
   const isMobile = useIsMobile();
   const [activeLang, setActiveLang] = useState('en');
@@ -41,7 +42,7 @@ export default function Header() {
               router.replace(pathname, { locale: value });
             }
           }}
-          aria-label="Language selector"
+          aria-label={t('languageSelector')}
         >
           {Object.entries(LangLabels).map(([lang, label]) => (
             <ToggleGroupItem key={lang} value={lang}>
@@ -55,7 +56,7 @@ export default function Header() {
           size="sm"
           onClick={toggleTheme}
           aria-label={
-            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+            isDarkMode ? t('switchToLightMode') : t('switchToDarkMode')
           }
         >
           {isDarkMode ? (

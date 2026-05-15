@@ -34,6 +34,8 @@ import Header from './Header';
 
 export default function Sidenav({ children }: { children: React.ReactNode }) {
   const t = useTranslations('Pages');
+  const tSidebar = useTranslations('Sidebar');
+  const tStatus = useTranslations('Status');
   const pathname = usePathname();
   const connectionStatus = useStore($connectionStatus);
   const error = useStore($error);
@@ -73,7 +75,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
 
         <SidebarFooter>
           <SidebarGroup>
-            <SidebarGroupLabel>P2P Messaging</SidebarGroupLabel>
+            <SidebarGroupLabel>{tSidebar('p2pMessaging')}</SidebarGroupLabel>
             <SidebarGroupContent className="list-none">
               <SidebarMenuItem>
                 <SidebarMenuButton>
@@ -82,7 +84,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     className={`size-4 ${statusMeta.className}`}
                   />
                   <Typography variant="body3" className="flex-1">
-                    {statusMeta.text}
+                    {tStatus(statusMeta.textKey.split('.')[1])}
                   </Typography>
                   {peerCount > 0 && (
                     <>
@@ -111,7 +113,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
             </SidebarGroupContent>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>About this site</SidebarGroupLabel>
+            <SidebarGroupLabel>{tSidebar('aboutSite')}</SidebarGroupLabel>
             <SidebarGroupContent className="list-none">
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
@@ -120,8 +122,8 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <BracketsCurlyIcon weight="duotone" size="0.7rem" /> Check
-                    out its code
+                    <BracketsCurlyIcon weight="duotone" size="0.7rem" />{' '}
+                    {tSidebar('checkOutCode')}
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -132,7 +134,8 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <PaletteIcon weight="duotone" size="0.7rem" /> and its UI!
+                    <PaletteIcon weight="duotone" size="0.7rem" />{' '}
+                    {tSidebar('andItsUI')}
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
