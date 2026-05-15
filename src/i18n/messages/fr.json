@@ -66,7 +66,7 @@
       },
       "services": {
         "description": "Afficher l'état de mes services auto-hébergés",
-        "title": "Services que j'héberge avec fierté :",
+        "title": "Services que j'héberge avec fierté",
         "connectionStatus": "État de la connexion",
         "loading": "(Chargement...)",
         "waitingForHeartbeats": "En attente de heartbeats...",
