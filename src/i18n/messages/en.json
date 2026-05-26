@@ -56,6 +56,21 @@
     "gpgLabel": "GPG Fingerprint",
     "copyToast": "GPG fingerprint copied to clipboard"
   },
+  "Contact": {
+    "title": "Get in Touch",
+    "subtitle": "Find me on the web",
+    "links": {
+      "github": "GitHub",
+      "twitter": "Twitter/X",
+      "linkedin": "LinkedIn",
+      "bluesky": "BlueSky",
+      "matrix": "Matrix",
+      "email": "Email"
+    },
+    "copyToast": "Copied to clipboard",
+    "copyLabel": "Copy to clipboard",
+    "note": "Feel free to reach out for collaboration, questions, or just to say hi!"
+  },
   "Terminal": {
     "unknownCmdErr": "command not recognized",
     "noMatch": "no match",

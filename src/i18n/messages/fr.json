@@ -56,6 +56,21 @@
     "gpgLabel": "Empreinte GPG",
     "copyToast": "Empreinte GPG copiée dans le presse-papier"
   },
+  "Contact": {
+    "title": "Me contacter",
+    "subtitle": "Retrouvez-moi sur le web",
+    "links": {
+      "github": "GitHub",
+      "twitter": "Twitter/X",
+      "linkedin": "LinkedIn",
+      "bluesky": "BlueSky",
+      "matrix": "Matrix",
+      "email": "Courriel"
+    },
+    "copyToast": "Copié dans le presse-papier",
+    "copyLabel": "Copier dans le presse-papier",
+    "note": "N'hésitez pas à me contacter pour collaborer, poser des questions, ou juste pour dire salut !"
+  },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",
     "noMatch": "aucune correspondance",
