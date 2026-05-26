@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -17,9 +16,10 @@ import {
   TargetIcon,
 } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import profileImage from '@/assets/Pro-Hacked.png';
 import gpgFingerprint from '@/assets/gpg-fingerprint.json';
+import profileImage from '@/assets/Pro-Hacked.png';
 
 const GPG_FINGERPRINT = gpgFingerprint.fingerprint;
 
