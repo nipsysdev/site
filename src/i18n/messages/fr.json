@@ -29,10 +29,32 @@
     "switchToDarkMode": "Passer au mode nuit"
   },
   "Sidebar": {
-    "p2pMessaging": "Messagerie P2P",
+    "p2pMessaging": "Logos Delivery",
     "aboutSite": "À propos de ce site",
     "checkOutCode": "Voir son code",
     "andItsUI": "et sa lib UI !"
+  },
+  "AboutMe": {
+    "name": "Xav [nipsysdev]",
+    "tagline": "cypherpunk / développeur / défenseur de la souveraineté numérique",
+    "badges": {
+      "location": "France → Canada → Suisse",
+      "experience": "10+ ans à construire pour le web",
+      "focus": "Confidentialité, Décentralisation, FLOSS",
+      "goal": "Pentester en devenir"
+    },
+    "bio": {
+      "intro1": "Je m'appelle Xavier Saliniere — cypherpunk dans l'âme, je développe et j'expérimente pour un internet plus libre.",
+      "intro2": "Une simple question me motive : et si l'internet pouvait réellement être au service de ceux qui l'utilisent ?",
+      "para1": "J'ai commencé à coder à 14 ans, en bricolant des homebrews PSP dans ma chambre. Ce qui a commencé comme une curiosité d'adolescent s'est transformé en un voyage d'une décennie à travers le monde du développement web — depuis l'abandon de mes études à 21 ans pour rejoindre une startup, jusqu'à développer des plateformes de sécurité d'entreprise au Centre des Opérations de Bell Canada.",
+      "para2": "Mais la vraie histoire n'est pas dans les postes que j'ai occupé. Elle est dans les nuits blanches à expérimenter et à découvrir des systèmes et technologies alternatifs.",
+      "para3": "Plonger dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement m'extraire des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passioné par leurs alternatives.",
+      "para4": "Après 4 ans au Canada, je m'installe maintenant en Suisse — emportant avec moi ma passion pour les technologies décentralisées, \"permissionless\" et respectueuses de la vie privée.",
+      "para5": "Côté carrière, après 10 ans en développement web, je me forme pour transitionner vers la cybersécurité, avec un fort intérêt pour le pentesting.",
+      "current": "Ce que je fais actuellement : Développement d'AnyMaps et de son infrastructure décentralisée, contribution aux écosystèmes qui alimentent mes projets, formation en cybersécurité, et mes expérimentations routinières :)"
+    },
+    "gpgLabel": "Empreinte GPG",
+    "copyToast": "Empreinte GPG copiée dans le presse-papier"
   },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",
