@@ -17,7 +17,7 @@ import {
 } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import gpgFingerprint from '@/assets/gpg-fingerprint.json';
-import profileImage from '@/assets/Pro-Hacked.png';
+import profileImage from '@/assets/Pro-Hacked.webp';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 
 const GPG_FINGERPRINT = gpgFingerprint.fingerprint;
