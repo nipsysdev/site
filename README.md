@@ -59,6 +59,9 @@ elements.
 git clone https://github.com/nipsysdev/site.git
 cd site
 
+# Initialize submodules (for resume PDFs)
+git submodule update --init --recursive
+
 # Install dependencies
 pnpm install
 
@@ -91,6 +94,7 @@ The site uses a terminal emulator interface. Available commands:
 | ------------ | --------------------------------------- |
 | `welcome`    | Display welcome message                 |
 | `whoami`     | About me - bio, badges, GPG fingerprint |
+| `resume`     | View/download resume (EN/FR)            |
 | `contact`    | Contact information and social links    |
 | `status`     | Self-hosted services health status      |
 | `help`       | List available commands                 |

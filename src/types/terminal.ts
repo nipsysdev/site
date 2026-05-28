@@ -9,6 +9,7 @@ export enum Command {
   Status = 'status',
   Welcome = 'welcome',
   Whoami = 'whoami',
+  Resume = 'resume',
 }
 
 export interface CommandEntry {
