@@ -16,7 +16,8 @@
     "welcome": "welcome",
     "whoami": "whoami",
     "status": "status",
-    "contact": "contact"
+    "contact": "contact",
+    "resume": "resume"
   },
   "Status": {
     "connected": "Connected",
@@ -123,6 +124,15 @@
           "degraded": "Degraded",
           "down": "Down"
         }
+      },
+      "resume": {
+        "description": "View my resume/CV",
+        "title": "Resume",
+        "subtitle": "View and download my resume in PDF format",
+        "downloadEN": "Download (English)",
+        "downloadFR": "Download (French)",
+        "viewing": "Currently viewing",
+        "version": "version"
       }
     }
   }

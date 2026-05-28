@@ -16,7 +16,8 @@
     "welcome": "bienvenue",
     "whoami": "qui suis-je",
     "status": "statut",
-    "contact": "contact"
+    "contact": "contact",
+    "resume": "cv"
   },
   "Status": {
     "connected": "Connecté",
@@ -123,6 +124,15 @@
           "degraded": "Dégradé",
           "down": "H.S."
         }
+      },
+      "resume": {
+        "description": "Voir mon CV",
+        "title": "CV",
+        "subtitle": "Afficher et télécharger mon CV en format PDF",
+        "downloadEN": "Télécharger (Anglais)",
+        "downloadFR": "Télécharger (Français)",
+        "viewing": "Version",
+        "version": "actuellement affichée"
       }
     }
   }

@@ -1,0 +1,3 @@
+[submodule "external/resume"]
+	path = external/resume
+	url = git@github.com:nipsysdev/resume.git

@@ -49,3 +49,6 @@ next-env.d.ts
 .kilocode
 .playwright-mcp
 skills-lock.json
+
+# Resume (symlink to submodule)
+/public/resume
