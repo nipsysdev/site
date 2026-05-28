@@ -72,13 +72,13 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
             variant="body1"
             style={{ color: 'var(--lsd-text-secondary)' }}
           >
-            {statusMsg?.description || `${t('cmds.services.noStatusMessage')}`}
+            {statusMsg?.description || `${t('cmds.status.noStatusMessage')}`}
           </Typography>
 
           <div className="flex items-center justify-end gap-(--lsd-spacing-smaller) mt-(--lsd-spacing-large)">
             <RecordIcon weight="duotone" className="animate-pulse" />
             <Typography variant="body3">
-              {t('cmds.services.lastChecked')}{' '}
+              {t('cmds.status.lastChecked')}{' '}
               {dayjs(statusMsg.timestamp).fromNow()}
             </Typography>
           </div>
@@ -88,7 +88,7 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
   );
 }
 
-export default function ServicesOutput({ t }: CommandOutputProps) {
+export default function StatusOutput({ t }: CommandOutputProps) {
   const statusMessages = useStore($statusMessages);
   const isLoading = useStore($isLoading);
   const dayjs = useDayjs();
@@ -120,14 +120,19 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
 
   return (
     <div className="py-(--lsd-spacing-small)">
-      <Typography variant="body2">{t('cmds.services.title')}</Typography>
+      <div className="flex flex-col gap-(--lsd-spacing-smallest)">
+        <Typography variant="body1">{t('cmds.status.title')}</Typography>
+        <Typography variant="body2" color="secondary">
+          {t('cmds.status.subtitle')}
+        </Typography>
+      </div>
 
       {isWaitingForHeartbeats ? (
         <div className="flex items-center gap-(--lsd-spacing-small) mt-(--lsd-spacing-small)">
           <Typography variant="body1" color="secondary">
             {isLoading
-              ? t('cmds.services.loading')
-              : t('cmds.services.waitingForHeartbeats')}
+              ? t('cmds.status.loading')
+              : t('cmds.status.waitingForHeartbeats')}
           </Typography>
         </div>
       ) : (
@@ -149,7 +154,7 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
 
           <div className="flex flex-col space-y-(--lsd-spacing-smallest)">
             <Typography variant="body2" color="secondary">
-              {t('cmds.services.healthcheckPrefix')}{' '}
+              {t('cmds.status.healthcheckPrefix')}{' '}
               <Button
                 variant="link"
                 className="font-bold p-0! h-fit! text-sm!"
@@ -162,12 +167,12 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
                   dpulse
                 </Link>
               </Button>
-              {t('cmds.services.healthcheckSuffix')}
+              {t('cmds.status.healthcheckSuffix')}
             </Typography>
 
             <Typography variant="body2" color="secondary">
               <span className="font-bold">dpulse</span>{' '}
-              {t('cmds.services.dpulseSignsPrefix')}{' '}
+              {t('cmds.status.dpulseSignsPrefix')}{' '}
               <Button
                 variant="link"
                 className="font-bold p-0! text-sm! h-fit!"
@@ -180,7 +185,7 @@ export default function ServicesOutput({ t }: CommandOutputProps) {
                   Logos Delivery
                 </Link>
               </Button>
-              {t('cmds.services.logosDeliverySuffix')}
+              {t('cmds.status.logosDeliverySuffix')}
             </Typography>
           </div>
         </div>

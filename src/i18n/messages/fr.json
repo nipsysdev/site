@@ -15,7 +15,7 @@
   "Pages": {
     "welcome": "bienvenue",
     "whoami": "qui suis-je",
-    "services": "services",
+    "status": "statut",
     "contact": "contact"
   },
   "Status": {
@@ -104,9 +104,10 @@
       "whoami": {
         "description": "Permettez-moi de me présenter"
       },
-      "services": {
+      "status": {
         "description": "Afficher l'état de mes services auto-hébergés",
-        "title": "Services que j'héberge avec fierté",
+        "title": "Statut",
+        "subtitle": "Statut des services que je suis fier d'héberger",
         "connectionStatus": "État de la connexion",
         "loading": "(Chargement...)",
         "waitingForHeartbeats": "En attente de heartbeats...",

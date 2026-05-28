@@ -12,19 +12,19 @@ export const STATUS_META = {
   healthy: {
     variant: 'success' as const,
     icon: CheckCircleIcon,
-    textKey: 'cmds.services.status.healthy',
+    textKey: 'cmds.status.status.healthy',
     className: '',
   },
   degraded: {
     variant: 'warning' as const,
     icon: CircleNotchIcon,
-    textKey: 'cmds.services.status.degraded',
+    textKey: 'cmds.status.status.degraded',
     className: 'animate-spin',
   },
   down: {
     variant: 'destructive' as const,
     icon: XCircleIcon,
-    textKey: 'cmds.services.status.down',
+    textKey: 'cmds.status.status.down',
     className: '',
   },
 };

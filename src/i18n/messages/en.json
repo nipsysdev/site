@@ -15,7 +15,7 @@
   "Pages": {
     "welcome": "welcome",
     "whoami": "whoami",
-    "services": "services",
+    "status": "status",
     "contact": "contact"
   },
   "Status": {
@@ -104,9 +104,10 @@
       "whoami": {
         "description": "Allow me to introduce myself"
       },
-      "services": {
+      "status": {
         "description": "Display my self-hosted services status",
-        "title": "Services that I proudly self-host",
+        "title": "Status",
+        "subtitle": "Status of the services that I proudly self-host",
         "connectionStatus": "Connection Status",
         "loading": "(Loading...)",
         "waitingForHeartbeats": "Waiting for heartbeats...",

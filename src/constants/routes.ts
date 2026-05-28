@@ -1,6 +1,6 @@
 export const Routes = {
   welcome: '/',
   whoami: '/whoami',
-  services: '/services',
+  status: '/status',
   contact: '/contact',
 };
