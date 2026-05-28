@@ -107,6 +107,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Set up Node.js using mise
         uses: jdx/mise-action@v2
