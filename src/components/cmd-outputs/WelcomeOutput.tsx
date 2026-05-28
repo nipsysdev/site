@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from '@nipsys/lsd';
 import Image from 'next/image';
-import avatar from '@/assets/nipsys.png';
+import avatar from '@/assets/nipsys.webp';
 import { $scrollY } from '@/stores/terminal-store';
 import { Command, type CommandOutputProps } from '@/types/terminal';
 import CmdLink from '../terminal/CmdLink';
