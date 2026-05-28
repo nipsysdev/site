@@ -5,14 +5,14 @@ import type { RouteData } from '@/types/routing';
 import { Command } from '@/types/terminal';
 import { setPageMeta } from '@/utils/metadata-utils';
 
-interface ServicesPageProps {
+interface StatusPageProps {
   params: Promise<{ locale: string }>;
 }
 
 export const generateMetadata = async (routeData: RouteData) =>
-  await setPageMeta(routeData, 'services');
+  await setPageMeta(routeData, 'status');
 
-export default async function ServicesPage({ params }: ServicesPageProps) {
+export default async function StatusPage({ params }: StatusPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Terminal' });
 
@@ -20,11 +20,11 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
     <>
       <StaticOutput>
         <div>
-          <p>{t('cmds.services.title')}</p>
-          <p>{t('cmds.services.description')}</p>
+          <p>{t('cmds.status.title')}</p>
+          <p>{t('cmds.status.description')}</p>
         </div>
       </StaticOutput>
-      <TerminalEmulator initialCommand={Command.Services} />
+      <TerminalEmulator initialCommand={Command.Status} />
     </>
   );
 }

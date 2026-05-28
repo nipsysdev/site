@@ -16,16 +16,15 @@ import {
   TargetIcon,
 } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { toast } from 'sonner';
 import gpgFingerprint from '@/assets/gpg-fingerprint.json';
 import profileImage from '@/assets/Pro-Hacked.png';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 
 const GPG_FINGERPRINT = gpgFingerprint.fingerprint;
 
 export default function AboutMe() {
   const t = useTranslations('AboutMe');
-  const [copied, setCopied] = useState(false);
+  const { copyWithToast, isCopied } = useCopyToClipboard();
 
   const quickInfo = [
     { icon: MapPinIcon, textKey: 'badges.location' },
@@ -33,13 +32,6 @@ export default function AboutMe() {
     { icon: LockKeyIcon, textKey: 'badges.focus' },
     { icon: TargetIcon, textKey: 'badges.goal' },
   ];
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(GPG_FINGERPRINT);
-    setCopied(true);
-    toast.success(t('copyToast'));
-    setTimeout(() => setCopied(false), 200);
-  };
 
   return (
     <div className="flex flex-col gap-(--lsd-spacing-large) py-(--lsd-spacing-small)">
@@ -105,8 +97,12 @@ export default function AboutMe() {
           <Typography variant="label1" color="secondary">
             {t('gpgLabel')}
           </Typography>
-          <Button variant="ghost" size="square-sm" onClick={handleCopy}>
-            <CopyIcon weight={copied ? 'fill' : 'duotone'} size={14} />
+          <Button
+            variant="ghost"
+            size="square-sm"
+            onClick={() => copyWithToast(GPG_FINGERPRINT, t('copyToast'))}
+          >
+            <CopyIcon weight={isCopied() ? 'fill' : 'duotone'} size={14} />
           </Button>
         </div>
         <Typography variant="body3" color="secondary">
