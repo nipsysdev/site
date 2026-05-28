@@ -35,7 +35,7 @@
     "andItsUI": "et sa lib UI !"
   },
   "AboutMe": {
-    "name": "Xav [nipsysdev]",
+    "name": "Xav [nipsys]",
     "tagline": "cypherpunk / développeur / défenseur de la souveraineté numérique",
     "badges": {
       "location": "France → Canada → Suisse",
@@ -51,25 +51,27 @@
       "para3": "Plonger dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement m'extraire des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passioné par leurs alternatives.",
       "para4": "Après 4 ans au Canada, je m'installe maintenant en Suisse — emportant avec moi ma passion pour les technologies décentralisées, \"permissionless\" et respectueuses de la vie privée.",
       "para5": "Côté carrière, après 10 ans en développement web, je me forme pour transitionner vers la cybersécurité, avec un fort intérêt pour le pentesting.",
-      "current": "Ce que je fais actuellement : Développement d'AnyMaps et de son infrastructure décentralisée, contribution aux écosystèmes qui alimentent mes projets, formation en cybersécurité, et mes expérimentations routinières :)"
+      "current": "Ce que je fais actuellement : Me former en cybersécurité, développer AnyMaps et de son infrastructure décentralisée, contribuer aux écosystèmes qui alimentent mes projets, et mes expérimentations routinières :)"
     },
     "gpgLabel": "Empreinte GPG",
     "copyToast": "Empreinte GPG copiée dans le presse-papier"
   },
   "Contact": {
     "title": "Me contacter",
-    "subtitle": "Retrouvez-moi sur le web",
+    "subtitle": "N'hésitez pas à me contacter pour collaborer, poser des questions, ou juste pour dire salut !",
+    "socialSection": "Réseaux sociaux",
+    "directSection": "Contact direct",
     "links": {
       "github": "GitHub",
       "twitter": "Twitter/X",
       "linkedin": "LinkedIn",
       "bluesky": "BlueSky",
+      "telegram": "Telegram",
       "matrix": "Matrix",
       "email": "Courriel"
     },
     "copyToast": "Copié dans le presse-papier",
-    "copyLabel": "Copier dans le presse-papier",
-    "note": "N'hésitez pas à me contacter pour collaborer, poser des questions, ou juste pour dire salut !"
+    "copyLabel": "Copier dans le presse-papier"
   },
   "Terminal": {
     "unknownCmdErr": "commande non reconnue",

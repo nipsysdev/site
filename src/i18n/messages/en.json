@@ -35,7 +35,7 @@
     "andItsUI": "and its UI!"
   },
   "AboutMe": {
-    "name": "Xav [nipsysdev]",
+    "name": "Xav [nipsys]",
     "tagline": "cypherpunk / builder / digital sovereignty advocate",
     "badges": {
       "location": "France → Canada → Switzerland",
@@ -51,25 +51,27 @@
       "para3": "Diving into Linux, the FLOSS philosophy, self-hosting various services, and gradually extricating myself from the walled gardens of Big Tech. The more I learned about centralized systems and the organizations behind them, the more I developed a passion for their alternatives.",
       "para4": "After 4 years in Canada, I'm now heading to Switzerland — bringing my passion for decentralized, permissionless, and privacy-preserving technologies with me.",
       "para5": "Career-wise, following 10 years in web development, I'm working on shifting towards cybersecurity, with a strong interest in penetration testing.",
-      "current": "Currently focused on: building AnyMaps and its decentralized infrastructure, contributing to the ecosystems powering my work, getting into cybersecurity, and breaking things to see how they work :)"
+      "current": "Currently focused on: Getting into cybersecurity, building AnyMaps and its decentralized infrastructure, contributing to the ecosystems powering my work and breaking things to see how they work :)"
     },
     "gpgLabel": "GPG Fingerprint",
     "copyToast": "GPG fingerprint copied to clipboard"
   },
   "Contact": {
     "title": "Get in Touch",
-    "subtitle": "Find me on the web",
+    "subtitle": "Feel free to reach out for collaboration, questions, or just to say hi!",
+    "socialSection": "Social",
+    "directSection": "Direct Contact",
     "links": {
       "github": "GitHub",
       "twitter": "Twitter/X",
       "linkedin": "LinkedIn",
       "bluesky": "BlueSky",
+      "telegram": "Telegram",
       "matrix": "Matrix",
       "email": "Email"
     },
     "copyToast": "Copied to clipboard",
-    "copyLabel": "Copy to clipboard",
-    "note": "Feel free to reach out for collaboration, questions, or just to say hi!"
+    "copyLabel": "Copy to clipboard"
   },
   "Terminal": {
     "unknownCmdErr": "command not recognized",
