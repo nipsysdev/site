@@ -50,5 +50,5 @@ next-env.d.ts
 .playwright-mcp
 skills-lock.json
 
-# Resume (symlink to submodule)
+# Resume (copied from submodule at build time)
 /public/resume
