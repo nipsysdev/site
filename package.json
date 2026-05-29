@@ -15,10 +15,11 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "next dev --turbopack",
-    "dev-legacy": "next dev",
-    "build": "next build",
-    "export": "next build",
+    "copy-resume": "node scripts/copy-resume.js",
+    "dev": "pnpm copy-resume && next dev --turbopack",
+    "dev-legacy": "pnpm copy-resume && next dev",
+    "build": "pnpm copy-resume && next build",
+    "export": "pnpm copy-resume && next build",
     "analyze": "ANALYZE=true next build",
     "serve": "npx serve@latest out",
     "test:unit": "vitest run",
