@@ -1,19 +1,57 @@
 'use client';
 
-import { Badge, Button, Typography } from '@nipsys/lsd';
+import { Badge, Button, ScrollArea, Typography } from '@nipsys/lsd';
 import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { ResumeHtml } from './ResumeHtml';
 
 const RESUME_PATHS = {
-  en: '/resume/Xavier-SALINIERE_resume.EN.pdf',
-  fr: '/resume/Xavier-SALINIERE_resume.FR.pdf',
+  en: {
+    pdf: '/resume/Xavier-SALINIERE_resume.EN.pdf',
+    html: '/resume/Xavier-SALINIERE_resume.EN.html',
+  },
+  fr: {
+    pdf: '/resume/Xavier-SALINIERE_resume.FR.pdf',
+    html: '/resume/Xavier-SALINIERE_resume.FR.html',
+  },
 };
 
-export default function Resume() {
+interface ResumeProps {
+  htmlEn?: string;
+  htmlFr?: string;
+}
+
+async function fetchHtml(locale: 'en' | 'fr'): Promise<string> {
+  const response = await fetch(RESUME_PATHS[locale].html);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch resume HTML: ${response.status}`);
+  }
+  return response.text();
+}
+
+export default function Resume({ htmlEn, htmlFr }: ResumeProps) {
   const locale = useLocale();
   const t = useTranslations('Terminal.cmds.resume');
 
   const currentLocale = locale === 'fr' ? 'fr' : 'en';
-  const currentPdfPath = RESUME_PATHS[currentLocale];
+
+  const [html, setHtml] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const initialHtml = currentLocale === 'fr' ? htmlFr : htmlEn;
+    if (initialHtml) {
+      setHtml(initialHtml);
+      return;
+    }
+
+    fetchHtml(currentLocale)
+      .then(setHtml)
+      .catch((err) => {
+        console.error('Failed to load resume:', err);
+        setError('Failed to load resume');
+      });
+  }, [currentLocale, htmlEn, htmlFr]);
 
   return (
     <div className="flex flex-col gap-(--lsd-spacing-large) py-(--lsd-spacing-small)">
@@ -32,24 +70,32 @@ export default function Resume() {
 
       <div className="flex flex-wrap gap-(--lsd-spacing-smaller)">
         <Button variant="outlined" size="sm" asChild>
-          <a href={RESUME_PATHS.en} download>
+          <a href={RESUME_PATHS.en.pdf} download>
             {t('downloadEN')}
           </a>
         </Button>
         <Button variant="outlined" size="sm" asChild>
-          <a href={RESUME_PATHS.fr} download>
+          <a href={RESUME_PATHS.fr.pdf} download>
             {t('downloadFR')}
           </a>
         </Button>
       </div>
 
       <div className="flex flex-col gap-(--lsd-spacing-base)">
-        <div className="w-full h-[600px] border border-(--lsd-color-border) rounded-(--lsd-shape-sm) overflow-hidden">
-          <iframe
-            src={currentPdfPath}
-            className="w-full h-full"
-            title="Resume PDF"
-          />
+        <div className="w-full max-w-6xl h-[600px] border border-(--lsd-color-border) rounded-(--lsd-shape-sm) overflow-hidden">
+          <ScrollArea className="h-full">
+            {error ? (
+              <div className="p-4 text-center text-(--lsd-color-text-error)">
+                {error}
+              </div>
+            ) : html ? (
+              <ResumeHtml htmlContent={html} />
+            ) : (
+              <div className="p-4 text-center text-(--lsd-color-text-secondary)">
+                Loading...
+              </div>
+            )}
+          </ScrollArea>
         </div>
       </div>
     </div>
