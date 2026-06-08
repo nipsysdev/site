@@ -129,8 +129,8 @@
         "description": "View my resume/CV",
         "title": "Resume",
         "subtitle": "View and download my resume in PDF format",
-        "downloadEN": "Download (English)",
-        "downloadFR": "Download (French)",
+        "downloadEN": "Download English PDF",
+        "downloadFR": "Download French PDF",
         "viewing": "Currently viewing",
         "version": "version"
       }

@@ -129,8 +129,8 @@
         "description": "Voir mon CV",
         "title": "CV",
         "subtitle": "Afficher et télécharger mon CV en format PDF",
-        "downloadEN": "Télécharger (Anglais)",
-        "downloadFR": "Télécharger (Français)",
+        "downloadEN": "Télécharger le PDF en Anglais",
+        "downloadFR": "Télécharger le PDF Français",
         "viewing": "Version",
         "version": "actuellement affichée"
       }
