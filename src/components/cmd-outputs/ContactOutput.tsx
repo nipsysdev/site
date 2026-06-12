@@ -8,6 +8,7 @@ import {
   EnvelopeIcon,
   GithubLogoIcon,
   type IconWeight,
+  InstagramLogoIcon,
   LinkedinLogoIcon,
   PaperPlaneTiltIcon,
   TwitterLogoIcon,
@@ -59,6 +60,12 @@ export default function ContactOutput() {
       labelKey: 'bluesky',
       href: 'https://bsky.app/profile/nipsys.bsky.social',
       displayText: '@nipsys.bsky.social',
+    },
+    {
+      icon: InstagramLogoIcon,
+      labelKey: 'pixelfed',
+      href: 'https://pixelfed.social/xaviers',
+      displayText: 'xaviers',
     },
     {
       icon: LinkedinLogoIcon,

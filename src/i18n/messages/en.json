@@ -70,7 +70,8 @@
       "bluesky": "BlueSky",
       "telegram": "Telegram",
       "matrix": "Matrix",
-      "email": "Email"
+      "email": "Email",
+      "pixelfed": "Pixelfed"
     },
     "copyToast": "Copied to clipboard",
     "copyLabel": "Copy to clipboard"
