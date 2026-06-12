@@ -93,7 +93,7 @@
         "description": "Afficher la liste des commandes"
       },
       "welcome": {
-        "description": "Afficher le message d'introduction"
+        "description": "Afficher le message de bienvenue"
       },
       "whoami": {
         "description": "Permettez-moi de me présenter"
