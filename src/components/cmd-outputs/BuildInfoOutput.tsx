@@ -1,22 +1,22 @@
-import type { CommandOutputProps } from '@/types/terminal';
+import { useTranslations } from 'next-intl';
 
-export default function BuildInfoOutput({ t }: CommandOutputProps) {
+export default function BuildInfoOutput() {
+  const t = useTranslations('BuildInfo');
   const buildTimestamp = process.env.BUILD_TIMESTAMP;
   const ipnsHash = process.env.IPNS_HASH;
 
   return (
     <div className="text-sm">
-      <div className="mb-2">{t('cmds.build-info.title')}</div>
+      <div className="mb-2">{t('title')}</div>
       <div className="space-y-1">
         <div>
-          <span>{t('cmds.build-info.timeLabel')}</span>{' '}
+          <span>{t('timeLabel')}</span>{' '}
           {buildTimestamp
             ? new Date(buildTimestamp).toLocaleString()
-            : t('cmds.build-info.unknown')}
+            : t('unknown')}
         </div>
         <div>
-          <span>{t('cmds.build-info.ipnsLabel')}</span>{' '}
-          {ipnsHash || t('cmds.build-info.notConfigured')}
+          <span>{t('ipnsLabel')}</span> {ipnsHash || t('notConfigured')}
         </div>
       </div>
     </div>

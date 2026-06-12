@@ -13,8 +13,12 @@ import {
 } from './constants';
 import { scheduleRetry } from './retry-manager';
 import { $connectionStatus, $peerCount } from './stores';
-import { getDecoder, setupFilterSubscription } from './waku-filter-client';
-import { queryStoreHistory } from './waku-store-client';
+import {
+  getDecoder,
+  getFeedDecoder,
+  setupFilterSubscription,
+} from './waku-filter-client';
+import { queryFeedHistory, queryStoreHistory } from './waku-store-client';
 
 let wakuNode: LightNode | null = null;
 let healthListener: ((event: CustomEvent) => void) | null = null;
@@ -81,12 +85,24 @@ export async function cleanup(): Promise<void> {
   }
 
   const decoder = getDecoder();
-  if (wakuNode && decoder) {
-    try {
-      await wakuNode.filter.unsubscribe([decoder]);
+  const feedDecoder = getFeedDecoder();
+  if (wakuNode) {
+    if (decoder) {
+      try {
+        await wakuNode.filter.unsubscribe([decoder]);
+      } catch (error) {
+        console.warn('[dpulse] Failed to unsubscribe from Filter:', error);
+      }
+    }
+    if (feedDecoder) {
+      try {
+        await wakuNode.filter.unsubscribe([feedDecoder]);
+      } catch (error) {
+        console.warn('[dpulse] Failed to unsubscribe from Feed Filter:', error);
+      }
+    }
+    if (decoder || feedDecoder) {
       console.log('[dpulse] Unsubscribed from Filter');
-    } catch (error) {
-      console.warn('[dpulse] Failed to unsubscribe from Filter:', error);
     }
   }
 
@@ -114,12 +130,16 @@ export async function createAndStartNode(): Promise<LightNode> {
   await waitForPeersWithRetry(node);
 
   console.log(
-    '[dpulse] Starting Store query and Filter subscription in parallel...',
+    '[dpulse] Starting Store queries and Filter subscription in parallel...',
   );
 
-  await Promise.all([queryStoreHistory(node), setupFilterSubscription(node)]);
+  await Promise.all([
+    queryStoreHistory(node),
+    queryFeedHistory(node),
+    setupFilterSubscription(node),
+  ]);
 
-  console.log('[dpulse] Store query and Filter subscription complete');
+  console.log('[dpulse] Store queries and Filter subscription complete');
   wakuNode = node;
   $connectionStatus.set('connected');
   startPeerCountUpdates();

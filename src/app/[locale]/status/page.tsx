@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import StatusOutput from '@/components/cmd-outputs/StatusOutput';
 import StaticOutput from '@/components/StaticOutput';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
 import type { RouteData } from '@/types/routing';
@@ -14,15 +15,12 @@ export const generateMetadata = async (routeData: RouteData) =>
 
 export default async function StatusPage({ params }: StatusPageProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'Terminal' });
+  const _t = await getTranslations({ locale, namespace: 'Terminal' });
 
   return (
     <>
       <StaticOutput>
-        <div>
-          <p>{t('cmds.status.title')}</p>
-          <p>{t('cmds.status.description')}</p>
-        </div>
+        <StatusOutput />
       </StaticOutput>
       <TerminalEmulator initialCommand={Command.Status} />
     </>

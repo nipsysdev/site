@@ -1,4 +1,4 @@
-import Contact from '@/components/contact/Contact';
+import ContactOutput from '@/components/cmd-outputs/ContactOutput';
 import StaticOutput from '@/components/StaticOutput';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
 import type { RouteData } from '@/types/routing';
@@ -17,7 +17,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
   return (
     <>
       <StaticOutput>
-        <Contact />
+        <ContactOutput />
       </StaticOutput>
       <TerminalEmulator initialCommand={Command.Contact} />
     </>

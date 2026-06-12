@@ -1,5 +1,6 @@
 import BuildInfoOutput from '@/components/cmd-outputs/BuildInfoOutput';
 import ContactOutput from '@/components/cmd-outputs/ContactOutput';
+import GalleryOutput from '@/components/cmd-outputs/GalleryOutput';
 import HelpOutput from '@/components/cmd-outputs/HelpOutput';
 import ResumeOutput from '@/components/cmd-outputs/ResumeOutput';
 import StatusOutput from '@/components/cmd-outputs/StatusOutput';
@@ -31,6 +32,10 @@ export const Commands: CommandInfo[] = [
   {
     name: Command.Contact,
     output: ContactOutput,
+  },
+  {
+    name: Command.Gallery,
+    output: GalleryOutput,
   },
   {
     name: Command.Clear,

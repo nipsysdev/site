@@ -15,11 +15,12 @@
   "Pages": {
     "welcome": "bienvenue",
     "whoami": "qui suis-je",
+    "gallery": "galerie",
     "status": "statut",
     "contact": "contact",
     "resume": "cv"
   },
-  "Status": {
+  "logosDelivery": {
     "connected": "Connecté",
     "connecting": "Connexion...",
     "disconnected": "Déconnecté"
@@ -37,10 +38,10 @@
   },
   "AboutMe": {
     "name": "Xav [nipsys]",
-    "tagline": "cypherpunk / développeur / défenseur de la souveraineté numérique",
+    "tagline": "cypherpunk / développeur / militant pour la souveraineté numérique",
     "badges": {
       "location": "France → Canada → Suisse",
-      "experience": "10+ ans à construire pour le web",
+      "experience": "10+ ans à construire sur la toile",
       "focus": "Confidentialité, Décentralisation, FLOSS",
       "goal": "Pentester en devenir"
     },
@@ -49,10 +50,10 @@
       "intro2": "Une simple question me motive : et si l'internet pouvait réellement être au service de ceux qui l'utilisent ?",
       "para1": "J'ai commencé à coder à 14 ans, en bricolant des homebrews PSP dans ma chambre. Ce qui a commencé comme une curiosité d'adolescent s'est transformé en un voyage d'une décennie à travers le monde du développement web — depuis l'abandon de mes études à 21 ans pour rejoindre une startup, jusqu'à développer des plateformes de sécurité d'entreprise au Centre des Opérations de Bell Canada.",
       "para2": "Mais la vraie histoire n'est pas dans les postes que j'ai occupé. Elle est dans les nuits blanches à expérimenter et à découvrir des systèmes et technologies alternatifs.",
-      "para3": "Plonger dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement m'extraire des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passioné par leurs alternatives.",
+      "para3": "Je me suis plongé dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement je me suis extrait des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passioné par leurs alternatives.",
       "para4": "Après 4 ans au Canada, je m'installe maintenant en Suisse — emportant avec moi ma passion pour les technologies décentralisées, \"permissionless\" et respectueuses de la vie privée.",
       "para5": "Côté carrière, après 10 ans en développement web, je me forme pour transitionner vers la cybersécurité, avec un fort intérêt pour le pentesting.",
-      "current": "Ce que je fais actuellement : Me former en cybersécurité, développer AnyMaps et de son infrastructure décentralisée, contribuer aux écosystèmes qui alimentent mes projets, et mes expérimentations routinières :)"
+      "current": "Ce que je fais actuellement : Me former en cybersécurité, développer AnyMaps et son infrastructure décentralisée, contribuer aux écosystèmes qui alimentent mes projets, et mes expérimentations routinières :)"
     },
     "gpgLabel": "Empreinte GPG",
     "copyToast": "Empreinte GPG copiée dans le presse-papier"
@@ -80,12 +81,7 @@
     "visitor": "visiteur",
     "cmds": {
       "build-info": {
-        "description": "Afficher la date du build et les informations de déploiement",
-        "title": "Informations du build",
-        "timeLabel": "Date du build :",
-        "ipnsLabel": "Nom IPNS :",
-        "unknown": "Inconnu",
-        "notConfigured": "Non configuré"
+        "description": "Afficher la date du build et les informations de déploiement"
       },
       "clear": {
         "description": "Effacer l'écran du terminal"
@@ -97,43 +93,71 @@
         "description": "Afficher la liste des commandes"
       },
       "welcome": {
-        "description": "Afficher le message d'introduction",
-        "welcome": "Hey salut, je suis <name>Xav</name>! Bienvenue dans mon pti chez moi en plein cyberspace :)",
-        "site_intro_1": "Ce site peut être parcouru en cliquant sur les liens présents dans la navigation latérale.",
-        "site_intro_2": "Ou, pour une expérience CLI... Commencez en cliquant sur <cmd></cmd>"
+        "description": "Afficher le message d'introduction"
       },
       "whoami": {
         "description": "Permettez-moi de me présenter"
       },
+      "gallery": {
+        "description": "Voir les dernières photos que j'ai publiées sur Pixelfed"
+      },
       "status": {
-        "description": "Afficher l'état de mes services auto-hébergés",
-        "title": "Statut",
-        "subtitle": "Statut des services que je suis fier d'héberger",
-        "connectionStatus": "État de la connexion",
-        "loading": "(Chargement...)",
-        "waitingForHeartbeats": "En attente de heartbeats...",
-        "errorLabel": "Erreur",
-        "lastChecked": "Vu",
-        "noStatusMessage": "Aucun message de statut disponible",
-        "healthcheckPrefix": "Les vérifications de l'état des services sont effectuées par",
-        "healthcheckSuffix": ". Qui est lancé toutes les 5min en tant que service systemd sur un VPS.",
-        "dpulseSignsPrefix": "signe et publie les résultats qui sont ensuite récupérés par ce site statique via",
-        "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
-        "status": {
-          "healthy": "Stable",
-          "degraded": "Dégradé",
-          "down": "H.S."
-        }
+        "description": "Afficher l'état de mes services auto-hébergés"
       },
       "resume": {
-        "description": "Voir mon CV",
-        "title": "CV",
-        "subtitle": "Afficher et télécharger mon CV en format PDF",
-        "downloadEN": "Télécharger le PDF en Anglais",
-        "downloadFR": "Télécharger le PDF Français",
-        "viewing": "Version",
-        "version": "actuellement affichée"
+        "description": "Voir mon CV"
       }
     }
+  },
+  "Welcome": {
+    "welcome": "Salut, je suis <name>Xav</name>! Bienvenue dans mon petit chez moi en plein cyberspace :)",
+    "siteIntro1": "Ce site peut être parcouru en cliquant sur les liens dans la navigation latérale.",
+    "siteIntro2": "Ou, pour une expérience CLI... Commencez avec <cmd></cmd>"
+  },
+  "BuildInfo": {
+    "title": "Informations du build",
+    "timeLabel": "Date du build :",
+    "ipnsLabel": "Nom IPNS :",
+    "unknown": "Inconnu",
+    "notConfigured": "Non configuré"
+  },
+  "Status": {
+    "title": "Statut",
+    "subtitle": "État des services que je suis fier d'auto-héberger",
+    "connectionStatus": "État de la connexion",
+    "loading": "Connexion à Logos Delivery...",
+    "waitingForHeartbeats": "En attente de heartbeats...",
+    "errorLabel": "Erreur",
+    "lastChecked": "Vu",
+    "noStatusMessage": "Aucun message de statut disponible",
+    "healthcheckPrefix": "Les vérifications de l'état des services sont effectuées par",
+    "healthcheckSuffix": ". Qui tourne en tant que service systemd sur un VPS.",
+    "dpulseSignsPrefix": "signe et publie les résultats qui sont ensuite récupérés par ce site statique via",
+    "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
+    "status": {
+      "healthy": "Stable",
+      "degraded": "Dégradé",
+      "down": "H.S."
+    }
+  },
+  "Resume": {
+    "title": "CV",
+    "subtitle": "Afficher et télécharger mon CV en format PDF",
+    "downloadEN": "Télécharger le PDF en anglais",
+    "downloadFR": "Télécharger le PDF en français",
+    "viewing": "Version",
+    "version": "actuellement affichée"
+  },
+  "Gallery": {
+    "title": "Galerie",
+    "subtitle": "Voici les dernières photos que j'ai publiées sur Pixelfed",
+    "loading": "Connexion à Logos Delivery...",
+    "notFound": "Aucune publication trouvé.",
+    "waitingForFeed": "En attente du flux de publication...",
+    "viewOnPixelfed": "Voir sur Pixelfed",
+    "feedPrefix": "Le flux Pixelfed est fourni par",
+    "feedSuffix": ". Qui tourne en tant que service systemd sur un VPS.",
+    "dpulseSignsPrefix": "récupère, signe et publie le flux qui est ensuite récupéré par ce site statique via",
+    "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure."
   }
 }

@@ -1,5 +1,6 @@
 import type { LightNode } from '@waku/sdk';
 import { DPULSE_CONFIG, STORE_HISTORY_HOURS } from './constants';
+import { processFeedBatch } from './feed-processor';
 import { processMessagePayload } from './message-processor';
 
 export async function queryStoreHistory(node: LightNode): Promise<number> {
@@ -53,6 +54,61 @@ export async function queryStoreHistory(node: LightNode): Promise<number> {
     return messageCount;
   } catch (error) {
     console.error('[dpulse] Store query failed:', error);
+    return 0;
+  }
+}
+
+export async function queryFeedHistory(node: LightNode): Promise<number> {
+  const feedStoreDecoder = node.createDecoder({
+    contentTopic: DPULSE_CONFIG.feedContentTopic,
+  });
+
+  const now = new Date();
+  const startTime = new Date(now.getTime() - STORE_HISTORY_HOURS * 3600000);
+
+  console.log(
+    `[dpulse] Querying Store for feed messages from ${startTime.toISOString()} to ${now.toISOString()}`,
+  );
+
+  const decodePromises: Promise<boolean>[] = [];
+
+  try {
+    await node.store.queryWithOrderedCallback(
+      [feedStoreDecoder],
+      (wakuMessage) => {
+        const payload = wakuMessage.payload;
+        if (!payload || payload.length === 0) {
+          return false;
+        }
+
+        if (wakuMessage.timestamp) {
+          const msgTime = wakuMessage.timestamp;
+          if (msgTime < startTime || msgTime > now) {
+            return false;
+          }
+        }
+
+        decodePromises.push(processFeedBatch(payload, 'store'));
+
+        return false;
+      },
+      {
+        paginationForward: false,
+        timeStart: startTime,
+        timeEnd: now,
+      },
+    );
+
+    const results = await Promise.all(decodePromises);
+    const batchCount = results.filter(Boolean).length;
+
+    console.log(
+      `[dpulse] Feed store query complete, processed ${batchCount} feed batches`,
+    );
+
+    return batchCount;
+  } catch (error) {
+    console.error('[dpulse] Feed store query failed:', error);
     return 0;
   }
 }

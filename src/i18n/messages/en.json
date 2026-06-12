@@ -15,11 +15,12 @@
   "Pages": {
     "welcome": "welcome",
     "whoami": "whoami",
+    "gallery": "gallery",
     "status": "status",
     "contact": "contact",
     "resume": "resume"
   },
-  "Status": {
+  "logosDelivery": {
     "connected": "Connected",
     "connecting": "Connecting...",
     "disconnected": "Disconnected"
@@ -80,12 +81,7 @@
     "visitor": "visitor",
     "cmds": {
       "build-info": {
-        "description": "Show build timestamp and deployment info",
-        "title": "Build Information",
-        "timeLabel": "Build Time:",
-        "ipnsLabel": "IPNS Name:",
-        "unknown": "Unknown",
-        "notConfigured": "Not configured"
+        "description": "Show build timestamp and deployment info"
       },
       "clear": {
         "description": "Clear the terminal screen"
@@ -97,43 +93,71 @@
         "description": "Print list of commands"
       },
       "welcome": {
-        "description": "Print welcome message",
-        "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
-        "site_intro_1": "This site can be browsed by clicking on the links in the side navigation.",
-        "site_intro_2": "Or, for a CLI experience... Get started with <cmd></cmd>"
+        "description": "Print welcome message"
       },
       "whoami": {
         "description": "Allow me to introduce myself"
       },
+      "gallery": {
+        "description": "View the last pictures I posted on Pixelfed"
+      },
       "status": {
-        "description": "Display my self-hosted services status",
-        "title": "Status",
-        "subtitle": "Status of the services that I proudly self-host",
-        "connectionStatus": "Connection Status",
-        "loading": "(Loading...)",
-        "waitingForHeartbeats": "Waiting for heartbeats...",
-        "errorLabel": "Error",
-        "lastChecked": "Seen",
-        "noStatusMessage": "No status message available",
-        "healthcheckPrefix": "Healthchecks are performed by",
-        "healthcheckSuffix": ". Which runs every 5min as a systemd service on a VPS.",
-        "dpulseSignsPrefix": "signs, and publishes the results which are then retrieved by this static site via",
-        "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
-        "status": {
-          "healthy": "Stable",
-          "degraded": "Degraded",
-          "down": "Down"
-        }
+        "description": "Display my self-hosted services status"
       },
       "resume": {
-        "description": "View my resume/CV",
-        "title": "Resume",
-        "subtitle": "View and download my resume in PDF format",
-        "downloadEN": "Download English PDF",
-        "downloadFR": "Download French PDF",
-        "viewing": "Currently viewing",
-        "version": "version"
+        "description": "View my resume/CV"
       }
     }
+  },
+  "Welcome": {
+    "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
+    "siteIntro1": "This site can be browsed by clicking on the links in the side navigation.",
+    "siteIntro2": "Or, for a CLI experience... Get started with <cmd></cmd>"
+  },
+  "BuildInfo": {
+    "title": "Build Information",
+    "timeLabel": "Build Time:",
+    "ipnsLabel": "IPNS Name:",
+    "unknown": "Unknown",
+    "notConfigured": "Not configured"
+  },
+  "Status": {
+    "title": "Status",
+    "subtitle": "Status of the services that I proudly self-host",
+    "connectionStatus": "Connection Status",
+    "loading": "Connecting to Logos Delivery...",
+    "waitingForHeartbeats": "Waiting for heartbeats...",
+    "errorLabel": "Error",
+    "lastChecked": "Seen",
+    "noStatusMessage": "No status message available",
+    "healthcheckPrefix": "Healthchecks are performed by",
+    "healthcheckSuffix": ". Which runs as a systemd service on a VPS.",
+    "dpulseSignsPrefix": "signs, and publishes the results which are then retrieved by this static site via",
+    "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
+    "status": {
+      "healthy": "Stable",
+      "degraded": "Degraded",
+      "down": "Down"
+    }
+  },
+  "Resume": {
+    "title": "Resume",
+    "subtitle": "View and download my resume in PDF format",
+    "downloadEN": "Download English PDF",
+    "downloadFR": "Download French PDF",
+    "viewing": "Currently viewing",
+    "version": "version"
+  },
+  "Gallery": {
+    "title": "Gallery",
+    "subtitle": "Here are the most recent pictures I posted on Pixelfed",
+    "loading": "Connecting to Logos Delivery...",
+    "notFound": "No posts found.",
+    "waitingForFeed": "Waiting for feed entries...",
+    "viewOnPixelfed": "View on Pixelfed",
+    "feedPrefix": "Pixelfed feed is provided by",
+    "feedSuffix": ". Which runs as a systemd service on a VPS.",
+    "dpulseSignsPrefix": "retrieves, signs, and publishes the feed which is then retrieved by this static site via",
+    "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network."
   }
 }
