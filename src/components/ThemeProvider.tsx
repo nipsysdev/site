@@ -1,7 +1,6 @@
 'use client';
 import { useStore } from '@nanostores/react';
-import { useEffect, useState } from 'react';
-import { initWaku } from '@/lib/dpulse/manager';
+import { useEffect } from 'react';
 import { $isDarkMode } from '@/stores/theme-store';
 
 export default function ThemeProvider({
@@ -10,14 +9,6 @@ export default function ThemeProvider({
   children: React.ReactNode;
 }) {
   const isDarkMode = useStore($isDarkMode);
-  const [wakuInitialized, setWakuInitialized] = useState(false);
-
-  useEffect(() => {
-    if (!wakuInitialized) {
-      setWakuInitialized(true);
-      initWaku();
-    }
-  }, [wakuInitialized]);
 
   useEffect(() => {
     const root = document.documentElement;

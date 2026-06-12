@@ -29,20 +29,19 @@ import { Routes } from '@/constants/routes';
 import { Link, usePathname } from '@/i18n/intl';
 import { $connectionStatus, $error, $peerCount } from '@/lib/dpulse/stores';
 import { getConnectionMeta } from '@/lib/dpulse/utils/status';
-import { $scrollY, $terminalPromptRef } from '@/stores/terminal-store';
+import { $scrollY } from '@/stores/terminal-store';
 import Header from './Header';
 
 export default function Sidenav({ children }: { children: React.ReactNode }) {
   const t = useTranslations('Pages');
   const tSidebar = useTranslations('Sidebar');
-  const tStatus = useTranslations('Status');
+  const tDelivery = useTranslations('logosDelivery');
   const pathname = usePathname();
   const connectionStatus = useStore($connectionStatus);
   const error = useStore($error);
   const peerCount = useStore($peerCount);
 
   const activePath = pathname === '/' ? pathname : pathname.replace(/\/+$/, '');
-  const terminalPromptRef = useStore($terminalPromptRef);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     $scrollY.set(e.currentTarget.scrollTop);
@@ -84,7 +83,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
                     className={`size-4 ${statusMeta.className}`}
                   />
                   <Typography variant="body3" className="flex-1">
-                    {tStatus(statusMeta.textKey.split('.')[1])}
+                    {tDelivery(statusMeta.textKey.split('.')[1])}
                   </Typography>
                   {peerCount > 0 && (
                     <>
@@ -150,10 +149,7 @@ export default function Sidenav({ children }: { children: React.ReactNode }) {
             <Header />
           </div>
           <Card className="flex-auto overflow-hidden">
-            <CardContent
-              className="h-full"
-              onClick={() => terminalPromptRef?.current?.focus()}
-            >
+            <CardContent className="h-full">
               <ScrollArea className="h-full" onScroll={handleScroll}>
                 <div className="size-full">{children}</div>
               </ScrollArea>

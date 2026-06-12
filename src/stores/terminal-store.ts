@@ -130,7 +130,6 @@ export function setNextHistoryEntry() {
 export function autocomplete() {
   const input = $terminalInput.get();
   const matchedCmds = Commands.map((cmd) => cmd.name).filter((cmd) => {
-    console.log(cmd);
     return cmd.startsWith(input);
   });
   if (matchedCmds.length === 1) {

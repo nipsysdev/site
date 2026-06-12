@@ -112,7 +112,7 @@ export async function validateAndDecodeStatusMessage(
     const isValid = await verifyMessage(payloadBytes, signature, publicKey);
 
     if (!isValid) {
-      console.error(
+      console.warn(
         'StatusMessage verification failed: invalid signature for',
         message.serviceName,
       );

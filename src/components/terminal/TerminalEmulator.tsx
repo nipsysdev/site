@@ -48,6 +48,16 @@ export default function TerminalEmulator({
     }
   }, [hasWindow, initialCommand]);
 
+  const focusTerminal = (target: HTMLElement) => {
+    if (
+      !target.closest(
+        '[data-prevent-terminal-focus],[data-slot="dialog-overlay"],[data-radix-popper-content-wrapper]',
+      )
+    ) {
+      mainPrompt.current?.focus();
+    }
+  };
+
   return (
     hasWindow && (
       <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize)">
@@ -56,14 +66,19 @@ export default function TerminalEmulator({
           role="button"
           tabIndex={0}
           className="flex size-full cursor-default flex-col"
-          onKeyDown={() => {}}
-          onClick={() => mainPrompt.current?.focus()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              mainPrompt.current?.focus();
+            }
+          }}
+          onClick={(e) => focusTerminal(e.target as HTMLElement)}
         >
           {history.slice(historyVisibleIdx).map((entry) => (
             <div key={entry.timestamp} className="mb-1">
               <TerminalPrompt i18n={t} entry={entry} />
               {entry.output ? (
-                <entry.output entry={entry} t={t} />
+                <entry.output entry={entry} />
               ) : (
                 entry.cmdName && <UnknownCmdOutput cmdName={entry.cmdName} />
               )}

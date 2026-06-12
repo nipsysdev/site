@@ -13,13 +13,13 @@ import {
 import { RecordIcon } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useDayjs } from '@/hooks/useDayjs';
 import { useIcon } from '@/hooks/useIcon';
 import { $isLoading, $statusMessages } from '@/lib/dpulse/stores';
 import type { HealthStatus, ServiceStatus } from '@/lib/dpulse/types';
 import { getStatusMeta } from '@/lib/dpulse/utils/status';
-import type { CommandOutputProps } from '@/types/terminal';
 
 interface ServiceCardProps {
   statusMsg: ServiceStatus;
@@ -36,7 +36,7 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
   const { blobUrl: iconBlobUrl } = useIcon(iconCid);
 
   return (
-    <Card>
+    <Card data-prevent-terminal-focus>
       <CardHeader>
         <div className="flex items-center justify-between gap-(--lsd-spacing-small)">
           <CardTitle className="flex items-center gap-(--lsd-spacing-small)">
@@ -72,14 +72,13 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
             variant="body1"
             style={{ color: 'var(--lsd-text-secondary)' }}
           >
-            {statusMsg?.description || `${t('cmds.status.noStatusMessage')}`}
+            {statusMsg?.description || `${t('noStatusMessage')}`}
           </Typography>
 
           <div className="flex items-center justify-end gap-(--lsd-spacing-smaller) mt-(--lsd-spacing-large)">
             <RecordIcon weight="duotone" className="animate-pulse" />
             <Typography variant="body3">
-              {t('cmds.status.lastChecked')}{' '}
-              {dayjs(statusMsg.timestamp).fromNow()}
+              {t('lastChecked')} {dayjs(statusMsg.timestamp).fromNow()}
             </Typography>
           </div>
         </div>
@@ -88,7 +87,8 @@ function ServiceCard({ statusMsg, t, dayjs }: ServiceCardProps) {
   );
 }
 
-export default function StatusOutput({ t }: CommandOutputProps) {
+export default function StatusOutput() {
+  const t = useTranslations('Status');
   const statusMessages = useStore($statusMessages);
   const isLoading = useStore($isLoading);
   const dayjs = useDayjs();
@@ -121,18 +121,16 @@ export default function StatusOutput({ t }: CommandOutputProps) {
   return (
     <div className="py-(--lsd-spacing-small)">
       <div className="flex flex-col gap-(--lsd-spacing-smallest)">
-        <Typography variant="body1">{t('cmds.status.title')}</Typography>
+        <Typography variant="body1">{t('title')}</Typography>
         <Typography variant="body2" color="secondary">
-          {t('cmds.status.subtitle')}
+          {t('subtitle')}
         </Typography>
       </div>
 
       {isWaitingForHeartbeats ? (
         <div className="flex items-center gap-(--lsd-spacing-small) mt-(--lsd-spacing-small)">
           <Typography variant="body1" color="secondary">
-            {isLoading
-              ? t('cmds.status.loading')
-              : t('cmds.status.waitingForHeartbeats')}
+            {isLoading ? t('loading') : t('waitingForHeartbeats')}
           </Typography>
         </div>
       ) : (
@@ -152,9 +150,12 @@ export default function StatusOutput({ t }: CommandOutputProps) {
               ))}
           </div>
 
-          <div className="flex flex-col space-y-(--lsd-spacing-smallest)">
+          <div
+            className="flex flex-col space-y-(--lsd-spacing-smallest)"
+            data-prevent-terminal-focus
+          >
             <Typography variant="body2" color="secondary">
-              {t('cmds.status.healthcheckPrefix')}{' '}
+              {t('healthcheckPrefix')}{' '}
               <Button
                 variant="link"
                 className="font-bold p-0! h-fit! text-sm!"
@@ -167,12 +168,11 @@ export default function StatusOutput({ t }: CommandOutputProps) {
                   dpulse
                 </Link>
               </Button>
-              {t('cmds.status.healthcheckSuffix')}
+              {t('healthcheckSuffix')}
             </Typography>
 
             <Typography variant="body2" color="secondary">
-              <span className="font-bold">dpulse</span>{' '}
-              {t('cmds.status.dpulseSignsPrefix')}{' '}
+              <span className="font-bold">dpulse</span> {t('dpulseSignsPrefix')}{' '}
               <Button
                 variant="link"
                 className="font-bold p-0! text-sm! h-fit!"
@@ -185,7 +185,7 @@ export default function StatusOutput({ t }: CommandOutputProps) {
                   Logos Delivery
                 </Link>
               </Button>
-              {t('cmds.status.logosDeliverySuffix')}
+              {t('logosDeliverySuffix')}
             </Typography>
           </div>
         </div>

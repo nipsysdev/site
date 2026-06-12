@@ -8,12 +8,14 @@ import {
   TooltipTrigger,
 } from '@nipsys/lsd';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import avatar from '@/assets/nipsys.webp';
 import { $scrollY } from '@/stores/terminal-store';
-import { Command, type CommandOutputProps } from '@/types/terminal';
+import { Command } from '@/types/terminal';
 import CmdLink from '../terminal/CmdLink';
 
-export default function WelcomeOutput({ t }: CommandOutputProps) {
+export default function WelcomeOutput() {
+  const t = useTranslations('Welcome');
   const scrollY = useStore($scrollY);
   const showTooltip = scrollY === 0;
 
@@ -26,14 +28,14 @@ export default function WelcomeOutput({ t }: CommandOutputProps) {
           </TooltipTrigger>
           <TooltipContent side="right" className="max-w-[70vw]">
             <p className="mb-(--lsd-spacing-base)">
-              {t.rich('cmds.welcome.welcome', {
+              {t.rich('welcome', {
                 name: (name) => <span className="font-bold">{name}</span>,
               })}
             </p>
 
-            <p>{t('cmds.welcome.site_intro_1')}</p>
+            <p>{t('siteIntro1')}</p>
             <p>
-              {t.rich('cmds.welcome.site_intro_2', {
+              {t.rich('siteIntro2', {
                 cmd: () => <CmdLink cmdName={Command.Help} primary />,
               })}
             </p>

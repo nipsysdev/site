@@ -9,20 +9,20 @@ interface HomePageProps {
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'Terminal' });
+  const t = await getTranslations({ locale, namespace: 'Welcome' });
 
   return (
     <>
       <StaticOutput>
         <div>
           <p>
-            {t.rich('cmds.welcome.welcome', {
+            {t.rich('welcome', {
               name: (name) => name,
             })}
           </p>
-          <p>{t('cmds.welcome.site_intro_1')}</p>
+          <p>{t('siteIntro1')}</p>
           <p>
-            {t.rich('cmds.welcome.site_intro_2', {
+            {t.rich('siteIntro2', {
               cmd: () => 'help',
             })}
           </p>
