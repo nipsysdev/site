@@ -9,6 +9,7 @@ import {
 } from '@nipsys/lsd';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 import avatar from '@/assets/nipsys.webp';
 import { $scrollY } from '@/stores/terminal-store';
 import { Command } from '@/types/terminal';
@@ -17,7 +18,13 @@ import CmdLink from '../terminal/CmdLink';
 export default function WelcomeOutput() {
   const t = useTranslations('Welcome');
   const scrollY = useStore($scrollY);
-  const showTooltip = scrollY === 0;
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  const showTooltip = scrollY === 0 && isReady;
 
   return (
     <TooltipProvider>
@@ -26,7 +33,7 @@ export default function WelcomeOutput() {
           <TooltipTrigger asChild>
             <Image src={avatar} width={70} alt="Avatar" priority={true} />
           </TooltipTrigger>
-          <TooltipContent side="right" className="max-w-[70vw]">
+          <TooltipContent side="right" className="max-w-[70vw] text-lg!">
             <p className="mb-(--lsd-spacing-base)">
               {t.rich('welcome', {
                 name: (name) => <span className="font-bold">{name}</span>,

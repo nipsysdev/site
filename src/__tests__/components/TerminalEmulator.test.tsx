@@ -1,6 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
+import { $isAppReady } from '@/stores/app-store';
+import {
+  $terminalHistory,
+  $terminalHistoryVisibleIdx,
+  $terminalPromptRef,
+} from '@/stores/terminal-store';
 import type { CommandEntry } from '@/types/terminal';
 import { Command } from '@/types/terminal';
 
@@ -19,6 +25,12 @@ vi.mock('@/stores/terminal-store', () => ({
     set: vi.fn(),
   },
   initializeTerminal: vi.fn(),
+}));
+
+vi.mock('@/stores/app-store', () => ({
+  $isAppReady: {
+    get: vi.fn(() => true),
+  },
 }));
 
 vi.mock('next-intl', () => ({
@@ -43,23 +55,17 @@ vi.mock('@/components/cmd-outputs/UnknownCmdOutput', () => ({
   )),
 }));
 
-import {
-  $terminalHistory,
-  $terminalHistoryVisibleIdx,
-  $terminalPromptRef,
-  initializeTerminal,
-} from '@/stores/terminal-store';
-
 describe('TerminalEmulator', () => {
   const mockHistoryGet = vi.mocked($terminalHistory.get);
   const mockHistoryVisibleIdxGet = vi.mocked($terminalHistoryVisibleIdx.get);
   const mockPromptRefSet = vi.mocked($terminalPromptRef.set);
-  const _mockInitializeTerminal = vi.mocked(initializeTerminal);
+  const mockIsAppReadyGet = vi.mocked($isAppReady.get);
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockHistoryGet.mockReturnValue([]);
     mockHistoryVisibleIdxGet.mockReturnValue(0);
+    mockIsAppReadyGet.mockReturnValue(true);
   });
 
   afterEach(() => {

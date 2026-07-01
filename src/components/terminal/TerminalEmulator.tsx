@@ -3,6 +3,7 @@
 import { useStore } from '@nanostores/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import { $isAppReady } from '@/stores/app-store';
 import {
   $terminalHistory,
   $terminalHistoryVisibleIdx,
@@ -21,6 +22,7 @@ export default function TerminalEmulator({
 }: TerminalEmulatorProps) {
   const history = useStore($terminalHistory);
   const historyVisibleIdx = useStore($terminalHistoryVisibleIdx);
+  const isAppReady = useStore($isAppReady);
 
   const t = useTranslations('Terminal');
 
@@ -33,20 +35,20 @@ export default function TerminalEmulator({
   }, []);
 
   useEffect(() => {
-    if (hasWindow) {
+    if (hasWindow && isAppReady) {
       setTimeout(() => {
         $terminalPromptRef.set(mainPrompt);
         mainPrompt.current?.scrollIntoView();
         mainPrompt.current?.focus();
       }, 100);
     }
-  }, [hasWindow]);
+  }, [hasWindow, isAppReady]);
 
   useEffect(() => {
-    if (hasWindow) {
+    if (hasWindow && isAppReady) {
       initializeTerminal(initialCommand);
     }
-  }, [hasWindow, initialCommand]);
+  }, [hasWindow, isAppReady, initialCommand]);
 
   const focusTerminal = (target: HTMLElement) => {
     if (

@@ -2,6 +2,7 @@
 
 import { useStore } from '@nanostores/react';
 import { useEffect, useMemo, useState } from 'react';
+import { $isAppMounted, $isAppReady } from '@/stores/app-store';
 import { $isDarkMode } from '@/stores/theme-store';
 
 interface LoadSequenceProps {
@@ -10,12 +11,21 @@ interface LoadSequenceProps {
 
 export default function LoadSequence({ children }: LoadSequenceProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [animationDone, setAnimationDone] = useState(false);
   const isDarkMode = useStore($isDarkMode);
+  const isAppMounted = useStore($isAppMounted);
+
+  const isLoading = !animationDone || !isAppMounted;
 
   useEffect(() => {
     document.body.style.visibility = 'visible';
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      $isAppReady.set(true);
+    }
+  }, [isLoading]);
 
   const steps = useMemo(
     () => [
@@ -40,7 +50,7 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
 
       return () => clearTimeout(timer);
     } else {
-      setIsLoading(false);
+      setAnimationDone(true);
     }
   }, [currentStep, steps]);
 
@@ -48,47 +58,53 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
     'opacity-0 animate-[showInstant_0s_ease-in-out_forwards]';
   const stepHeight = 'h-[24px] leading-6';
 
-  if (!isLoading && children) {
-    return <>{children}</>;
-  }
-
   return (
-    <div className="p-8 text-sm font-medium leading-5">
-      <style>{`
-        @keyframes showInstant {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
-      <div className="flex flex-col pt-[24px] relative">
-        {/* Static HTML steps that display immediately */}
-        <div
-          className={`top-0 absolute ${fadeInAnimation}`}
-          style={{ animationDelay: '200ms' }}
-        >
-          <span>{'> Connected to IPFS'}</span>
-        </div>
-        <div
-          className={`top-[24px] ${currentStep ? '' : fadeInAnimation} h-0`}
-          style={{ animationDelay: '600ms' }}
-        >
-          <span>{'> Loading core chunks'}</span>
-        </div>
-
-        <div className="flex flex-col mt-[24px]">
-          {steps.slice(0, currentStep).map((step) => (
-            <div className={stepHeight} key={step.message}>
-              {step.message}
-            </div>
-          ))}
-        </div>
-        <div
-          className={`${fadeInAnimation}`}
-          style={{ animationDelay: '600ms' }}
-        >
-          <span className="animate-pulse">█</span>
-        </div>
+    <>
+      <div
+        aria-hidden={isLoading}
+        className={isLoading ? 'invisible h-0 overflow-hidden' : undefined}
+      >
+        {children}
       </div>
-    </div>
+
+      {isLoading && (
+        <div className="p-8 text-sm font-medium leading-5">
+          <style>{`
+          @keyframes showInstant {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+        `}</style>
+          <div className="flex flex-col pt-[24px] relative">
+            <div
+              className={`top-0 absolute ${fadeInAnimation}`}
+              style={{ animationDelay: '200ms' }}
+            >
+              <span>{'> Connected to IPFS'}</span>
+            </div>
+            <div
+              className={`top-[24px] ${currentStep ? '' : fadeInAnimation} h-0`}
+              style={{ animationDelay: '600ms' }}
+            >
+              <span>{'> Loading core chunks'}</span>
+            </div>
+
+            <div className="flex flex-col mt-[24px]">
+              {steps.slice(0, currentStep).map((step) => (
+                <div className={stepHeight} key={step.message}>
+                  {step.message}
+                </div>
+              ))}
+            </div>
+            <div
+              className={`${fadeInAnimation}`}
+              style={{ animationDelay: '600ms' }}
+            >
+              <span className="animate-pulse">█</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Toaster } from 'sonner';
+import { $isAppMounted } from '@/stores/app-store';
 import Sidenav from './Sidenav';
 
 export default function MainWrapper({
@@ -8,6 +10,10 @@ export default function MainWrapper({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    $isAppMounted.set(true);
+  }, []);
+
   return (
     <>
       <Sidenav>{children}</Sidenav>

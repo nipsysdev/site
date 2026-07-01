@@ -71,7 +71,8 @@
       "telegram": "Telegram",
       "matrix": "Matrix",
       "email": "Email",
-      "pixelfed": "Pixelfed"
+      "pixelfed": "Pixelfed",
+      "signal": "Signal"
     },
     "copyToast": "Copied to clipboard",
     "copyLabel": "Copy to clipboard"
@@ -113,7 +114,7 @@
   "Welcome": {
     "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
     "siteIntro1": "This site can be browsed by clicking on the links in the side navigation.",
-    "siteIntro2": "Or, for a CLI experience... Get started with <cmd></cmd>"
+    "siteIntro2": "Or, for a CLI experience... Get started with <cmd></cmd>."
   },
   "BuildInfo": {
     "title": "Build Information",
@@ -147,7 +148,14 @@
     "downloadEN": "Download English PDF",
     "downloadFR": "Download French PDF",
     "viewing": "Currently viewing",
-    "version": "version"
+    "version": "version",
+    "generationPrefix": "I use ",
+    "resumed": "resumed",
+    "generationMiddle": " and the ",
+    "stackoverflowTheme": "stackoverflow theme",
+    "generationSuffix": " to generate my resume files. See the repo ",
+    "repoLink": "here",
+    "generationEnd": "."
   },
   "Gallery": {
     "title": "Gallery",
