@@ -1,8 +1,8 @@
 'use client';
 
 import { Badge, Button, Typography } from '@nipsys/lsd';
-import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 
 const RESUME_PATHS = {
   en: '/resume/Xavier-SALINIERE_resume.EN.pdf',
