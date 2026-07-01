@@ -70,7 +70,9 @@
       "bluesky": "BlueSky",
       "telegram": "Telegram",
       "matrix": "Matrix",
-      "email": "Courriel"
+      "email": "Courriel",
+      "pixelfed": "Pixelfed",
+      "signal": "Signal"
     },
     "copyToast": "Copié dans le presse-papier",
     "copyLabel": "Copier dans le presse-papier"
@@ -110,9 +112,9 @@
     }
   },
   "Welcome": {
-    "welcome": "Salut, je suis <name>Xav</name>! Bienvenue dans mon petit chez moi en plein cyberspace :)",
+    "welcome": "Bien le bonjour, je suis <name>Xav</name>! Bienvenue dans mon petit chez moi en plein cyberspace :)",
     "siteIntro1": "Ce site peut être parcouru en cliquant sur les liens dans la navigation latérale.",
-    "siteIntro2": "Ou, pour une expérience CLI... Commencez avec <cmd></cmd>"
+    "siteIntro2": "Ou, pour une expérience CLI... Vous pouvez commencer avec <cmd></cmd>."
   },
   "BuildInfo": {
     "title": "Informations du build",

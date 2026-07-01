@@ -26,7 +26,7 @@ export default function WelcomeOutput() {
           <TooltipTrigger asChild>
             <Image src={avatar} width={70} alt="Avatar" priority={true} />
           </TooltipTrigger>
-          <TooltipContent side="right" className="max-w-[70vw]">
+          <TooltipContent side="right" className="max-w-[70vw] text-lg!">
             <p className="mb-(--lsd-spacing-base)">
               {t.rich('welcome', {
                 name: (name) => <span className="font-bold">{name}</span>,

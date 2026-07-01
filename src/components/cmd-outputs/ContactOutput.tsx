@@ -50,12 +50,6 @@ export default function ContactOutput() {
       displayText: '@nipsysdev',
     },
     {
-      icon: PaperPlaneTiltIcon,
-      labelKey: 'telegram',
-      href: 'https://t.me/nipsysdev',
-      displayText: '@nipsysdev',
-    },
-    {
       icon: ButterflyIcon,
       labelKey: 'bluesky',
       href: 'https://bsky.app/profile/nipsys.bsky.social',
@@ -81,6 +75,20 @@ export default function ContactOutput() {
       labelKey: 'matrix',
       href: 'https://matrix.to/#/@nipsys:nips.im',
       displayText: '@nipsys:nips.im',
+      copyable: true,
+    },
+    {
+      icon: ChatTeardropTextIcon,
+      labelKey: 'signal',
+      href: 'https://signal.me/#eu/4FynXZ6lCD-qaR0x_CfvmEGVVtnprCVT4YRzyVrn7GVNB71oVHFAL6aP2soYBAI4',
+      displayText: 'nipsysdev.12',
+      copyable: true,
+    },
+    {
+      icon: PaperPlaneTiltIcon,
+      labelKey: 'telegram',
+      href: 'https://t.me/nipsysdev',
+      displayText: '@nipsysdev',
       copyable: true,
     },
     {
