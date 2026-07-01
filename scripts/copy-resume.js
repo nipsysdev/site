@@ -7,10 +7,10 @@ const destDir = 'public/resume';
 // Ensure destination directory exists
 fs.mkdirSync(destDir, { recursive: true });
 
-// Copy PDF and HTML files
+// Copy PDF files
 const files = fs.readdirSync(srcDir);
 for (const file of files) {
-  if (file.endsWith('.pdf') || file.endsWith('.html')) {
+  if (file.endsWith('.pdf')) {
     fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
     console.log(`Copied ${file}`);
   }

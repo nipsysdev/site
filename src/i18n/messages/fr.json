@@ -146,7 +146,14 @@
     "downloadEN": "Télécharger le PDF en anglais",
     "downloadFR": "Télécharger le PDF en français",
     "viewing": "Version",
-    "version": "actuellement affichée"
+    "version": "actuellement affichée",
+    "generationPrefix": "J'utilise ",
+    "resumed": "resumed",
+    "generationMiddle": " et le thème ",
+    "stackoverflowTheme": "stackoverflow",
+    "generationSuffix": " pour générer mon CV. Voir le repo ",
+    "repoLink": "ici",
+    "generationEnd": "."
   },
   "Gallery": {
     "title": "Galerie",

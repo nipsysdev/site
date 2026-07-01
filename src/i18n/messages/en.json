@@ -147,7 +147,14 @@
     "downloadEN": "Download English PDF",
     "downloadFR": "Download French PDF",
     "viewing": "Currently viewing",
-    "version": "version"
+    "version": "version",
+    "generationPrefix": "I use ",
+    "resumed": "resumed",
+    "generationMiddle": " and the ",
+    "stackoverflowTheme": "stackoverflow theme",
+    "generationSuffix": " to generate my resume files. See the repo ",
+    "repoLink": "here",
+    "generationEnd": "."
   },
   "Gallery": {
     "title": "Gallery",
