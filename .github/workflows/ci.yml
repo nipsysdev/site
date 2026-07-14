@@ -179,7 +179,7 @@ jobs:
           IPNS_NAME=$(echo "$PUBLISH_RESP" | grep -oE 'Published to [a-zA-Z0-9]+' | awk '{print $3}')
           echo "IPNS Name: $IPNS_NAME"
           echo "IPNS published successfully!"
-          echo "Site available at: https://nipsys.eth.limo"
+          echo "Site available at: https://xav.gwei.site"
 
       - name: Pin to 4EVERLand
         env:
