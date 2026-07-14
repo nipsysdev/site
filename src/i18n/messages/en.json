@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "xav/nipsys.eth",
-    "description": "My personal website"
+    "title": "Xavier Saliniere",
+    "description": "My personal and decentralized website"
   },
   "Core": {
     "menu": "menu",
@@ -37,23 +37,23 @@
     "andItsUI": "and its UI!"
   },
   "AboutMe": {
-    "name": "Xav [nipsys]",
-    "tagline": "cypherpunk / builder / digital sovereignty advocate",
+    "name": "Xavier Saliniere",
+    "tagline": "cypherpunk / builder / digital freedom",
     "badges": {
       "location": "France → Canada → Switzerland",
       "experience": "10+ yrs building for the web",
       "focus": "Privacy, Decentralization, FLOSS",
-      "goal": "Aspiring penetration tester"
+      "goal": "Building alternative infrastructure"
     },
     "bio": {
-      "intro1": "My name is Xavier Saliniere — a cypherpunk at heart, building and breaking things for a freer internet.",
-      "intro2": "I'm driven by a simple question: what if the internet actually worked for the people using it?",
-      "para1": "I started coding at 14, hacking together PSP homebrews in my bedroom. What began as teenage curiosity evolved into a decade-long journey through the web development world — from dropping out of school at 21 to join a startup, to building enterprise security platforms at Bell Canada's Operations Center.",
+      "intro1": "My name is Xavier Saliniere — a cypherpunk at heart, building and experimenting for a freer internet.",
+      "intro2": "I'm driven by a simple question: what if the internet and the code running on it actually worked for its users?",
+      "intro3": "Like Bitcoin and Ethereum, I believe decentralized, privacy-respecting, censorship-resistant systems without intermediaries are key to a better internet.",
+      "para1": "I started coding at 14, hacking together PSP homebrews in my bedroom. What began as teenage curiosity evolved into a decade-long journey through the web development world — from joining a real estate startup at 21, to building enterprise security platforms at Bell Canada's Operations Center.",
       "para2": "But the real story isn't in the job titles. It's in the late nights experimenting and learning about alternative systems and technologies.",
       "para3": "Diving into Linux, the FLOSS philosophy, self-hosting various services, and gradually extricating myself from the walled gardens of Big Tech. The more I learned about centralized systems and the organizations behind them, the more I developed a passion for their alternatives.",
       "para4": "After 4 years in Canada, I'm now heading to Switzerland — bringing my passion for decentralized, permissionless, and privacy-preserving technologies with me.",
-      "para5": "Career-wise, following 10 years in web development, I'm working on shifting towards cybersecurity, with a strong interest in penetration testing.",
-      "current": "Currently focused on: Getting into cybersecurity, building AnyMaps and its decentralized infrastructure, contributing to the ecosystems powering my work and breaking things to see how they work :)"
+      "current": "Currently: Building software for companies while developing AnyMaps, an open-source and offline-first mapping app that leverages decentralized technologies."
     },
     "gpgLabel": "GPG Fingerprint",
     "copyToast": "GPG fingerprint copied to clipboard"
@@ -117,9 +117,13 @@
     "siteIntro2": "Or, for a CLI experience... Get started with <cmd></cmd>."
   },
   "BuildInfo": {
-    "title": "Build Information",
-    "timeLabel": "Build Time:",
-    "ipnsLabel": "IPNS Name:",
+    "buildTimeLabel": "Build Time",
+    "commitLabel": "Commit",
+    "ipfsCid": "IPFS CID",
+    "ipnsName": "IPNS Name",
+    "gateways": "Gateways",
+    "cidResolving": "Resolving…",
+    "cidUnavailable": "CID unavailable",
     "unknown": "Unknown",
     "notConfigured": "Not configured"
   },
@@ -167,6 +171,8 @@
     "feedPrefix": "Pixelfed feed is provided by",
     "feedSuffix": ". Which runs as a systemd service on a VPS.",
     "dpulseSignsPrefix": "retrieves, signs, and publishes the feed which is then retrieved by this static site via",
-    "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network."
+    "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
+    "previousImage": "Previous image",
+    "nextImage": "Next image"
   }
 }
