@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "xav/nipsys.eth",
-    "description": "Mon site personnel"
+    "title": "Xavier Saliniere",
+    "description": "Mon site personnel et décentralisé"
   },
   "Core": {
     "menu": "menu",
@@ -37,23 +37,23 @@
     "andItsUI": "et sa lib UI !"
   },
   "AboutMe": {
-    "name": "Xav [nipsys]",
-    "tagline": "cypherpunk / développeur / militant pour la souveraineté numérique",
+    "name": "Xavier Saliniere",
+    "tagline": "cypherpunk / développeur / liberté numérique",
     "badges": {
       "location": "France → Canada → Suisse",
-      "experience": "10+ ans à construire sur la toile",
+      "experience": "10+ ans à construire sur le web",
       "focus": "Confidentialité, Décentralisation, FLOSS",
-      "goal": "Pentester en devenir"
+      "goal": "Construire des infrastructures alternatives"
     },
     "bio": {
       "intro1": "Je m'appelle Xavier Saliniere — cypherpunk dans l'âme, je développe et j'expérimente pour un internet plus libre.",
-      "intro2": "Une simple question me motive : et si l'internet pouvait réellement être au service de ceux qui l'utilisent ?",
-      "para1": "J'ai commencé à coder à 14 ans, en bricolant des homebrews PSP dans ma chambre. Ce qui a commencé comme une curiosité d'adolescent s'est transformé en un voyage d'une décennie à travers le monde du développement web — depuis l'abandon de mes études à 21 ans pour rejoindre une startup, jusqu'à développer des plateformes de sécurité d'entreprise au Centre des Opérations de Bell Canada.",
+      "intro2": "Une simple question me motive : et si l'internet et le code qui y tourne pouvaient réellement être au service de leurs utilisateurs ?",
+      "intro3": "À l'instar de Bitcoin et Ethereum, je crois que des systèmes décentralisés, sans tiers de confiance, respectueux de la vie privée et résistants à la censure sont la clef pour un meilleur internet.",
+      "para1": "J'ai commencé à coder à 14 ans, en bricolant des homebrews PSP dans ma chambre. Ce qui a commencé comme une curiosité d'adolescent s'est transformé en un voyage d'une décennie à travers le monde du développement web — depuis mes débuts dans une startup immobilière à 21 ans, jusqu'à développer des plateformes de sécurité d'entreprise au Centre des Opérations de Bell Canada.",
       "para2": "Mais la vraie histoire n'est pas dans les postes que j'ai occupé. Elle est dans les nuits blanches à expérimenter et à découvrir des systèmes et technologies alternatifs.",
-      "para3": "Je me suis plongé dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement je me suis extrait des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passioné par leurs alternatives.",
-      "para4": "Après 4 ans au Canada, je m'installe maintenant en Suisse — emportant avec moi ma passion pour les technologies décentralisées, \"permissionless\" et respectueuses de la vie privée.",
-      "para5": "Côté carrière, après 10 ans en développement web, je me forme pour transitionner vers la cybersécurité, avec un fort intérêt pour le pentesting.",
-      "current": "Ce que je fais actuellement : Me former en cybersécurité, développer AnyMaps et son infrastructure décentralisée, contribuer aux écosystèmes qui alimentent mes projets, et mes expérimentations routinières :)"
+      "para3": "Je me suis plongé dans Linux, la philosophie FLOSS, l'auto-hébergement de divers services, et progressivement je me suis extrait des \"walled gardens\" de la Big Tech. Plus j'apprenais sur les systèmes centralisés et les organisations qui les contrôlent, plus je suis devenu passionné par leurs alternatives.",
+      "para4": "Après 4 ans au Canada, la Suisse est ma prochaine étape — emportant avec moi ma passion pour les technologies décentralisées, \"permissionless\" et respectueuses de la vie privée.",
+      "current": "Actuellement : Je continue de développer des logiciels pour des entreprises, tout en construisant AnyMaps, une application de cartographie open-source et offline-first qui s'appuie sur des technologies décentralisées."
     },
     "gpgLabel": "Empreinte GPG",
     "copyToast": "Empreinte GPG copiée dans le presse-papier"
@@ -117,9 +117,13 @@
     "siteIntro2": "Ou, pour une expérience CLI... Vous pouvez commencer avec <cmd></cmd>."
   },
   "BuildInfo": {
-    "title": "Informations du build",
-    "timeLabel": "Date du build :",
-    "ipnsLabel": "Nom IPNS :",
+    "buildTimeLabel": "Date du build",
+    "commitLabel": "Commit",
+    "ipfsCid": "IPFS CID",
+    "ipnsName": "Nom IPNS",
+    "gateways": "Passerelles",
+    "cidResolving": "Résolution…",
+    "cidUnavailable": "CID indisponible",
     "unknown": "Inconnu",
     "notConfigured": "Non configuré"
   },
@@ -167,6 +171,8 @@
     "feedPrefix": "Le flux Pixelfed est fourni par",
     "feedSuffix": ". Qui tourne en tant que service systemd sur un VPS.",
     "dpulseSignsPrefix": "récupère, signe et publie le flux qui est ensuite récupéré par ce site statique via",
-    "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure."
+    "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante"
   }
 }

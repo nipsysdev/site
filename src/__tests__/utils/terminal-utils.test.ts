@@ -322,48 +322,48 @@ describe('terminal-utils', () => {
 
       it('returns full host for regular domains', () => {
         vi.stubGlobal('window', {
-          location: { host: 'nipsys.dev:443' },
+          location: { host: 'xav.gwei.site:443' },
         });
 
-        expect(getDisplayHost()).toBe('nipsys.dev');
+        expect(getDisplayHost()).toBe('xav.gwei.site');
       });
 
       it('returns host without port when no port specified', () => {
         vi.stubGlobal('window', {
-          location: { host: 'nipsys.dev' },
+          location: { host: 'xav.gwei.site' },
         });
 
-        expect(getDisplayHost()).toBe('nipsys.dev');
+        expect(getDisplayHost()).toBe('xav.gwei.site');
       });
 
       it('strips first part from IPNS hosts', () => {
         vi.stubGlobal('window', {
           location: {
-            host: 'k51qzi5uqu5dkkciu33khkzbcmxtyhn2i3v.ipns.nipsys.dev',
+            host: 'k51qzi5uqu5dkkciu33khkzbcmxtyhn2i3v.ipns.xav.gwei.site',
           },
         });
 
-        expect(getDisplayHost()).toBe('ipns.nipsys.dev');
+        expect(getDisplayHost()).toBe('ipns.xav.gwei.site');
       });
 
       it('strips first part from IPFS hosts', () => {
         vi.stubGlobal('window', {
           location: {
-            host: 'bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs.nipsys.dev',
+            host: 'bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs.xav.gwei.site',
           },
         });
 
-        expect(getDisplayHost()).toBe('ipfs.nipsys.dev');
+        expect(getDisplayHost()).toBe('ipfs.xav.gwei.site');
       });
 
       it('returns full host when IPNS/IPFS but no subdomain parts', () => {
         vi.stubGlobal('window', {
           location: {
-            host: 'ipns.nipsys.dev',
+            host: 'ipns.xav.gwei.site',
           },
         });
 
-        expect(getDisplayHost()).toBe('nipsys.dev');
+        expect(getDisplayHost()).toBe('xav.gwei.site');
       });
 
       it('handles localhost with port', () => {

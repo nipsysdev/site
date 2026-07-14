@@ -17,7 +17,7 @@ import {
 } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import gpgFingerprint from '@/assets/gpg-fingerprint.json';
-import profileImage from '@/assets/Pro-Hacked.webp';
+import profileImage from '@/assets/me.webp';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 
 const GPG_FINGERPRINT = gpgFingerprint.fingerprint;
@@ -71,6 +71,7 @@ export default function WhoamiOutput() {
       <div className="flex flex-col gap-(--lsd-spacing-base)">
         <Typography variant="body1">{tAbout('bio.intro1')}</Typography>
         <Typography variant="body1">{tAbout('bio.intro2')}</Typography>
+        <Typography variant="body1">{tAbout('bio.intro3')}</Typography>
 
         <Typography variant="body2" color="secondary">
           {tAbout('bio.para1')}
@@ -86,10 +87,6 @@ export default function WhoamiOutput() {
 
         <Typography variant="body2" color="secondary">
           {tAbout('bio.para4')}
-        </Typography>
-
-        <Typography variant="body2" color="secondary">
-          {tAbout('bio.para5')}
         </Typography>
 
         <Typography variant="body2">{tAbout('bio.current')}</Typography>

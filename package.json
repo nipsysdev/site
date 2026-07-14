@@ -8,11 +8,11 @@
     "type": "git",
     "url": "git+https://github.com/nipsysdev/site"
   },
-  "homepage": "https://nipsys.dev/",
+  "homepage": "https://xav.gwei.site",
   "author": "Xavier Saliniere <bonjour@xaviers.sh>",
   "engines": {
     "node": ">=22.0.0",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   },
   "scripts": {
     "copy-resume": "node scripts/copy-resume.js",
@@ -38,7 +38,6 @@
     "@phosphor-icons/react": "^2.1.7",
     "@waku/sdk": "^0.0.36",
     "dayjs": "^1.11.20",
-    "fast-xml-parser": "^5.8.0",
     "nanostores": "^1.1.1",
     "next": "^15.5.12",
     "next-intl": "^4.8.3",

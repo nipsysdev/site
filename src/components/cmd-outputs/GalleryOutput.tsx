@@ -238,7 +238,7 @@ function PostCard({ entry, t }: { entry: FeedEntry; t: Translator }) {
                   size="square-md"
                   onClick={handlePreviousImage}
                   className="absolute left-(--lsd-spacing-smaller) bg-(--lsd-primary-content)!"
-                  aria-label="Previous image"
+                  aria-label={t('previousImage')}
                 >
                   <CaretLeftIcon weight="bold" size={24} />
                 </Button>
@@ -247,7 +247,7 @@ function PostCard({ entry, t }: { entry: FeedEntry; t: Translator }) {
                   size="square-md"
                   onClick={handleNextImage}
                   className="absolute right-(--lsd-spacing-smaller) bg-(--lsd-primary-content)!"
-                  aria-label="Next image"
+                  aria-label={t('nextImage')}
                 >
                   <CaretRightIcon weight="bold" size={24} />
                 </Button>

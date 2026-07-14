@@ -1,13 +1,13 @@
-# nipsys.dev
+# xav.gwei.site
 
 My personal portfolio website with a terminal-style interface. Navigate using
 CLI commands instead of traditional UI.
 
 ![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)
 ![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-green)
-![pnpm](https://img.shields.io/badge/pnpm-%3E%3D9-orange)
+![pnpm](https://img.shields.io/badge/pnpm-%3E%3D10-orange)
 
-**Live:** [nipsys.eth.limo](https://nipsys.eth.limo)
+**Live:** [xav.gwei.site](https://xav.gwei.site)
 
 ## What makes it unique
 
@@ -15,7 +15,7 @@ CLI commands instead of traditional UI.
   `contact`
 - **Peer-to-peer data retrieval** — Real-time service health and recent Pixelfed
   posts fetch via Logos Delivery (A censorship resistant P2P messaging network)
-- **IPFS hosted** — Deployed on IPFS with IPNS, accessible via ENS
+- **IPFS hosted** — Deployed on IPFS with IPNS
 
 ## Commands
 
@@ -44,7 +44,7 @@ CLI commands instead of traditional UI.
 
 ## Getting Started
 
-**Requirements:** Node.js ≥22, pnpm ≥9
+**Requirements:** Node.js ≥22, pnpm ≥10
 
 ```bash
 git clone https://github.com/nipsysdev/site.git
