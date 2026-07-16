@@ -52,3 +52,6 @@ skills-lock.json
 
 # Resume (copied from submodule at build time)
 /public/resume
+
+# Generated repo file-tree index (build time)
+/public/repo-tree.json

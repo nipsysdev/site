@@ -2,6 +2,7 @@ import { useStore } from '@nanostores/react';
 import { Typography } from '@nipsys/lsd';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { Translator } from '@/i18n/intl';
+import { $cwd } from '@/stores/repo-store';
 import {
   $terminalHistoryIdx,
   $terminalInput,
@@ -28,6 +29,8 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
     const input = useStore($terminalInput);
     const suggestions = useStore($terminalSuggestions);
     const isReadOnly = useStore($terminalInputReadOnly);
+    const cwd = useStore($cwd);
+    const promptPath = entry ? (entry.cwd ?? '/') : cwd;
 
     const inputRef = useRef<HTMLInputElement>(null);
     const autocompleteRef = useRef<HTMLDivElement>(null);
@@ -58,7 +61,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
       <>
         <div className="flex w-full gap-x-2">
           <span className="font-bold">
-            {i18n('visitor')}@{getDisplayHost()}:~$
+            {`${i18n('visitor')}@${getDisplayHost()}:${promptPath}$`}
           </span>
           <input
             ref={inputRef}

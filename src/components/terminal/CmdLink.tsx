@@ -15,7 +15,7 @@ export default function CmdLink(props: Props) {
     const cmd = props.cmdName ?? props.cmdInfo?.name ?? '';
     if (!cmd) return;
 
-    if (props.cmdInfo?.options?.length) {
+    if (props.cmdInfo?.options?.length || props.cmdInfo?.usage) {
       $terminalInput.set(`${cmd} `);
       return;
     }
@@ -40,12 +40,16 @@ export default function CmdLink(props: Props) {
       );
     }
 
-    if (props.cmdInfo.options) {
-      const options = props.cmdInfo.options.join('|');
-      return <span>&nbsp;{options}</span>;
+    const parts: JSX.Element[] = [];
+    for (const flag of props.cmdInfo.options ?? []) {
+      parts.push(<span key={flag}>&nbsp;[{flag}]</span>);
+    }
+    if (props.cmdInfo.usage) {
+      parts.push(<span key="usage">&nbsp;{props.cmdInfo.usage}</span>);
     }
 
-    return;
+    // biome-ignore lint/complexity/noUselessFragments: Fragment wrapping actually needed
+    return parts.length ? <>{parts}</> : undefined;
   };
 
   return (

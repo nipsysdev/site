@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { buildCommandEntry } from '@/__tests__/fixtures/terminal-fixtures';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
 import { $isAppReady } from '@/stores/app-store';
 import {
@@ -30,6 +31,12 @@ vi.mock('@/stores/terminal-store', () => ({
 vi.mock('@/stores/app-store', () => ({
   $isAppReady: {
     get: vi.fn(() => true),
+  },
+}));
+
+vi.mock('@/stores/repo-store', () => ({
+  $repoTree: {
+    listen: vi.fn(() => () => {}),
   },
 }));
 
@@ -91,8 +98,8 @@ describe('TerminalEmulator', () => {
 
     it('renders history entries', () => {
       const entries: CommandEntry[] = [
-        { timestamp: 1000, cmdName: Command.Help },
-        { timestamp: 2000, cmdName: Command.Whoami },
+        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
+        buildCommandEntry({ cmdName: Command.Whoami, timestamp: 2000 }),
       ];
       mockHistoryGet.mockReturnValue(entries);
 
@@ -103,9 +110,9 @@ describe('TerminalEmulator', () => {
 
     it('respects historyVisibleIdx to slice history', () => {
       const entries: CommandEntry[] = [
-        { timestamp: 1000, cmdName: Command.Help },
-        { timestamp: 2000, cmdName: Command.Whoami },
-        { timestamp: 3000, cmdName: Command.Contact },
+        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
+        buildCommandEntry({ cmdName: Command.Whoami, timestamp: 2000 }),
+        buildCommandEntry({ cmdName: Command.Contact, timestamp: 3000 }),
       ];
       mockHistoryGet.mockReturnValue(entries);
       mockHistoryVisibleIdxGet.mockReturnValue(1);
@@ -122,11 +129,11 @@ describe('TerminalEmulator', () => {
         <div data-testid="mock-output">Output for {entry.cmdName}</div>
       ));
       const entries: CommandEntry[] = [
-        {
-          timestamp: 1000,
+        buildCommandEntry({
           cmdName: Command.Help,
           output: MockOutput,
-        },
+          timestamp: 1000,
+        }),
       ];
       mockHistoryGet.mockReturnValue(entries);
 
@@ -134,9 +141,13 @@ describe('TerminalEmulator', () => {
       expect(screen.getByTestId('mock-output')).toBeInTheDocument();
     });
 
-    it('renders UnknownCmdOutput when entry has cmdName but no output', () => {
+    it('renders UnknownCmdOutput when entry has an unrecognized cmdName and no output', () => {
       const entries: CommandEntry[] = [
-        { timestamp: 1000, cmdName: Command.Help },
+        buildCommandEntry({
+          cmdName: 'foobar' as Command,
+          output: undefined,
+          timestamp: 1000,
+        }),
       ];
       mockHistoryGet.mockReturnValue(entries);
 
@@ -144,9 +155,48 @@ describe('TerminalEmulator', () => {
       expect(screen.getByTestId('unknown-cmd-output')).toBeInTheDocument();
     });
 
+    it('renders the entry error text and no UnknownCmdOutput when entry has an error', () => {
+      const entries: CommandEntry[] = [
+        buildCommandEntry({
+          cmdName: Command.Clear,
+          output: undefined,
+          error: 'boom',
+          timestamp: 1000,
+        }),
+      ];
+      mockHistoryGet.mockReturnValue(entries);
+
+      render(<TerminalEmulator />);
+      expect(screen.getByText('boom')).toBeInTheDocument();
+      expect(
+        screen.queryByTestId('unknown-cmd-output'),
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders nothing for a recognized command with no output and no error', () => {
+      const entries: CommandEntry[] = [
+        buildCommandEntry({
+          cmdName: Command.Clear,
+          output: undefined,
+          timestamp: 1000,
+        }),
+      ];
+      mockHistoryGet.mockReturnValue(entries);
+
+      render(<TerminalEmulator />);
+      expect(
+        screen.queryByTestId('unknown-cmd-output'),
+      ).not.toBeInTheDocument();
+    });
+
     it('does not render output when entry has no cmdName', () => {
       const entries: CommandEntry[] = [
-        { timestamp: 1000, cmdName: undefined as unknown as Command },
+        {
+          timestamp: 1000,
+          cmdName: undefined as unknown as Command,
+          args: { positional: [], flags: [], options: {} },
+          rawInput: '',
+        },
       ];
       mockHistoryGet.mockReturnValue(entries);
 
@@ -184,6 +234,25 @@ describe('TerminalEmulator', () => {
       expect(container).toBeInTheDocument();
       expect(container).toHaveAttribute('tabIndex', '0');
     });
+
+    it('does not swallow Space typed in the prompt input (regression)', () => {
+      render(<TerminalEmulator />);
+      // The stubbed main prompt renders an input with defaultValue 'test-input'.
+      const input = screen.getByDisplayValue('test-input');
+
+      // Dispatch a real keydown so it bubbles to the real TerminalEmulator
+      // container handler. Without the `target === currentTarget` guard, the
+      // container's preventDefault() deletes the Space character, making it
+      // impossible to type args like `cat README.md`.
+      const event = new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        cancelable: true,
+      });
+      input.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(false);
+    });
   });
 
   describe('store integration', () => {
@@ -198,7 +267,7 @@ describe('TerminalEmulator', () => {
 
     it('uses history from store', () => {
       const entries: CommandEntry[] = [
-        { timestamp: 1000, cmdName: Command.Help },
+        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
       ];
       mockHistoryGet.mockReturnValue(entries);
 

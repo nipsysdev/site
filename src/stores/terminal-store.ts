@@ -2,8 +2,10 @@ import { atom, effect } from 'nanostores';
 import type { KeyboardEvent, RefObject } from 'react';
 import type { TerminalPromptRef } from '@/components/terminal/TerminalPrompt';
 import { Commands } from '@/constants/commands';
+import { completePath } from '@/lib/repo/complete';
+import { $cwd, $repoTree, changeDirectory } from '@/stores/repo-store';
 import { Key } from '@/types/keyboard';
-import type { CommandEntry } from '@/types/terminal';
+import { Command, type CommandEntry } from '@/types/terminal';
 import { getPastInputStr, parseTerminalEntry } from '@/utils/terminal-utils';
 
 export const $terminalInput = atom('');
@@ -55,11 +57,21 @@ export function submitTerminalInput() {
   const currentInput = $terminalInput.get();
   const currentHistory = $terminalHistory.get();
   const terminalPromptRef = $terminalPromptRef.get();
+  const parsed = parseTerminalEntry(currentInput);
 
-  if (currentInput !== 'clear') {
-    $terminalHistory.set([...currentHistory, parseTerminalEntry(currentInput)]);
-  } else {
+  if (parsed.cmdName === Command.Clear) {
     $terminalHistoryVisibleIdx.set(currentHistory.length);
+  } else if (parsed.cmdName === Command.Cd) {
+    const cwdBefore = $cwd.get();
+    const target = parsed.args.positional[0] ?? '';
+    const result = changeDirectory(target);
+    const entry: CommandEntry = { ...parsed, cwd: cwdBefore };
+    if (!result.ok) {
+      entry.error = `cd: ${result.error}`;
+    }
+    $terminalHistory.set([...currentHistory, entry]);
+  } else {
+    $terminalHistory.set([...currentHistory, { ...parsed, cwd: $cwd.get() }]);
   }
   $terminalInput.set('');
   setTimeout(() => {
@@ -95,6 +107,7 @@ export function initializeTerminal(command: string) {
   $terminalHistory.set([]);
   $terminalHistoryIdx.set(-1);
   $terminalHistoryVisibleIdx.set(0);
+  $cwd.set('/');
   simulateInput(command);
 }
 
@@ -127,15 +140,68 @@ export function setNextHistoryEntry() {
   $terminalHistoryIdx.set(idx);
 }
 
+/** Commands whose arguments are filesystem paths (eligible for path completion). */
+const PATH_COMMANDS = new Set<Command>([Command.Cd, Command.Cat, Command.Ls]);
+
 export function autocomplete() {
   const input = $terminalInput.get();
-  const matchedCmds = Commands.map((cmd) => cmd.name).filter((cmd) => {
-    return cmd.startsWith(input);
-  });
-  if (matchedCmds.length === 1) {
-    $terminalInput.set(matchedCmds[0]);
-  } else {
-    $terminalSuggestions.set(matchedCmds);
+  const lastSpace = input.lastIndexOf(' ');
+
+  // No space yet → complete command names.
+  if (lastSpace === -1) {
+    const matchedCmds = Commands.map((cmd) => cmd.name).filter((cmd) =>
+      cmd.startsWith(input),
+    );
+    if (matchedCmds.length === 1) {
+      $terminalInput.set(matchedCmds[0]);
+    } else {
+      $terminalSuggestions.set(matchedCmds);
+      $terminalPromptRef.get()?.current?.scrollIntoView();
+    }
+    return;
+  }
+
+  // A space is present → complete the last token as a path, but only for
+  // commands that take path arguments (cd / ls / cat).
+  const cmdToken = input.slice(0, input.indexOf(' '));
+  const command = Object.values(Command).find((value) => value === cmdToken) as
+    | Command
+    | undefined;
+
+  if (!command || !PATH_COMMANDS.has(command)) {
+    $terminalSuggestions.set(null);
+    return;
+  }
+
+  const token = input.slice(lastSpace + 1);
+  if (token.startsWith('-')) {
+    // Flags are not completed.
+    $terminalSuggestions.set(null);
+    return;
+  }
+
+  const { vfs } = $repoTree.get();
+  if (!vfs) {
+    $terminalSuggestions.set(null);
+    return;
+  }
+
+  const result = completePath(
+    vfs,
+    $cwd.get(),
+    token,
+    command === Command.Cd ? 'dir' : 'all',
+  );
+
+  if (result.completed !== undefined) {
+    $terminalInput.set(`${input.slice(0, lastSpace + 1)}${result.completed}`);
+    $terminalSuggestions.set(null);
+  } else if (result.suggestions.length > 0) {
+    $terminalSuggestions.set(result.suggestions);
     $terminalPromptRef.get()?.current?.scrollIntoView();
+  } else {
+    // No matching file/folder — surface "no match" (empty array) like the
+    // command-name path does, instead of silently rendering nothing.
+    $terminalSuggestions.set([]);
   }
 }

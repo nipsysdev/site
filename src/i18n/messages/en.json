@@ -85,6 +85,12 @@
       "build-info": {
         "description": "Show build timestamp and deployment info"
       },
+      "cat": {
+        "description": "Print the contents of a file"
+      },
+      "cd": {
+        "description": "Change the working directory"
+      },
       "clear": {
         "description": "Clear the terminal screen"
       },
@@ -93,6 +99,12 @@
       },
       "help": {
         "description": "Print list of commands"
+      },
+      "ls": {
+        "description": "List directory contents"
+      },
+      "pwd": {
+        "description": "Print the current working directory"
       },
       "welcome": {
         "description": "Print welcome message"
@@ -174,5 +186,11 @@
     "logosDeliverySuffix": ", a peer-to-peer & censorship-resistant messaging network.",
     "previousImage": "Previous image",
     "nextImage": "Next image"
+  },
+  "Cat": {
+    "loading": "Please wait. Fetching {file} from GitHub."
+  },
+  "Ls": {
+    "loading": "Please wait. Loading the repository..."
   }
 }

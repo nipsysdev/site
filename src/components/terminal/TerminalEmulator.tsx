@@ -1,15 +1,18 @@
 'use client';
 
 import { useStore } from '@nanostores/react';
+import { Typography } from '@nipsys/lsd';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { $isAppReady } from '@/stores/app-store';
+import { $repoTree } from '@/stores/repo-store';
 import {
   $terminalHistory,
   $terminalHistoryVisibleIdx,
   $terminalPromptRef,
   initializeTerminal,
 } from '@/stores/terminal-store';
+import { isRecognizedCommand } from '@/utils/terminal-utils';
 import UnknownCmdOutput from '../cmd-outputs/UnknownCmdOutput';
 import TerminalPrompt, { type TerminalPromptRef } from './TerminalPrompt';
 
@@ -50,6 +53,11 @@ export default function TerminalEmulator({
     }
   }, [hasWindow, isAppReady, initialCommand]);
 
+  useEffect(() => {
+    const unsubscribe = $repoTree.listen(() => {});
+    return unsubscribe;
+  }, []);
+
   const focusTerminal = (target: HTMLElement) => {
     if (
       !target.closest(
@@ -69,7 +77,10 @@ export default function TerminalEmulator({
           tabIndex={0}
           className="flex size-full cursor-default flex-col"
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (
+              e.target === e.currentTarget &&
+              (e.key === 'Enter' || e.key === ' ')
+            ) {
               e.preventDefault();
               mainPrompt.current?.focus();
             }
@@ -81,7 +92,11 @@ export default function TerminalEmulator({
               <TerminalPrompt i18n={t} entry={entry} />
               {entry.output ? (
                 <entry.output entry={entry} />
-              ) : (
+              ) : entry.error ? (
+                <Typography variant="body2" color="destructive">
+                  {entry.error}
+                </Typography>
+              ) : isRecognizedCommand(entry.cmdName) ? null : (
                 entry.cmdName && <UnknownCmdOutput cmdName={entry.cmdName} />
               )}
             </div>
