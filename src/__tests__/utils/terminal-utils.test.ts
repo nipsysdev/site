@@ -1,12 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import HelpOutput from '@/components/cmd-outputs/HelpOutput';
-import { Command } from '@/types/terminal';
+import { Command, type CommandEntry } from '@/types/terminal';
 import {
   getDisplayHost,
   getPastInputStr,
   getTerminalEntryInput,
+  isRecognizedCommand,
   newTerminalEntry,
+  parseArguments,
   parseTerminalEntry,
+  tokenize,
   unrecognizedTerminalEntry,
 } from '@/utils/terminal-utils';
 
@@ -18,17 +21,16 @@ describe('terminal-utils', () => {
         const entry = newTerminalEntry(
           Command.Help,
           HelpOutput,
-          'detailed',
-          'format',
-          'json',
+          { positional: ['detailed'], flags: [], options: { format: 'json' } },
+          'help detailed --format=json',
         );
         const afterTime = Date.now();
 
         expect(entry.cmdName).toBe(Command.Help);
         expect(entry.output).toBe(HelpOutput);
-        expect(entry.option).toBe('detailed');
-        expect(entry.argName).toBe('format');
-        expect(entry.argValue).toBe('json');
+        expect(entry.args.positional).toEqual(['detailed']);
+        expect(entry.args.options).toEqual({ format: 'json' });
+        expect(entry.rawInput).toBe('help detailed --format=json');
         expect(entry.timestamp).toBeGreaterThanOrEqual(beforeTime);
         expect(entry.timestamp).toBeLessThanOrEqual(afterTime);
       });
@@ -38,9 +40,10 @@ describe('terminal-utils', () => {
 
         expect(entry.cmdName).toBe(Command.Welcome);
         expect(entry.output).toBeUndefined();
-        expect(entry.option).toBeUndefined();
-        expect(entry.argName).toBeUndefined();
-        expect(entry.argValue).toBeUndefined();
+        expect(entry.args.positional).toEqual([]);
+        expect(entry.args.flags).toEqual([]);
+        expect(entry.args.options).toEqual({});
+        expect(entry.rawInput).toBe('');
       });
 
       it('creates entry with command and output only', () => {
@@ -48,31 +51,20 @@ describe('terminal-utils', () => {
 
         expect(entry.cmdName).toBe(Command.Help);
         expect(entry.output).toBe(HelpOutput);
-        expect(entry.option).toBeUndefined();
-        expect(entry.argName).toBeUndefined();
+        expect(entry.args.positional).toEqual([]);
+        expect(entry.rawInput).toBe('');
       });
 
-      it('creates entry with command and option only', () => {
-        const entry = newTerminalEntry(Command.Help, undefined, 'verbose');
+      it('creates entry with command and args only', () => {
+        const entry = newTerminalEntry(Command.Help, undefined, {
+          positional: ['verbose'],
+          flags: [],
+          options: {},
+        });
 
         expect(entry.cmdName).toBe(Command.Help);
         expect(entry.output).toBeUndefined();
-        expect(entry.option).toBe('verbose');
-      });
-
-      it('creates entry with command and argument', () => {
-        const entry = newTerminalEntry(
-          Command.Help,
-          undefined,
-          undefined,
-          'format',
-          'json',
-        );
-
-        expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.argName).toBe('format');
-        expect(entry.argValue).toBe('json');
-        expect(entry.option).toBeUndefined();
+        expect(entry.args.positional).toEqual(['verbose']);
       });
 
       it('always includes a timestamp', () => {
@@ -88,9 +80,10 @@ describe('terminal-utils', () => {
 
         expect(entry.cmdName).toBe('foobar');
         expect(entry.output).toBeUndefined();
-        expect(entry.option).toBeUndefined();
-        expect(entry.argName).toBeUndefined();
-        expect(entry.argValue).toBeUndefined();
+        expect(entry.args.positional).toEqual([]);
+        expect(entry.args.flags).toEqual([]);
+        expect(entry.args.options).toEqual({});
+        expect(entry.rawInput).toBe('foobar');
       });
 
       it('creates entry with empty string command', () => {
@@ -98,47 +91,209 @@ describe('terminal-utils', () => {
 
         expect(entry.cmdName).toBe('');
         expect(entry.output).toBeUndefined();
+        expect(entry.rawInput).toBe('');
       });
 
       it('creates entry with special characters in command', () => {
         const entry = unrecognizedTerminalEntry('foo-bar-baz');
 
         expect(entry.cmdName).toBe('foo-bar-baz');
+        expect(entry.rawInput).toBe('foo-bar-baz');
       });
 
       it('includes timestamp', () => {
         const entry = unrecognizedTerminalEntry('unknown');
         expect(entry.timestamp).toBeTypeOf('number');
       });
+
+      it('has empty args and rawInput equal to name', () => {
+        const entry = unrecognizedTerminalEntry('not-a-command');
+
+        expect(entry.args).toEqual({
+          positional: [],
+          flags: [],
+          options: {},
+        });
+        expect(entry.rawInput).toBe('not-a-command');
+      });
+    });
+  });
+
+  describe('tokenize', () => {
+    it('splits simple space-separated tokens', () => {
+      expect(tokenize('help detailed')).toEqual(['help', 'detailed']);
+    });
+
+    it('collapses multiple spaces', () => {
+      expect(tokenize('help   detailed')).toEqual(['help', 'detailed']);
+    });
+
+    it('handles leading and trailing whitespace', () => {
+      expect(tokenize('  help  ')).toEqual(['help']);
+    });
+
+    it('respects single quotes', () => {
+      expect(tokenize("cat 'my file.txt'")).toEqual(['cat', 'my file.txt']);
+    });
+
+    it('respects double quotes', () => {
+      expect(tokenize('cat "my file.txt"')).toEqual(['cat', 'my file.txt']);
+    });
+
+    it('returns empty array for empty string', () => {
+      expect(tokenize('')).toEqual([]);
+    });
+
+    it('returns empty array for whitespace-only string', () => {
+      expect(tokenize('   ')).toEqual([]);
+    });
+
+    it('preserves single quotes inside double quotes', () => {
+      expect(tokenize('echo "it\'s here"')).toEqual(['echo', "it's here"]);
+    });
+
+    it('preserves double quotes inside single quotes', () => {
+      expect(tokenize('echo \'say "hi"\'')).toEqual(['echo', 'say "hi"']);
+    });
+  });
+
+  describe('parseArguments', () => {
+    it('returns positional args only', () => {
+      expect(parseArguments(['src', 'app', 'page.tsx'])).toEqual({
+        positional: ['src', 'app', 'page.tsx'],
+        flags: [],
+        options: {},
+      });
+    });
+
+    it('splits grouped short flags -la into [l, a]', () => {
+      expect(parseArguments(['-la'])).toEqual({
+        positional: [],
+        flags: ['l', 'a'],
+        options: {},
+      });
+    });
+
+    it('handles separate short flags -l -a', () => {
+      expect(parseArguments(['-l', '-a'])).toEqual({
+        positional: [],
+        flags: ['l', 'a'],
+        options: {},
+      });
+    });
+
+    it('handles long flag --all', () => {
+      expect(parseArguments(['--all'])).toEqual({
+        positional: [],
+        flags: ['all'],
+        options: {},
+      });
+    });
+
+    it('handles key=value option --key=value', () => {
+      expect(parseArguments(['--format=json'])).toEqual({
+        positional: [],
+        flags: [],
+        options: { format: 'json' },
+      });
+    });
+
+    it('treats -- as end-of-options marker', () => {
+      expect(parseArguments(['--', '--weird', '-x'])).toEqual({
+        positional: ['--weird', '-x'],
+        flags: [],
+        options: {},
+      });
+    });
+
+    it('mixes grouped short flags and positional args', () => {
+      expect(parseArguments(['-la', 'src'])).toEqual({
+        positional: ['src'],
+        flags: ['l', 'a'],
+        options: {},
+      });
+    });
+
+    it('combines flags, options, and positional args', () => {
+      expect(parseArguments(['-l', '--format=json', 'src'])).toEqual({
+        positional: ['src'],
+        flags: ['l'],
+        options: { format: 'json' },
+      });
+    });
+
+    it('returns empty result for empty tokens', () => {
+      expect(parseArguments([])).toEqual({
+        positional: [],
+        flags: [],
+        options: {},
+      });
+    });
+
+    it('treats a lone dash as a positional arg', () => {
+      expect(parseArguments(['-'])).toEqual({
+        positional: ['-'],
+        flags: [],
+        options: {},
+      });
     });
   });
 
   describe('Entry Parsing Functions', () => {
     describe('parseTerminalEntry', () => {
-      it('parses simple command without options or arguments', () => {
+      it('parses help command', () => {
         const entry = parseTerminalEntry('help');
 
         expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.option).toBeUndefined();
-        expect(entry.argName).toBeUndefined();
-        expect(entry.argValue).toBeUndefined();
+        expect(entry.args.positional).toEqual([]);
       });
 
-      it('parses command with option', () => {
+      it('parses whoami command', () => {
+        expect(parseTerminalEntry('whoami').cmdName).toBe(Command.Whoami);
+      });
+
+      it('parses contact command', () => {
+        expect(parseTerminalEntry('contact').cmdName).toBe(Command.Contact);
+      });
+
+      it('parses build-info command', () => {
+        expect(parseTerminalEntry('build-info').cmdName).toBe(
+          Command.BuildInfo,
+        );
+      });
+
+      it('parses clear command', () => {
+        expect(parseTerminalEntry('clear').cmdName).toBe(Command.Clear);
+      });
+
+      it('parses welcome command', () => {
+        expect(parseTerminalEntry('welcome').cmdName).toBe(Command.Welcome);
+      });
+
+      it('parses status command', () => {
+        expect(parseTerminalEntry('status').cmdName).toBe(Command.Status);
+      });
+
+      it('parses gallery command', () => {
+        expect(parseTerminalEntry('gallery').cmdName).toBe(Command.Gallery);
+      });
+
+      it('parses resume command', () => {
+        expect(parseTerminalEntry('resume').cmdName).toBe(Command.Resume);
+      });
+
+      it('parses command with positional arg', () => {
         const entry = parseTerminalEntry('help detailed');
 
         expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.option).toBe('detailed');
-        expect(entry.argName).toBeUndefined();
+        expect(entry.args.positional).toEqual(['detailed']);
       });
 
-      it('parses command with argument using --name=value syntax', () => {
+      it('parses command with --key=value option', () => {
         const entry = parseTerminalEntry('help --format=json');
 
         expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.argName).toBe('format');
-        expect(entry.argValue).toBe('json');
-        expect(entry.option).toBeUndefined();
+        expect(entry.args.options).toEqual({ format: 'json' });
       });
 
       it('returns unrecognized entry for unknown command', () => {
@@ -148,6 +303,12 @@ describe('terminal-utils', () => {
         expect(entry.output).toBeUndefined();
       });
 
+      it('returns full trimmed input as cmdName for unknown multi-word command', () => {
+        const entry = parseTerminalEntry('foo bar');
+
+        expect(entry.cmdName).toBe('foo bar');
+      });
+
       it('handles empty string', () => {
         const entry = parseTerminalEntry('');
 
@@ -155,95 +316,89 @@ describe('terminal-utils', () => {
         expect(entry.output).toBeUndefined();
       });
 
-      it('handles command with multiple spaces', () => {
+      it('handles whitespace-only string', () => {
+        const entry = parseTerminalEntry('   ');
+
+        expect(entry.cmdName).toBe('');
+      });
+
+      it('collapses multiple spaces between tokens', () => {
         const entry = parseTerminalEntry('help   detailed');
 
         expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.option).toBe(''); // Empty string from split
+        expect(entry.args.positional).toEqual(['detailed']);
       });
 
-      it('parses whoami command', () => {
-        const entry = parseTerminalEntry('whoami');
-
-        expect(entry.cmdName).toBe(Command.Whoami);
-      });
-
-      it('parses contact command', () => {
-        const entry = parseTerminalEntry('contact');
-
-        expect(entry.cmdName).toBe(Command.Contact);
-      });
-
-      it('parses build-info command', () => {
-        const entry = parseTerminalEntry('build-info');
-
-        expect(entry.cmdName).toBe(Command.BuildInfo);
-      });
-
-      it('parses clear command', () => {
-        const entry = parseTerminalEntry('clear');
-
-        expect(entry.cmdName).toBe(Command.Clear);
-      });
-
-      it('parses welcome command', () => {
-        const entry = parseTerminalEntry('welcome');
-
-        expect(entry.cmdName).toBe(Command.Welcome);
-      });
-
-      it('correctly processes help command with output', () => {
-        const entry = parseTerminalEntry('help');
+      it('parses Unix-style grouped short flags -la src via a registered command', () => {
+        const entry = parseTerminalEntry('help -la src');
 
         expect(entry.cmdName).toBe(Command.Help);
-        expect(entry.timestamp).toBeTypeOf('number');
+        expect(entry.args.flags).toEqual(['l', 'a']);
+        expect(entry.args.positional).toEqual(['src']);
+      });
+
+      it('parses ls -la src into command, flags, and positional', () => {
+        const entry = parseTerminalEntry('ls -la src');
+
+        expect(entry.cmdName).toBe(Command.Ls);
+        expect(entry.args.flags).toEqual(['l', 'a']);
+        expect(entry.args.positional).toEqual(['src']);
+      });
+
+      it('parses cat with a file path positional arg', () => {
+        const entry = parseTerminalEntry('cat src/app/page.tsx');
+
+        expect(entry.cmdName).toBe(Command.Cat);
+        expect(entry.args.positional).toEqual(['src/app/page.tsx']);
+      });
+
+      it('parses cd with a relative target positional arg', () => {
+        const entry = parseTerminalEntry('cd ../lib');
+
+        expect(entry.cmdName).toBe(Command.Cd);
+        expect(entry.args.positional).toEqual(['../lib']);
+      });
+
+      it('parses quoted file path as single positional arg via a registered command', () => {
+        const entry = parseTerminalEntry('help "my file.txt"');
+
+        expect(entry.cmdName).toBe(Command.Help);
+        expect(entry.args.positional).toEqual(['my file.txt']);
+      });
+
+      it('respects -- end-of-options marker via a registered command', () => {
+        const entry = parseTerminalEntry('help -- --weird');
+
+        expect(entry.cmdName).toBe(Command.Help);
+        expect(entry.args.flags).toEqual([]);
+        expect(entry.args.positional).toEqual(['--weird']);
       });
 
       it('includes timestamp in parsed entry', () => {
         const entry = parseTerminalEntry('help');
         expect(entry.timestamp).toBeTypeOf('number');
       });
+
+      it('sets rawInput equal to trimmed input', () => {
+        const entry = parseTerminalEntry('  help detailed  ');
+
+        expect(entry.rawInput).toBe('help detailed');
+      });
+
+      it('attaches the registered output component for valid commands', () => {
+        const entry = parseTerminalEntry('help');
+        expect(entry.output).toBe(HelpOutput);
+      });
     });
   });
 
   describe('Input String Functions', () => {
     describe('getTerminalEntryInput', () => {
-      it('returns command name only for simple entry', () => {
+      it('returns rawInput when present', () => {
         const entry = {
           cmdName: Command.Help,
-          timestamp: Date.now(),
-        };
-
-        expect(getTerminalEntryInput(entry)).toBe('help');
-      });
-
-      it('includes option when present', () => {
-        const entry = {
-          cmdName: Command.Help,
-          option: 'detailed',
-          timestamp: Date.now(),
-        };
-
-        expect(getTerminalEntryInput(entry)).toBe('help detailed');
-      });
-
-      it('includes argument when present', () => {
-        const entry = {
-          cmdName: Command.Help,
-          argName: 'format',
-          argValue: 'json',
-          timestamp: Date.now(),
-        };
-
-        expect(getTerminalEntryInput(entry)).toBe('help --format=json');
-      });
-
-      it('includes both option and argument when present', () => {
-        const entry = {
-          cmdName: Command.Help,
-          option: 'detailed',
-          argName: 'format',
-          argValue: 'json',
+          args: { positional: [], flags: [], options: {} },
+          rawInput: 'help detailed --format=json',
           timestamp: Date.now(),
         };
 
@@ -251,47 +406,70 @@ describe('terminal-utils', () => {
           'help detailed --format=json',
         );
       });
-    });
 
-    describe('getPastInputStr', () => {
-      it('returns command name only for simple entry', () => {
+      it('falls back to cmdName when rawInput is empty', () => {
         const entry = {
           cmdName: Command.Help,
+          args: { positional: [], flags: [], options: {} },
+          rawInput: '',
           timestamp: Date.now(),
         };
 
-        expect(getPastInputStr(entry)).toBe('help');
+        expect(getTerminalEntryInput(entry)).toBe('help');
       });
+    });
 
-      it('includes option when present', () => {
+    describe('getPastInputStr', () => {
+      it('returns rawInput when present', () => {
         const entry = {
           cmdName: Command.Help,
-          option: 'detailed',
+          args: { positional: [], flags: [], options: {} },
+          rawInput: 'help detailed',
           timestamp: Date.now(),
         };
 
         expect(getPastInputStr(entry)).toBe('help detailed');
       });
 
-      it('includes argument when present', () => {
+      it('falls back to cmdName when rawInput is empty', () => {
         const entry = {
           cmdName: Command.Help,
-          argName: 'format',
-          argValue: 'json',
+          args: { positional: [], flags: [], options: {} },
+          rawInput: '',
           timestamp: Date.now(),
         };
 
-        expect(getPastInputStr(entry)).toBe('help --format=json');
+        expect(getPastInputStr(entry)).toBe('help');
       });
+    });
 
-      it('matches getTerminalEntryInput behavior', () => {
-        const entries = [
-          { cmdName: Command.Help, timestamp: Date.now() },
-          { cmdName: Command.Help, option: 'detailed', timestamp: Date.now() },
+    describe('getTerminalEntryInput and getPastInputStr parity', () => {
+      it('match each other for several entries', () => {
+        const entries: CommandEntry[] = [
           {
             cmdName: Command.Help,
-            argName: 'format',
-            argValue: 'json',
+            args: { positional: [], flags: [], options: {} },
+            rawInput: 'help',
+            timestamp: Date.now(),
+          },
+          {
+            cmdName: Command.Help,
+            args: {
+              positional: ['detailed'],
+              flags: [],
+              options: {},
+            },
+            rawInput: 'help detailed',
+            timestamp: Date.now(),
+          },
+          {
+            cmdName: Command.Help,
+            args: {
+              positional: [],
+              flags: [],
+              options: { format: 'json' },
+            },
+            rawInput: '',
             timestamp: Date.now(),
           },
         ];
@@ -300,6 +478,31 @@ describe('terminal-utils', () => {
           expect(getPastInputStr(entry)).toBe(getTerminalEntryInput(entry));
         }
       });
+    });
+  });
+
+  describe('isRecognizedCommand', () => {
+    it('returns true for a registered command', () => {
+      expect(isRecognizedCommand(Command.Help)).toBe(true);
+    });
+
+    it('returns true for clear (registered, no output)', () => {
+      expect(isRecognizedCommand(Command.Clear)).toBe(true);
+    });
+
+    it('returns true for the repo-browsing commands', () => {
+      expect(isRecognizedCommand(Command.Pwd)).toBe(true);
+      expect(isRecognizedCommand(Command.Ls)).toBe(true);
+      expect(isRecognizedCommand(Command.Cd)).toBe(true);
+      expect(isRecognizedCommand(Command.Cat)).toBe(true);
+    });
+
+    it('returns false for an unrecognized cast string', () => {
+      expect(isRecognizedCommand('foobar' as Command)).toBe(false);
+    });
+
+    it('returns false for an empty string', () => {
+      expect(isRecognizedCommand('' as Command)).toBe(false);
     });
   });
 

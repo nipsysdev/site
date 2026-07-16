@@ -37,6 +37,7 @@ vi.mock('@/utils/terminal-utils', () => ({
 }));
 
 import type { Translator } from '@/i18n/intl';
+import { $cwd } from '@/stores/repo-store';
 import {
   $terminalInput,
   $terminalInputReadOnly,
@@ -64,16 +65,18 @@ describe('TerminalPrompt', () => {
     mockInputGet.mockReturnValue('');
     mockReadOnlyGet.mockReturnValue(false);
     mockSuggestionsGet.mockReturnValue(null);
+    $cwd.set('/');
   });
 
   afterEach(() => {
     vi.resetAllMocks();
+    $cwd.set('/');
   });
 
   describe('rendering', () => {
     it('renders the prompt with visitor and host', () => {
       render(<TerminalPrompt i18n={mockI18n} />);
-      expect(screen.getByText(/visitor@localhost:~\$/)).toBeInTheDocument();
+      expect(screen.getByText(/visitor@localhost:\/\$/)).toBeInTheDocument();
     });
 
     it('renders an input field', () => {
@@ -92,6 +95,8 @@ describe('TerminalPrompt', () => {
       const entry: CommandEntry = {
         timestamp: Date.now(),
         cmdName: Command.Help,
+        args: { positional: [], flags: [], options: {} },
+        rawInput: 'help',
       };
       render(<TerminalPrompt i18n={mockI18n} entry={entry} />);
       const input = screen.getByRole('textbox');
@@ -102,6 +107,8 @@ describe('TerminalPrompt', () => {
       const entry: CommandEntry = {
         timestamp: Date.now(),
         cmdName: Command.Help,
+        args: { positional: [], flags: [], options: {} },
+        rawInput: 'help',
       };
       render(<TerminalPrompt i18n={mockI18n} entry={entry} />);
       const input = screen.getByRole('textbox');
@@ -113,6 +120,29 @@ describe('TerminalPrompt', () => {
       render(<TerminalPrompt i18n={mockI18n} />);
       const input = screen.getByRole('textbox');
       expect(input).toHaveAttribute('readonly');
+    });
+  });
+
+  describe('prompt path from cwd', () => {
+    it('renders the live cwd in the prompt', () => {
+      $cwd.set('/src');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      expect(screen.getByText(/visitor@localhost:\/src\$/)).toBeInTheDocument();
+    });
+
+    it('uses the entry snapshot cwd when an entry is provided', () => {
+      const entry: CommandEntry = {
+        timestamp: Date.now(),
+        cmdName: Command.Help,
+        args: { positional: [], flags: [], options: {} },
+        rawInput: 'help',
+        cwd: '/src/app',
+      };
+      $cwd.set('/');
+      render(<TerminalPrompt i18n={mockI18n} entry={entry} />);
+      expect(
+        screen.getByText(/visitor@localhost:\/src\/app\$/),
+      ).toBeInTheDocument();
     });
   });
 
@@ -142,6 +172,8 @@ describe('TerminalPrompt', () => {
       const entry: CommandEntry = {
         timestamp: Date.now(),
         cmdName: Command.Help,
+        args: { positional: [], flags: [], options: {} },
+        rawInput: 'help',
       };
       render(<TerminalPrompt i18n={mockI18n} entry={entry} />);
       expect(screen.queryByText('help')).not.toBeInTheDocument();

@@ -1,13 +1,22 @@
 import HelpOutput from '@/components/cmd-outputs/HelpOutput';
-import { Command, type CommandEntry } from '@/types/terminal';
+import {
+  Command,
+  type CommandEntry,
+  type ParsedArguments,
+} from '@/types/terminal';
+
+const EMPTY_ARGS: ParsedArguments = { positional: [], flags: [], options: {} };
 
 export function buildCommandEntry(
   overrides: Partial<CommandEntry> = {},
 ): CommandEntry {
+  const { cmdName = Command.Help, ...rest } = overrides;
   return {
     timestamp: Date.now(),
-    cmdName: Command.Help,
+    cmdName,
     output: HelpOutput,
-    ...overrides,
+    args: EMPTY_ARGS,
+    rawInput: cmdName as string,
+    ...rest,
   };
 }

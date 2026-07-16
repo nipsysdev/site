@@ -85,6 +85,12 @@
       "build-info": {
         "description": "Afficher la date du build et les informations de déploiement"
       },
+      "cat": {
+        "description": "Afficher le contenu d'un fichier"
+      },
+      "cd": {
+        "description": "Changer le répertoire de travail"
+      },
       "clear": {
         "description": "Effacer l'écran du terminal"
       },
@@ -93,6 +99,12 @@
       },
       "help": {
         "description": "Afficher la liste des commandes"
+      },
+      "ls": {
+        "description": "Lister le contenu du répertoire"
+      },
+      "pwd": {
+        "description": "Afficher le répertoire de travail actuel"
       },
       "welcome": {
         "description": "Afficher le message de bienvenue"
@@ -174,5 +186,11 @@
     "logosDeliverySuffix": ", un réseau de messagerie pair-à-pair et résistant à la censure.",
     "previousImage": "Image précédente",
     "nextImage": "Image suivante"
+  },
+  "Cat": {
+    "loading": "Veuillez patienter. Récupération de {file} depuis GitHub."
+  },
+  "Ls": {
+    "loading": "Veuillez patienter. Chargement du dépôt..."
   }
 }

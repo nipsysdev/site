@@ -50,9 +50,30 @@ describe('CmdLink', () => {
       };
       render(<CmdLink cmdInfo={cmdInfo} />);
       expect(screen.getByText('help')).toBeInTheDocument();
-      // Check for the options text in the button
+      // Each flag is bracketed to read as a separate, optional modifier.
       const button = screen.getByRole('button');
-      expect(button.textContent).toContain('--all|--short');
+      expect(button.textContent).toContain('[--all]');
+      expect(button.textContent).toContain('[--short]');
+    });
+
+    it('renders flags and usage together when both are set', () => {
+      const cmdInfo: CommandInfo = {
+        name: Command.Ls,
+        options: ['-l', '-a'],
+        usage: '[path]',
+      };
+      render(<CmdLink cmdInfo={cmdInfo} />);
+      const button = screen.getByRole('button');
+      expect(button.textContent).toContain('[-l]');
+      expect(button.textContent).toContain('[-a]');
+      expect(button.textContent).toContain('[path]');
+    });
+
+    it('renders the usage hint when cmdInfo has usage', () => {
+      const cmdInfo: CommandInfo = { name: Command.Ls, usage: '[path]' };
+      render(<CmdLink cmdInfo={cmdInfo} />);
+      expect(screen.getByText('ls')).toBeInTheDocument();
+      expect(screen.getByRole('button').textContent).toContain('[path]');
     });
 
     it('renders with argument options when arg has options', () => {
@@ -105,6 +126,14 @@ describe('CmdLink', () => {
       render(<CmdLink cmdInfo={cmdInfo} />);
       fireEvent.click(screen.getByRole('button'));
       expect(mockSetInput).toHaveBeenCalledWith('help ');
+      expect(mockSimulateInput).not.toHaveBeenCalled();
+    });
+
+    it('sets input with space when command has usage', () => {
+      const cmdInfo: CommandInfo = { name: Command.Cat, usage: '<file>' };
+      render(<CmdLink cmdInfo={cmdInfo} />);
+      fireEvent.click(screen.getByRole('button'));
+      expect(mockSetInput).toHaveBeenCalledWith('cat ');
       expect(mockSimulateInput).not.toHaveBeenCalled();
     });
 

@@ -81,7 +81,7 @@ export default function ContactOutput() {
       icon: ChatTeardropTextIcon,
       labelKey: 'signal',
       href: 'https://signal.me/#eu/4FynXZ6lCD-qaR0x_CfvmEGVVtnprCVT4YRzyVrn7GVNB71oVHFAL6aP2soYBAI4',
-      displayText: 'nipsysdev.12',
+      displayText: 'nipsys.90',
       copyable: true,
     },
     {

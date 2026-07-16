@@ -2,6 +2,9 @@ import { allTasks, cleanStores, keepMount } from 'nanostores';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildCommandEntry } from '@/__tests__/fixtures/terminal-fixtures';
+import type { RepoEntry } from '@/lib/repo/types';
+import { createVfs } from '@/lib/repo/vfs';
+import { $cwd, $repoTree } from '@/stores/repo-store';
 import {
   $terminalHistory,
   $terminalHistoryIdx,
@@ -205,6 +208,68 @@ describe('terminal-store', () => {
     });
   });
 
+  describe('cd command', () => {
+    const CD_ENTRIES: RepoEntry[] = [
+      { path: 'README.md', type: 'blob', size: 10 },
+      { path: 'src/index.ts', type: 'blob', size: 5 },
+    ];
+
+    beforeEach(() => {
+      $repoTree.set({
+        vfs: createVfs(CD_ENTRIES),
+        commit: 'abc',
+        loading: false,
+        error: null,
+      });
+      $cwd.set('/');
+      $terminalHistory.set([]);
+    });
+
+    afterEach(() => {
+      $repoTree.set({ vfs: null, commit: null, loading: true, error: null });
+      $cwd.set('/');
+    });
+
+    it('changes directory and records the before-cwd on the entry', () => {
+      $terminalInput.set('cd src');
+
+      submitTerminalInput();
+
+      expect($cwd.get()).toBe('/src');
+      const history = $terminalHistory.get();
+      expect(history).toHaveLength(1);
+      expect(history[0].cmdName).toBe(Command.Cd);
+      expect(history[0].error).toBeUndefined();
+      expect(history[0].cwd).toBe('/');
+    });
+
+    it('records an error and leaves cwd unchanged for a missing target', () => {
+      $terminalInput.set('cd nope');
+
+      submitTerminalInput();
+
+      expect($cwd.get()).toBe('/');
+      const history = $terminalHistory.get();
+      expect(history).toHaveLength(1);
+      expect(history[0].cmdName).toBe(Command.Cd);
+      expect(history[0].error).toMatch(/cd:.*no such file or directory/);
+      expect(history[0].cwd).toBe('/');
+    });
+
+    it('goes home on no argument from a subdirectory', () => {
+      $cwd.set('/src');
+      $terminalInput.set('cd');
+
+      submitTerminalInput();
+
+      expect($cwd.get()).toBe('/');
+      const history = $terminalHistory.get();
+      expect(history[0].cmdName).toBe(Command.Cd);
+      expect(history[0].error).toBeUndefined();
+      expect(history[0].cwd).toBe('/src');
+    });
+  });
+
   describe('History Navigation', () => {
     beforeEach(() => {
       $terminalHistory.set([
@@ -355,6 +420,127 @@ describe('terminal-store', () => {
     });
   });
 
+  describe('autocomplete (path completion)', () => {
+    const PATH_ENTRIES: RepoEntry[] = [
+      { path: 'README.md', type: 'blob', size: 100 },
+      { path: 'package.json', type: 'blob', size: 50 },
+      { path: 'src', type: 'tree' },
+      { path: 'src/index.ts', type: 'blob', size: 20 },
+      { path: 'src/app', type: 'tree' },
+      { path: 'src/lib', type: 'tree' },
+    ];
+
+    beforeEach(() => {
+      $repoTree.set({
+        vfs: createVfs(PATH_ENTRIES),
+        commit: 'abc',
+        loading: false,
+        error: null,
+      });
+      $cwd.set('/');
+      $terminalInput.set('');
+      $terminalSuggestions.set(null);
+    });
+
+    afterEach(() => {
+      $repoTree.set({ vfs: null, commit: null, loading: true, error: null });
+      $cwd.set('/');
+    });
+
+    it('completes a file path for cat', () => {
+      $terminalInput.set('cat READ');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cat README.md');
+      expect($terminalSuggestions.get()).toBeNull();
+    });
+
+    it('completes a directory path for cd with a trailing slash', () => {
+      $terminalInput.set('cd sr');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cd src/');
+    });
+
+    it('cd only completes directories (files are ignored)', () => {
+      $terminalInput.set('cd READ');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cd READ');
+      expect($terminalSuggestions.get()).toEqual([]);
+    });
+
+    it('shows "no match" when no file or folder matches', () => {
+      $terminalInput.set('cat zzz');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cat zzz');
+      expect($terminalSuggestions.get()).toEqual([]);
+    });
+
+    it('ls completes both files and directories', () => {
+      $terminalInput.set('ls sr');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('ls src/');
+    });
+
+    it('shows multiple suggestions when ambiguous', () => {
+      $terminalInput.set('cat src/');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cat src/');
+      const suggestions = $terminalSuggestions.get();
+      expect(suggestions).not.toBeNull();
+      expect(suggestions).toEqual(
+        expect.arrayContaining(['app', 'index.ts', 'lib']),
+      );
+    });
+
+    it('does not path-complete non-path commands (help)', () => {
+      $terminalInput.set('help READ');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('help READ');
+      expect($terminalSuggestions.get()).toBeNull();
+    });
+
+    it('resolves completion relative to the current cwd', () => {
+      $cwd.set('/src');
+      $terminalInput.set('cat ap');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cat app/');
+    });
+
+    it('does not complete flags', () => {
+      $terminalInput.set('ls -');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('ls -');
+      expect($terminalSuggestions.get()).toBeNull();
+    });
+
+    it('does nothing when the filesystem is not loaded', () => {
+      $repoTree.set({ vfs: null, commit: null, loading: true, error: null });
+      $terminalInput.set('cat READ');
+
+      autocomplete();
+
+      expect($terminalInput.get()).toBe('cat READ');
+      expect($terminalSuggestions.get()).toBeNull();
+    });
+  });
+
   describe('Keyboard Event Effects', () => {
     it('submits input on Enter key', async () => {
       $terminalInput.set('help');
@@ -476,7 +662,8 @@ describe('terminal-store', () => {
     it('handles history navigation with commands that have options', () => {
       const entry = buildCommandEntry({
         cmdName: Command.Help,
-        option: 'detailed',
+        args: { positional: ['detailed'], flags: [], options: {} },
+        rawInput: 'help detailed',
       });
       $terminalHistory.set([entry]);
       $terminalHistoryIdx.set(-1);
@@ -489,8 +676,8 @@ describe('terminal-store', () => {
     it('handles history navigation with commands that have arguments', () => {
       const entry = buildCommandEntry({
         cmdName: Command.Help,
-        argName: 'format',
-        argValue: 'json',
+        args: { positional: [], flags: [], options: { format: 'json' } },
+        rawInput: 'help --format=json',
       });
       $terminalHistory.set([entry]);
       $terminalHistoryIdx.set(-1);
