@@ -1,0 +1,231 @@
+/* Aurora background — decorative cyan glow over the themed base.
+   Hybrid architecture (Pattern 5):
+   - Glow lives in SVG with feTurbulence+feDisplacementMap (organic shape)
+   - Blur is CSS filter on an OVERSIZED wrapper (defeats SVG viewport clipping)
+   - Grain is a SEPARATE layer so it stays sharp
+   - .aurora-root { overflow: hidden } is the single clip boundary
+*/
+
+/* Register the light position so it can be transitioned (relight on section change). */
+@property --light-x {
+  syntax: "<percentage>";
+  initial-value: 70%;
+  inherits: true;
+}
+
+@property --light-y {
+  syntax: "<percentage>";
+  initial-value: 55%;
+  inherits: true;
+}
+
+/* Root: full-viewport, behind all content, non-interactive, SINGLE clip boundary. */
+.aurora-root {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--lsd-background);
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Glow core alpha — dark default (electric cyan in the void). */
+  --glow-alpha: 0.6;
+  --grain-alpha: 0.3;
+}
+
+/* Light mode: visibly cyan-tinted bloom on cool paper. */
+.light .aurora-root {
+  --glow-alpha: 0.7;
+  --grain-alpha: 0.3;
+}
+
+/* The blurred glow layer — oversized so the soft fade happens before the clip edge. */
+.aurora-canvas-wrap {
+  position: absolute;
+  inset: -25%; /* 50% larger than parent on each side */
+  filter: blur(32px); /* the blur, moved OUT of SVG into CSS */
+}
+
+/* ===== Loading state: centered heavy pulse =====
+   The aurora IS the loading screen. While loading, the glow sits dead-center
+   and pulses hard (fast cycle, dramatic opacity + scale). App content is
+   hidden via opacity on the MainWrapper content wrapper. */
+
+/* Position glow at center during loading + transitioning (shrink phase). */
+.aurora-root.is-loading,
+.aurora-root.is-transitioning {
+  --light-x: 55%;
+  --light-y: 55%;
+}
+
+/* Loading: heavy pulse at center. */
+.aurora-root.is-loading .aurora-canvas-wrap {
+  animation: aurora-loading-pulse 1.5s ease-in-out infinite;
+}
+
+/* Transitioning: shrink to 0 — glow disappears at loading position. */
+.aurora-root.is-transitioning .aurora-canvas-wrap {
+  animation: aurora-shrink-out 300ms ease-in forwards;
+}
+
+/* ===== Ready state: expand at page position =====
+   After shrinking to 0 (is-transitioning), the position swaps from center
+   to page values (70%/55%), then the glow expands back to full size.
+   aurora-expand-in runs once (forwards), then aurora-pulse takes over
+   (delayed 300ms so it starts exactly when expand-in finishes). */
+.aurora-root.is-ready .aurora-canvas-wrap {
+  animation:
+    aurora-expand-in 300ms ease-out forwards,
+    aurora-pulse 9s ease-in-out 300ms infinite alternate;
+}
+
+.aurora-canvas-wrap svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Relight: the glow glides when --light-x/--light-y change on this element.
+   Percentages resolve against the SVG viewport via transform-box: view-box.
+   The offset equals half the ellipse radius (rx=14% → offset=7%) so
+     the ellipse CENTER lands on the var, not its top-left corner. */
+.aurora-light {
+  transform-box: view-box;
+  transform: translate(calc(var(--light-x) - 7%), calc(var(--light-y) - 7%));
+  /* No transition — position changes are instant (teleport while invisible during shrink→expand flow).
+     For future per-page "relight" glide, re-add: transition: --light-x 300ms ease-in-out, --light-y 300ms ease-in-out; */
+}
+
+/* Tilt: rotates the entire glow so the long axis goes diagonal
+   instead of horizontal. Transform-box: fill-box + transform-origin: center
+   ensures the rotation pivots around the ellipse's own center. */
+.aurora-rotate {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(-25deg);
+}
+
+/* Ambient breathing: slow scale + tiny drift so the scene breathes when idle. */
+.aurora-breathe {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+
+/* Loading text: centered, pulses in sync with the aurora's 1.5s heavy pulse. */
+.aurora-loading-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--lsd-primary);
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  z-index: 1;
+  pointer-events: none;
+  animation: loading-text-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-text-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Grain overlay — separate layer, stays sharp, covers viewport exactly. */
+.aurora-grain-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--grain-alpha);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@keyframes drift {
+  0% {
+    transform: scale(1) translate(0%, 0%);
+  }
+  100% {
+    transform: scale(1.06) translate(1.5%, -1%);
+  }
+}
+
+/* Heavy loading pulse (1.5s): dramatic opacity + scale oscillation,
+   drives the loading state. Ends at the same opacity:1 the ready pulse
+   starts on, so the animation swap doesn't drop the glow to black. */
+@keyframes aurora-loading-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.65);
+  }
+}
+
+/* Shrink to 0: glow disappears at loading position before teleporting. */
+@keyframes aurora-shrink-out {
+  from {
+    opacity: 0.7;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* Expand from 0: glow reappears at page position. */
+@keyframes aurora-expand-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Gentle alpha breathe (9s). */
+@keyframes aurora-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-canvas-wrap {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .aurora-breathe {
+    animation: none !important;
+  }
+
+  .aurora-light {
+    transition: none !important;
+  }
+
+  .aurora-loading-text {
+    animation: none !important;
+    opacity: 0.7;
+  }
+}

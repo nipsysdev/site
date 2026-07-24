@@ -1,22 +1,36 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useStore } from '@nanostores/react';
 import { Toaster } from 'sonner';
-import { $isAppMounted } from '@/stores/app-store';
-import Sidenav from './Sidenav';
+import { $isAppMounted, $isAppReady } from '@/stores/app-store';
+import AuroraBackground from './AuroraBackground';
+import TopNav from './TopNav';
+import Footer from './Footer';
 
 export default function MainWrapper({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isAppReady = useStore($isAppReady);
+
   useEffect(() => {
     $isAppMounted.set(true);
   }, []);
 
   return (
     <>
-      <Sidenav>{children}</Sidenav>
+      <AuroraBackground />
+      <div
+        className={`relative z-10 flex h-dvh w-screen flex-col transition-opacity duration-700 ${isAppReady ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+        <TopNav />
+        <main className="mx-auto flex w-full min-h-0 max-w-[1200px] flex-1 flex-col overflow-hidden py-(--lsd-spacing-base) px-(--lsd-spacing-base)">
+          {children}
+        </main>
+        <Footer />
+      </div>
       {/* TODO: Fix toaster export in @nipsys/lsd package to avoid doing all of this */}
       <Toaster
         className="lsd:toaster lsd:group"

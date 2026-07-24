@@ -1,0 +1,54 @@
+:root {
+  /* Decorative cyan glow used by the aurora background.
+     Dark mode default; overridden to a deeper cyan in light mode below. */
+  --aurora-glow: #22d3ee;
+  /* Aurora light position — must match @property initial-value in aurora.css.
+     With inherits:true, these cascade to .aurora-light and drive the glow position.
+     Override per-route (e.g., on a section-scoped class) for the "relight on navigation" feature. */
+  --light-x: 70%;
+  --light-y: 55%;
+}
+
+[data-theme='phosphor'] {
+  &,
+  &.light {
+    --lsd-primary: #078aa1; /* cyan-800 — passes AA on white with comfortable margin */
+    --aurora-glow: #078aa1; /* cyan-500 — saturated enough to read as visible bloom on paper */
+    --lsd-primary-content: #ffffff;
+    --lsd-text-neutral: #0b0e13;
+    --lsd-text-secondary: #5b6671;
+    --lsd-background: #f7f8fa;
+    --lsd-foreground: #ffffff;
+    --lsd-border: #e1e4e9;
+    --lsd-destructive: #b91c1c;
+    --lsd-text-destructive: #b91c1c;
+    --lsd-success: #047857;
+    --lsd-text-success: #047857;
+    --lsd-warning: #b45309;
+    --lsd-text-warning: #b45309;
+    --lsd-info: #1d4ed8;
+    --lsd-text-info: #1d4ed8;
+    color: var(--lsd-text-neutral);
+    background-color: var(--lsd-background);
+  }
+
+  &.dark {
+    --lsd-primary: #22d3ee;
+    --lsd-primary-content: #05070a;
+    --lsd-text-neutral: #e6e9ec;
+    --lsd-text-secondary: #7c8894;
+    --lsd-background: #05070a;
+    --lsd-foreground: #0b0e13;
+    --lsd-border: #1a1f27;
+    --lsd-destructive: #f87171;
+    --lsd-text-destructive: #fca5a5;
+    --lsd-success: #34d399;
+    --lsd-text-success: #6ee7b7;
+    --lsd-warning: #fbbf24;
+    --lsd-text-warning: #fcd34d;
+    --lsd-info: #60a5fa;
+    --lsd-text-info: #93c5fd;
+    color: var(--lsd-text-neutral);
+    background-color: var(--lsd-background);
+  }
+}

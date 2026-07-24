@@ -1,10 +1,28 @@
 import { getTranslations } from 'next-intl/server';
+import localFont from 'next/font/local';
 import LoadSequence from '@/components/LoadSequence';
-import ThemeProvider from '@/components/ThemeProvider';
 import 'tailwindcss/index.css';
 import '@nipsys/lsd/css';
 import '@/app/globals.css';
 import '@/utils/chunk-retry';
+
+const ubuntuMono = localFont({
+  src: [
+    {
+      path: '../../public/fonts/UbuntuMono-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/UbuntuMono-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-ubuntu-mono',
+  display: 'swap',
+  preload: true,
+});
 
 export async function generateMetadata() {
   const tMeta = await getTranslations({ locale: 'en', namespace: 'Metadata' });
@@ -24,7 +42,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="nord" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-theme="phosphor"
+      suppressHydrationWarning
+      className={`dark ${ubuntuMono.variable}`}
+    >
       <head>
         <meta name="theme-color" content="#000000" />
         <meta
@@ -33,9 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body className="h-dvh w-screen monospace">
-        <ThemeProvider>
-          <LoadSequence>{children}</LoadSequence>
-        </ThemeProvider>
+        <LoadSequence>{children}</LoadSequence>
       </body>
     </html>
   );

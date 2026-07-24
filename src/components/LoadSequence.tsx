@@ -1,24 +1,31 @@
 'use client';
 
 import { useStore } from '@nanostores/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { $isAppMounted, $isAppReady } from '@/stores/app-store';
-import { $isDarkMode } from '@/stores/theme-store';
 
-interface LoadSequenceProps {
+export default function LoadSequence({
+  children,
+}: {
   children?: React.ReactNode;
-}
-
-export default function LoadSequence({ children }: LoadSequenceProps) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [animationDone, setAnimationDone] = useState(false);
-  const isDarkMode = useStore($isDarkMode);
+}) {
+  const [fontsReady, setFontsReady] = useState(false);
   const isAppMounted = useStore($isAppMounted);
 
-  const isLoading = !animationDone || !isAppMounted;
+  const isLoading = !isAppMounted || !fontsReady;
 
   useEffect(() => {
-    document.body.style.visibility = 'visible';
+    let cancelled = false;
+    const fontsPromise =
+      typeof document !== 'undefined'
+        ? document.fonts.ready
+        : Promise.resolve();
+    fontsPromise.then(() => {
+      if (!cancelled) setFontsReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -27,84 +34,5 @@ export default function LoadSequence({ children }: LoadSequenceProps) {
     }
   }, [isLoading]);
 
-  const steps = useMemo(
-    () => [
-      { message: '> Detecting theme preference...', delay: 600 },
-      {
-        message: `> Theme set to [${isDarkMode ? 'dark' : 'light'}]`,
-        delay: 200,
-      },
-      {
-        message: '> Initializing application...',
-        delay: 200,
-      },
-    ],
-    [isDarkMode],
-  );
-
-  useEffect(() => {
-    if (currentStep < steps.length) {
-      const timer = setTimeout(() => {
-        setCurrentStep(currentStep + 1);
-      }, steps[currentStep].delay);
-
-      return () => clearTimeout(timer);
-    } else {
-      setAnimationDone(true);
-    }
-  }, [currentStep, steps]);
-
-  const fadeInAnimation =
-    'opacity-0 animate-[showInstant_0s_ease-in-out_forwards]';
-  const stepHeight = 'h-[24px] leading-6';
-
-  return (
-    <>
-      <div
-        aria-hidden={isLoading}
-        className={isLoading ? 'invisible h-0 overflow-hidden' : undefined}
-      >
-        {children}
-      </div>
-
-      {isLoading && (
-        <div className="p-8 text-sm font-medium leading-5">
-          <style>{`
-          @keyframes showInstant {
-            from { opacity: 0; }
-            to { opacity: 1; }
-          }
-        `}</style>
-          <div className="flex flex-col pt-[24px] relative">
-            <div
-              className={`top-0 absolute ${fadeInAnimation}`}
-              style={{ animationDelay: '200ms' }}
-            >
-              <span>{'> Connected to IPFS'}</span>
-            </div>
-            <div
-              className={`top-[24px] ${currentStep ? '' : fadeInAnimation} h-0`}
-              style={{ animationDelay: '600ms' }}
-            >
-              <span>{'> Loading core chunks'}</span>
-            </div>
-
-            <div className="flex flex-col mt-[24px]">
-              {steps.slice(0, currentStep).map((step) => (
-                <div className={stepHeight} key={step.message}>
-                  {step.message}
-                </div>
-              ))}
-            </div>
-            <div
-              className={`${fadeInAnimation}`}
-              style={{ animationDelay: '600ms' }}
-            >
-              <span className="animate-pulse">█</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return <>{children}</>;
 }
