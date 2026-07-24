@@ -15,17 +15,8 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       <StaticOutput>
         <div>
-          <p>
-            {t.rich('welcome', {
-              name: (name) => name,
-            })}
-          </p>
-          <p>{t('siteIntro1')}</p>
-          <p>
-            {t.rich('siteIntro2', {
-              cmd: () => 'help',
-            })}
-          </p>
+          <p>{t('heroLine1')}</p>
+          <p>{t('heroLine2')}</p>
         </div>
       </StaticOutput>
       <TerminalEmulator initialCommand={Command.Welcome} />

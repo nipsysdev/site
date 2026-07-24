@@ -4,7 +4,6 @@ export enum Command {
   BuildInfo = 'build-info',
   Cat = 'cat',
   Cd = 'cd',
-  Clear = 'clear',
   Contact = 'contact',
   Gallery = 'gallery',
   Help = 'help',

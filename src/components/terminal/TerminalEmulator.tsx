@@ -8,7 +8,6 @@ import { $isAppReady } from '@/stores/app-store';
 import { $repoTree } from '@/stores/repo-store';
 import {
   $terminalHistory,
-  $terminalHistoryVisibleIdx,
   $terminalPromptRef,
   initializeTerminal,
 } from '@/stores/terminal-store';
@@ -24,7 +23,6 @@ export default function TerminalEmulator({
   initialCommand = 'welcome',
 }: TerminalEmulatorProps) {
   const history = useStore($terminalHistory);
-  const historyVisibleIdx = useStore($terminalHistoryVisibleIdx);
   const isAppReady = useStore($isAppReady);
 
   const t = useTranslations('Terminal');
@@ -58,50 +56,28 @@ export default function TerminalEmulator({
     return unsubscribe;
   }, []);
 
-  const focusTerminal = (target: HTMLElement) => {
-    if (
-      !target.closest(
-        '[data-prevent-terminal-focus],[data-slot="dialog-overlay"],[data-radix-popper-content-wrapper]',
-      )
-    ) {
-      mainPrompt.current?.focus();
-    }
-  };
+  const currentEntry = history.length > 0 ? history[history.length - 1] : null;
 
   return (
     hasWindow && (
-      <div className="size-full overflow-y-auto text-(length:--lsd-body2-fontSize) sm:text-(length:--lsd-body1-fontSize)">
-        {/** biome-ignore lint/a11y/useSemanticElements: terminal container needs to be clickable and listen to inputs while still displaying as a div */}
-        <div
-          role="button"
-          tabIndex={0}
-          className="flex size-full cursor-default flex-col"
-          onKeyDown={(e) => {
-            if (
-              e.target === e.currentTarget &&
-              (e.key === 'Enter' || e.key === ' ')
-            ) {
-              e.preventDefault();
-              mainPrompt.current?.focus();
-            }
-          }}
-          onClick={(e) => focusTerminal(e.target as HTMLElement)}
-        >
-          {history.slice(historyVisibleIdx).map((entry) => (
-            <div key={entry.timestamp} className="mb-1">
-              <TerminalPrompt i18n={t} entry={entry} />
-              {entry.output ? (
-                <entry.output entry={entry} />
-              ) : entry.error ? (
+      <div className="flex flex-col size-full overflow-hidden">
+        <TerminalPrompt ref={mainPrompt} i18n={t} />
+
+        <div className="flex-1 flex overflow-y-auto p-(--lsd-spacing-largest)">
+          <div className="h-fit">
+            {currentEntry &&
+              (currentEntry.output ? (
+                <currentEntry.output entry={currentEntry} />
+              ) : currentEntry.error ? (
                 <Typography variant="body2" color="destructive">
-                  {entry.error}
+                  {currentEntry.error}
                 </Typography>
-              ) : isRecognizedCommand(entry.cmdName) ? null : (
-                entry.cmdName && <UnknownCmdOutput cmdName={entry.cmdName} />
-              )}
-            </div>
-          ))}
-          <TerminalPrompt ref={mainPrompt} i18n={t} />
+              ) : isRecognizedCommand(currentEntry.cmdName) ? null : (
+                currentEntry.cmdName && (
+                  <UnknownCmdOutput cmdName={currentEntry.cmdName} />
+                )
+              ))}
+          </div>
         </div>
       </div>
     )

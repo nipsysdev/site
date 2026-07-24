@@ -41,9 +41,6 @@ export const Commands: CommandInfo[] = [
     output: GalleryOutput,
   },
   {
-    name: Command.Clear,
-  },
-  {
     name: Command.Pwd,
     output: PwdOutput,
   },

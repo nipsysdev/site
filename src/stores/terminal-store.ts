@@ -10,6 +10,7 @@ import { getPastInputStr, parseTerminalEntry } from '@/utils/terminal-utils';
 
 export const $terminalInput = atom('');
 export const $terminalInputReadOnly = atom(false);
+export const $lastDisplayedCommand = atom<string>('');
 export const $terminalHistory = atom<CommandEntry[]>([]);
 export const $terminalHistoryIdx = atom(-1);
 export const $terminalHistoryVisibleIdx = atom(0);
@@ -59,9 +60,7 @@ export function submitTerminalInput() {
   const terminalPromptRef = $terminalPromptRef.get();
   const parsed = parseTerminalEntry(currentInput);
 
-  if (parsed.cmdName === Command.Clear) {
-    $terminalHistoryVisibleIdx.set(currentHistory.length);
-  } else if (parsed.cmdName === Command.Cd) {
+  if (parsed.cmdName === Command.Cd) {
     const cwdBefore = $cwd.get();
     const target = parsed.args.positional[0] ?? '';
     const result = changeDirectory(target);
@@ -73,7 +72,15 @@ export function submitTerminalInput() {
   } else {
     $terminalHistory.set([...currentHistory, { ...parsed, cwd: $cwd.get() }]);
   }
-  $terminalInput.set('');
+  // Ensure the displayed command has a trailing space so the unfocused cursor
+  // sits one character to the right of the last letter ($ welcome █ not $ welcome█)
+  let displayedValue = $terminalInput.get();
+  if (displayedValue && !displayedValue.endsWith(' ')) {
+    displayedValue = `${displayedValue} `;
+    $terminalInput.set(displayedValue);
+  }
+  $lastDisplayedCommand.set(displayedValue);
+  $terminalPromptRef.get()?.current?.blur();
   setTimeout(() => {
     terminalPromptRef?.current?.scrollIntoView();
   }, 100);
@@ -95,7 +102,9 @@ export function simulateInput(input: string) {
 
     setTimeout(() => {
       addChar(cmd);
-      $terminalPromptRef.get()?.current?.focus();
+      if (i < cmd.length) {
+        $terminalPromptRef.get()?.current?.focus();
+      }
     }, 50);
   };
 

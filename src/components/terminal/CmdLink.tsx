@@ -57,7 +57,7 @@ export default function CmdLink(props: Props) {
       variant={props.primary ? 'filled' : 'outlined'}
       size="sm"
       onClick={submitCmd}
-      className="text-xs w-fit!"
+      className="text-xs w-fit! min-h-11 sm:min-h-8"
     >
       <span>{props.cmdName ?? props.cmdInfo?.name}</span>
       {cmdArgOptionRender()}

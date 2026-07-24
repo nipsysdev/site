@@ -1,9 +1,16 @@
 import { useStore } from '@nanostores/react';
 import { Typography } from '@nipsys/lsd';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
-import type { Translator } from '@/i18n/intl';
-import { $cwd } from '@/stores/repo-store';
 import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import type { Translator } from '@/i18n/intl';
+import {
+  $lastDisplayedCommand,
   $terminalHistoryIdx,
   $terminalInput,
   $terminalInputReadOnly,
@@ -11,10 +18,11 @@ import {
   $terminalSuggestions,
 } from '@/stores/terminal-store';
 import type { CommandEntry } from '@/types/terminal';
-import { getDisplayHost, getTerminalEntryInput } from '@/utils/terminal-utils';
+import { getTerminalEntryInput } from '@/utils/terminal-utils';
 
 export interface TerminalPromptRef {
   focus: () => void;
+  blur: () => void;
   scrollIntoView: () => void;
   setCursorToIdx: (index: number) => void;
 }
@@ -29,14 +37,41 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
     const input = useStore($terminalInput);
     const suggestions = useStore($terminalSuggestions);
     const isReadOnly = useStore($terminalInputReadOnly);
-    const cwd = useStore($cwd);
-    const promptPath = entry ? (entry.cwd ?? '/') : cwd;
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const autocompleteRef = useRef<HTMLDivElement>(null);
+    const typingTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+      undefined,
+    );
+    const [isFocused, setIsFocused] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
+    const [scrollLeft, setScrollLeft] = useState(0);
+    const [inputWidth, setInputWidth] = useState(0);
+
+    const value = entry ? getTerminalEntryInput(entry) : input;
+
+    useLayoutEffect(() => {
+      if (inputRef.current) {
+        setScrollLeft(inputRef.current.scrollLeft);
+      }
+    }, []);
+
+    useEffect(() => {
+      const el = inputRef.current;
+      if (!el) return;
+      setInputWidth(el.clientWidth);
+      const observer = new ResizeObserver(() => {
+        setInputWidth(el.clientWidth);
+      });
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
 
     const focus = () => {
       inputRef.current?.focus();
+    };
+
+    const blur = () => {
+      inputRef.current?.blur();
     };
 
     const scrollIntoView = () => {
@@ -53,28 +88,74 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
 
     useImperativeHandle(ref, () => ({
       focus,
+      blur,
       scrollIntoView,
       setCursorToIdx,
     }));
 
+    const handleTyping = () => {
+      setIsTyping(true);
+      clearTimeout(typingTimer.current);
+      typingTimer.current = setTimeout(() => setIsTyping(false), 400);
+    };
+
+    const FONT_SIZE_PX = 20;
+    const caretRightEdge = value.length * 0.5 * FONT_SIZE_PX - scrollLeft + 9;
+    const caretOverflows = caretRightEdge > inputWidth;
+
+    const showCursor = !entry && (isFocused || !caretOverflows);
+
     return (
       <>
-        <div className="flex w-full gap-x-2">
-          <span className="font-bold">
-            {`${i18n('visitor')}@${getDisplayHost()}:${promptPath}$`}
-          </span>
-          <input
-            ref={inputRef}
-            value={entry ? getTerminalEntryInput(entry) : input}
-            type="text"
-            spellCheck="false"
-            readOnly={isReadOnly || !!entry}
-            onChange={(e) => $terminalInput.set(e.target.value)}
-            onKeyDown={(e) => $terminalKeyEvent.set(e)}
-            onBeforeInput={() => $terminalHistoryIdx.set(-1)}
-          />
+        <div className="flex w-4/5 items-center gap-x-(--lsd-spacing-small) text-xl cursor-pointer opacity-80 transition-opacity duration-150 hover:opacity-100">
+          <span className="leading-none text-(--lsd-primary)">$</span>
+          <div className="relative flex-1">
+            <input
+              ref={inputRef}
+              value={value}
+              id="prompt"
+              type="text"
+              spellCheck="false"
+              readOnly={isReadOnly || !!entry}
+              className="w-full!"
+              style={{ caretColor: 'transparent' }}
+              onChange={(e) => {
+                $terminalInput.set(e.target.value);
+                handleTyping();
+              }}
+              onKeyDown={(e) => $terminalKeyEvent.set(e)}
+              onScroll={(e) => setScrollLeft(e.currentTarget.scrollLeft)}
+              onBeforeInput={() => $terminalHistoryIdx.set(-1)}
+              onFocus={() => {
+                setIsFocused(true);
+                if (!isReadOnly) {
+                  $lastDisplayedCommand.set($terminalInput.get());
+                  $terminalInput.set('');
+                }
+              }}
+              onBlur={() => {
+                setIsFocused(false);
+                $terminalInput.set($lastDisplayedCommand.get());
+              }}
+            />
+            {showCursor && (
+              <span
+                aria-hidden="true"
+                className={
+                  !isFocused
+                    ? 'prompt-cursor prompt-cursor--hollow'
+                    : isTyping
+                      ? 'prompt-cursor prompt-cursor--solid'
+                      : 'prompt-cursor'
+                }
+                style={{
+                  left: `calc(${value.length} * 0.5em - ${scrollLeft}px)`,
+                }}
+              />
+            )}
+          </div>
         </div>
-        <div className="flex items-start" ref={autocompleteRef}>
+        <div className="flex items-start">
           {!entry &&
             suggestions &&
             (!suggestions.length ? (
@@ -102,7 +183,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
             }
             flex: 1 1 auto;
             width: inherit;
-            opacity: 0.8;
+            caret-color: transparent;
           }
         `}</style>
       </>
