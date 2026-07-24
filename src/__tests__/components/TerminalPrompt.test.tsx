@@ -19,6 +19,10 @@ vi.mock('@/stores/terminal-store', () => ({
   $terminalInputReadOnly: {
     get: vi.fn(() => false),
   },
+  $lastDisplayedCommand: {
+    get: vi.fn(() => ''),
+    set: vi.fn(),
+  },
   $terminalHistoryIdx: {
     get: vi.fn(() => -1),
     set: vi.fn(),
@@ -32,13 +36,12 @@ vi.mock('@/stores/terminal-store', () => ({
 }));
 
 vi.mock('@/utils/terminal-utils', () => ({
-  getDisplayHost: vi.fn(() => 'localhost'),
   getTerminalEntryInput: vi.fn((entry) => entry.cmdName),
 }));
 
 import type { Translator } from '@/i18n/intl';
-import { $cwd } from '@/stores/repo-store';
 import {
+  $lastDisplayedCommand,
   $terminalInput,
   $terminalInputReadOnly,
   $terminalKeyEvent,
@@ -51,10 +54,11 @@ describe('TerminalPrompt', () => {
   const mockReadOnlyGet = vi.mocked($terminalInputReadOnly.get);
   const mockKeyEventSet = vi.mocked($terminalKeyEvent.set);
   const mockSuggestionsGet = vi.mocked($terminalSuggestions.get);
+  const mockLastDisplayedGet = vi.mocked($lastDisplayedCommand.get);
+  const mockLastDisplayedSet = vi.mocked($lastDisplayedCommand.set);
 
   const mockI18n = ((key: string) => {
     const translations: Record<string, string> = {
-      visitor: 'visitor',
       noMatch: 'No match found',
     };
     return translations[key] ?? key;
@@ -65,18 +69,22 @@ describe('TerminalPrompt', () => {
     mockInputGet.mockReturnValue('');
     mockReadOnlyGet.mockReturnValue(false);
     mockSuggestionsGet.mockReturnValue(null);
-    $cwd.set('/');
+    mockLastDisplayedGet.mockReturnValue('');
   });
 
   afterEach(() => {
     vi.resetAllMocks();
-    $cwd.set('/');
   });
 
   describe('rendering', () => {
-    it('renders the prompt with visitor and host', () => {
+    it('renders the $ prefix glyph', () => {
       render(<TerminalPrompt i18n={mockI18n} />);
-      expect(screen.getByText(/visitor@localhost:\/\$/)).toBeInTheDocument();
+      expect(screen.getByText('$')).toBeInTheDocument();
+    });
+
+    it('does not render the old visitor@host:path prefix', () => {
+      render(<TerminalPrompt i18n={mockI18n} />);
+      expect(screen.queryByText(/visitor@localhost/)).not.toBeInTheDocument();
     });
 
     it('renders an input field', () => {
@@ -123,26 +131,54 @@ describe('TerminalPrompt', () => {
     });
   });
 
-  describe('prompt path from cwd', () => {
-    it('renders the live cwd in the prompt', () => {
-      $cwd.set('/src');
+  describe('block cursor', () => {
+    it('renders hollow cursor when unfocused', () => {
       render(<TerminalPrompt i18n={mockI18n} />);
-      expect(screen.getByText(/visitor@localhost:\/src\$/)).toBeInTheDocument();
+      const cursor = document.querySelector('.prompt-cursor');
+      expect(cursor).toBeInTheDocument();
+      expect(cursor).toHaveClass('prompt-cursor--hollow');
     });
 
-    it('uses the entry snapshot cwd when an entry is provided', () => {
+    it('renders solid+blinking cursor when focused and idle', () => {
+      vi.useFakeTimers();
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+      fireEvent.focus(input);
+
+      // Wait past the typing timer (400ms) so isTyping settles to false.
+      vi.advanceTimersByTime(500);
+
+      const cursor = document.querySelector('.prompt-cursor');
+      expect(cursor).toBeInTheDocument();
+      expect(cursor).not.toHaveClass('prompt-cursor--solid');
+      expect(cursor).not.toHaveClass('prompt-cursor--hollow');
+      vi.useRealTimers();
+    });
+
+    it('transitions from hollow to solid on focus', () => {
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const cursorBefore = document.querySelector('.prompt-cursor');
+      expect(cursorBefore).toHaveClass('prompt-cursor--hollow');
+
+      const input = screen.getByRole('textbox');
+      fireEvent.focus(input);
+
+      const cursorAfter = document.querySelector('.prompt-cursor');
+      expect(cursorAfter).toBeInTheDocument();
+      expect(cursorAfter).not.toHaveClass('prompt-cursor--hollow');
+    });
+
+    it('does not render the block cursor for entry echoes', () => {
       const entry: CommandEntry = {
         timestamp: Date.now(),
         cmdName: Command.Help,
         args: { positional: [], flags: [], options: {} },
         rawInput: 'help',
-        cwd: '/src/app',
       };
-      $cwd.set('/');
       render(<TerminalPrompt i18n={mockI18n} entry={entry} />);
-      expect(
-        screen.getByText(/visitor@localhost:\/src\/app\$/),
-      ).toBeInTheDocument();
+      const input = screen.getByRole('textbox');
+      fireEvent.focus(input);
+      expect(document.querySelector('.prompt-cursor')).not.toBeInTheDocument();
     });
   });
 
@@ -160,11 +196,11 @@ describe('TerminalPrompt', () => {
     });
 
     it('shows suggestions list when suggestions exist', () => {
-      mockSuggestionsGet.mockReturnValue(['help', 'whoami', 'clear']);
+      mockSuggestionsGet.mockReturnValue(['help', 'whoami', 'contact']);
       render(<TerminalPrompt i18n={mockI18n} />);
       expect(screen.getByText('help')).toBeInTheDocument();
       expect(screen.getByText('whoami')).toBeInTheDocument();
-      expect(screen.getByText('clear')).toBeInTheDocument();
+      expect(screen.getByText('contact')).toBeInTheDocument();
     });
 
     it('does not show suggestions when entry is provided', () => {
@@ -196,6 +232,81 @@ describe('TerminalPrompt', () => {
     });
   });
 
+  describe('focus-clears-input behavior (single-prompt model)', () => {
+    it('clears the input store on focus when not read-only', () => {
+      mockInputGet.mockReturnValue('existing');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockInputSet.mockClear();
+      fireEvent.focus(input);
+
+      expect(mockInputSet).toHaveBeenCalledWith('');
+    });
+
+    it('does NOT clear the input store on focus when read-only', () => {
+      mockReadOnlyGet.mockReturnValue(true);
+      mockInputGet.mockReturnValue('welcome');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockInputSet.mockClear();
+      fireEvent.focus(input);
+
+      expect(mockInputSet).not.toHaveBeenCalledWith('');
+    });
+
+    it('captures the current displayed value into $lastDisplayedCommand on focus', () => {
+      mockInputGet.mockReturnValue('welcome');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockLastDisplayedSet.mockClear();
+      mockInputSet.mockClear();
+      fireEvent.focus(input);
+
+      expect(mockLastDisplayedSet).toHaveBeenCalledWith('welcome');
+      expect(mockInputSet).toHaveBeenCalledWith('');
+    });
+
+    it('does NOT touch $lastDisplayedCommand on focus when read-only', () => {
+      mockReadOnlyGet.mockReturnValue(true);
+      mockInputGet.mockReturnValue('welcome');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockLastDisplayedSet.mockClear();
+      fireEvent.focus(input);
+
+      expect(mockLastDisplayedSet).not.toHaveBeenCalled();
+    });
+
+    it('restores $terminalInput from $lastDisplayedCommand on blur (no submit)', () => {
+      mockLastDisplayedGet.mockReturnValue('welcome');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockInputSet.mockClear();
+      fireEvent.blur(input);
+
+      expect(mockInputSet).toHaveBeenCalledWith('welcome');
+    });
+
+    it('restore-on-blur is a no-op when $lastDisplayedCommand holds the just-submitted value', () => {
+      // After submit, $terminalInput === $lastDisplayedCommand === 'whoami'.
+      mockInputGet.mockReturnValue('whoami');
+      mockLastDisplayedGet.mockReturnValue('whoami');
+      render(<TerminalPrompt i18n={mockI18n} />);
+      const input = screen.getByRole('textbox');
+
+      mockInputSet.mockClear();
+      fireEvent.blur(input);
+
+      // Restore writes the same value back — single call, same value.
+      expect(mockInputSet).toHaveBeenCalledWith('whoami');
+    });
+  });
+
   describe('ref methods', () => {
     it('exposes focus method', async () => {
       const ref = createRef<TerminalPromptRef>();
@@ -206,6 +317,17 @@ describe('TerminalPrompt', () => {
 
       ref.current?.focus();
       expect(focusSpy).toHaveBeenCalled();
+    });
+
+    it('exposes blur method', async () => {
+      const ref = createRef<TerminalPromptRef>();
+      render(<TerminalPrompt i18n={mockI18n} ref={ref} />);
+
+      const input = screen.getByRole('textbox');
+      const blurSpy = vi.spyOn(input, 'blur');
+
+      ref.current?.blur();
+      expect(blurSpy).toHaveBeenCalled();
     });
 
     it('exposes scrollIntoView method', async () => {

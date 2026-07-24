@@ -9,6 +9,7 @@ import {
   $terminalHistory,
   $terminalHistoryIdx,
   $terminalHistoryVisibleIdx,
+  $lastDisplayedCommand,
   $terminalInput,
   $terminalInputReadOnly,
   $terminalKeyEvent,
@@ -61,6 +62,7 @@ function createMockKeyboardEvent(
 function resetAllStores() {
   $terminalInput.set('');
   $terminalInputReadOnly.set(false);
+  $lastDisplayedCommand.set('');
   $terminalHistory.set([]);
   $terminalHistoryIdx.set(-1);
   $terminalHistoryVisibleIdx.set(0);
@@ -155,12 +157,47 @@ describe('terminal-store', () => {
       expect(history[0].cmdName).toBe(Command.Help);
     });
 
-    it('clears input after submission', () => {
+    it('preserves input value after submission (single-prompt model)', () => {
       $terminalInput.set('help');
 
       submitTerminalInput();
 
-      expect($terminalInput.get()).toBe('');
+      expect($terminalInput.get()).toBe('help ');
+    });
+
+    it('blurs the prompt ref after submission', () => {
+      const blur = vi.fn();
+      $terminalPromptRef.set({
+        current: {
+          blur,
+          focus: vi.fn(),
+          scrollIntoView: vi.fn(),
+          setCursorToIdx: vi.fn(),
+        },
+      } as unknown as {
+        current: {
+          blur: () => void;
+          focus: () => void;
+          scrollIntoView: () => void;
+          setCursorToIdx: (index: number) => void;
+        } | null;
+      });
+      $terminalInput.set('help');
+
+      submitTerminalInput();
+
+      expect(blur).toHaveBeenCalled();
+      expect($terminalInput.get()).toBe('help ');
+    });
+
+    it('sets $lastDisplayedCommand to the submitted value before blur', () => {
+      $terminalInput.set('whoami');
+      $lastDisplayedCommand.set('welcome');
+
+      submitTerminalInput();
+
+      expect($lastDisplayedCommand.get()).toBe('whoami ');
+      expect($terminalInput.get()).toBe('whoami ');
     });
 
     it('adds entry to existing history', () => {
@@ -172,19 +209,6 @@ describe('terminal-store', () => {
       const history = $terminalHistory.get();
       expect(history).toHaveLength(2);
       expect(history[1].cmdName).toBe(Command.Contact);
-    });
-
-    it('handles clear command specially', () => {
-      $terminalHistory.set([
-        buildCommandEntry({ cmdName: Command.Help }),
-        buildCommandEntry({ cmdName: Command.Whoami }),
-      ]);
-      $terminalInput.set('clear');
-
-      submitTerminalInput();
-
-      expect($terminalHistoryVisibleIdx.get()).toBe(2);
-      expect($terminalHistory.get()).toHaveLength(2);
     });
 
     it('handles unknown command', () => {
@@ -205,6 +229,36 @@ describe('terminal-store', () => {
       const history = $terminalHistory.get();
       expect(history).toHaveLength(1);
       expect(history[0].cmdName).toBe('');
+      expect($terminalInput.get()).toBe('');
+      expect($lastDisplayedCommand.get()).toBe('');
+    });
+
+    it('appends a trailing space to the displayed value after submit', () => {
+      $terminalInput.set('welcome');
+
+      submitTerminalInput();
+
+      expect($terminalInput.get()).toBe('welcome ');
+      expect($lastDisplayedCommand.get()).toBe('welcome ');
+    });
+
+    it('does not add an extra trailing space if one is already present', () => {
+      $terminalInput.set('ls -l ');
+
+      submitTerminalInput();
+
+      expect($terminalInput.get()).toBe('ls -l ');
+      expect($lastDisplayedCommand.get()).toBe('ls -l ');
+    });
+
+    it('records the original rawInput without trailing space in history', () => {
+      $terminalInput.set('welcome');
+
+      submitTerminalInput();
+
+      const history = $terminalHistory.get();
+      expect(history).toHaveLength(1);
+      expect(history[0].rawInput).toBe('welcome');
     });
   });
 
@@ -723,7 +777,9 @@ describe('simulateInput function', () => {
     expect($terminalInput.get()).toBe('help');
 
     await vi.advanceTimersByTimeAsync(50);
-    expect($terminalInput.get()).toBe('');
+    // Single-prompt model: input value is preserved after submit (shows the
+    // command just executed); the prompt is blurred instead of cleared.
+    expect($terminalInput.get()).toBe('help ');
     expect($terminalInputReadOnly.get()).toBe(false);
 
     const history = $terminalHistory.get();

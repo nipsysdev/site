@@ -262,10 +262,6 @@ describe('terminal-utils', () => {
         );
       });
 
-      it('parses clear command', () => {
-        expect(parseTerminalEntry('clear').cmdName).toBe(Command.Clear);
-      });
-
       it('parses welcome command', () => {
         expect(parseTerminalEntry('welcome').cmdName).toBe(Command.Welcome);
       });
@@ -484,10 +480,6 @@ describe('terminal-utils', () => {
   describe('isRecognizedCommand', () => {
     it('returns true for a registered command', () => {
       expect(isRecognizedCommand(Command.Help)).toBe(true);
-    });
-
-    it('returns true for clear (registered, no output)', () => {
-      expect(isRecognizedCommand(Command.Clear)).toBe(true);
     });
 
     it('returns true for the repo-browsing commands', () => {

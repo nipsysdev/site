@@ -1,13 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildCommandEntry } from '@/__tests__/fixtures/terminal-fixtures';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
 import { $isAppReady } from '@/stores/app-store';
-import {
-  $terminalHistory,
-  $terminalHistoryVisibleIdx,
-  $terminalPromptRef,
-} from '@/stores/terminal-store';
+import { $terminalHistory, $terminalPromptRef } from '@/stores/terminal-store';
 import type { CommandEntry } from '@/types/terminal';
 import { Command } from '@/types/terminal';
 
@@ -18,9 +14,6 @@ vi.mock('@nanostores/react', () => ({
 vi.mock('@/stores/terminal-store', () => ({
   $terminalHistory: {
     get: vi.fn(() => []),
-  },
-  $terminalHistoryVisibleIdx: {
-    get: vi.fn(() => 0),
   },
   $terminalPromptRef: {
     set: vi.fn(),
@@ -45,11 +38,11 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('@/components/terminal/TerminalPrompt', () => ({
-  default: vi.fn(({ entry, i18n }) => {
+  default: vi.fn(({ entry }) => {
     const input = entry ? entry.cmdName : 'test-input';
     return (
       <div data-testid="terminal-prompt" data-entry={entry ? 'true' : 'false'}>
-        <span>{i18n('visitor')}@localhost:~$</span>
+        <span>$</span>
         <input type="text" defaultValue={input} data-readonly={!!entry} />
       </div>
     );
@@ -64,14 +57,12 @@ vi.mock('@/components/cmd-outputs/UnknownCmdOutput', () => ({
 
 describe('TerminalEmulator', () => {
   const mockHistoryGet = vi.mocked($terminalHistory.get);
-  const mockHistoryVisibleIdxGet = vi.mocked($terminalHistoryVisibleIdx.get);
   const mockPromptRefSet = vi.mocked($terminalPromptRef.set);
   const mockIsAppReadyGet = vi.mocked($isAppReady.get);
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockHistoryGet.mockReturnValue([]);
-    mockHistoryVisibleIdxGet.mockReturnValue(0);
     mockIsAppReadyGet.mockReturnValue(true);
   });
 
@@ -80,14 +71,9 @@ describe('TerminalEmulator', () => {
   });
 
   describe('rendering', () => {
-    it('renders nothing on server side (no window)', () => {
-      render(<TerminalEmulator />);
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
-
     it('renders terminal container after hydration', () => {
       render(<TerminalEmulator />);
-      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByTestId('terminal-prompt')).toBeInTheDocument();
     });
 
     it('renders main prompt', () => {
@@ -96,30 +82,38 @@ describe('TerminalEmulator', () => {
       expect(prompts.length).toBeGreaterThan(0);
     });
 
-    it('renders history entries', () => {
-      const entries: CommandEntry[] = [
-        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
-        buildCommandEntry({ cmdName: Command.Whoami, timestamp: 2000 }),
-      ];
-      mockHistoryGet.mockReturnValue(entries);
+    it('renders only the editable prompt when history is empty', () => {
+      mockHistoryGet.mockReturnValue([]);
 
       render(<TerminalEmulator />);
       const prompts = screen.getAllByTestId('terminal-prompt');
-      expect(prompts).toHaveLength(3);
+      // No history → only the editable main prompt.
+      expect(prompts).toHaveLength(1);
     });
 
-    it('respects historyVisibleIdx to slice history', () => {
+    it('renders only the editable prompt regardless of history (single-prompt model)', () => {
       const entries: CommandEntry[] = [
         buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
         buildCommandEntry({ cmdName: Command.Whoami, timestamp: 2000 }),
-        buildCommandEntry({ cmdName: Command.Contact, timestamp: 3000 }),
       ];
       mockHistoryGet.mockReturnValue(entries);
-      mockHistoryVisibleIdxGet.mockReturnValue(1);
 
       render(<TerminalEmulator />);
       const prompts = screen.getAllByTestId('terminal-prompt');
-      expect(prompts).toHaveLength(3);
+      // Single-prompt model: editable main prompt doubles as the display.
+      // The read-only echo prompt was removed; only output renders below.
+      expect(prompts).toHaveLength(1);
+    });
+
+    it('renders a single editable prompt for one entry (no echo)', () => {
+      const entries: CommandEntry[] = [
+        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
+      ];
+      mockHistoryGet.mockReturnValue(entries);
+
+      render(<TerminalEmulator />);
+      const prompts = screen.getAllByTestId('terminal-prompt');
+      expect(prompts).toHaveLength(1);
     });
   });
 
@@ -158,7 +152,7 @@ describe('TerminalEmulator', () => {
     it('renders the entry error text and no UnknownCmdOutput when entry has an error', () => {
       const entries: CommandEntry[] = [
         buildCommandEntry({
-          cmdName: Command.Clear,
+          cmdName: Command.Cd,
           output: undefined,
           error: 'boom',
           timestamp: 1000,
@@ -176,7 +170,7 @@ describe('TerminalEmulator', () => {
     it('renders nothing for a recognized command with no output and no error', () => {
       const entries: CommandEntry[] = [
         buildCommandEntry({
-          cmdName: Command.Clear,
+          cmdName: Command.Cd,
           output: undefined,
           timestamp: 1000,
         }),
@@ -207,54 +201,6 @@ describe('TerminalEmulator', () => {
     });
   });
 
-  describe('interactions', () => {
-    it('calls focus on the prompt ref when container is clicked', async () => {
-      vi.useFakeTimers();
-      render(<TerminalEmulator />);
-      const container = screen.getByRole('button');
-
-      vi.advanceTimersByTime(100);
-      expect(mockPromptRefSet).toHaveBeenCalled();
-
-      fireEvent.click(container);
-      expect(container).toBeInTheDocument();
-      vi.useRealTimers();
-    });
-
-    it('handles keyboard events on container', () => {
-      render(<TerminalEmulator />);
-      const container = screen.getByRole('button');
-
-      container.focus();
-      expect(container).toHaveFocus();
-
-      fireEvent.keyDown(container, { key: 'Enter' });
-      fireEvent.keyDown(container, { key: 'Tab' });
-
-      expect(container).toBeInTheDocument();
-      expect(container).toHaveAttribute('tabIndex', '0');
-    });
-
-    it('does not swallow Space typed in the prompt input (regression)', () => {
-      render(<TerminalEmulator />);
-      // The stubbed main prompt renders an input with defaultValue 'test-input'.
-      const input = screen.getByDisplayValue('test-input');
-
-      // Dispatch a real keydown so it bubbles to the real TerminalEmulator
-      // container handler. Without the `target === currentTarget` guard, the
-      // container's preventDefault() deletes the Space character, making it
-      // impossible to type args like `cat README.md`.
-      const event = new KeyboardEvent('keydown', {
-        key: ' ',
-        bubbles: true,
-        cancelable: true,
-      });
-      input.dispatchEvent(event);
-
-      expect(event.defaultPrevented).toBe(false);
-    });
-  });
-
   describe('store integration', () => {
     it('sets prompt ref on mount', () => {
       vi.useFakeTimers();
@@ -272,28 +218,10 @@ describe('TerminalEmulator', () => {
       mockHistoryGet.mockReturnValue(entries);
 
       render(<TerminalEmulator />);
-      expect(screen.getAllByTestId('terminal-prompt').length).toBeGreaterThan(
+      // Single-prompt model: only the editable main prompt is rendered.
+      expect(screen.getAllByTestId('terminal-prompt').length).toBeGreaterThanOrEqual(
         1,
       );
-    });
-
-    it('uses historyVisibleIdx from store', () => {
-      mockHistoryVisibleIdxGet.mockReturnValue(5);
-      render(<TerminalEmulator />);
-      expect(mockHistoryVisibleIdxGet).toHaveBeenCalled();
-    });
-  });
-
-  describe('accessibility', () => {
-    it('has button role on container', () => {
-      render(<TerminalEmulator />);
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
-
-    it('has tabIndex on container', () => {
-      render(<TerminalEmulator />);
-      const container = screen.getByRole('button');
-      expect(container).toHaveAttribute('tabIndex', '0');
     });
   });
 });
