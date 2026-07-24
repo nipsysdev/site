@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/nipsysdev/site"
   },
-  "homepage": "https://xav.gwei.site",
+  "homepage": "https://xav.dev",
   "author": "Xavier Saliniere <bonjour@xaviers.sh>",
   "engines": {
     "node": ">=22.0.0",

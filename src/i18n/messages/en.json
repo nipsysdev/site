@@ -13,12 +13,12 @@
     "ctrlc": "CTRL+C"
   },
   "Pages": {
-    "welcome": "welcome",
-    "whoami": "whoami",
-    "gallery": "gallery",
-    "status": "status",
-    "contact": "contact",
-    "resume": "resume"
+    "welcome": "Welcome",
+    "whoami": "About me",
+    "gallery": "Gallery",
+    "status": "Status",
+    "contact": "Contact",
+    "resume": "Resume"
   },
   "logosDelivery": {
     "connected": "Connected",
@@ -29,6 +29,10 @@
     "languageSelector": "Language selector",
     "switchToLightMode": "Switch to light mode",
     "switchToDarkMode": "Switch to dark mode"
+  },
+  "Footer": {
+    "availableForContracts": "Available for contracts",
+    "getInTouch": "Get in touch"
   },
   "Sidebar": {
     "p2pMessaging": "Logos Delivery",
@@ -91,9 +95,6 @@
       "cd": {
         "description": "Change the working directory"
       },
-      "clear": {
-        "description": "Clear the terminal screen"
-      },
       "contact": {
         "description": "Print contact info"
       },
@@ -124,9 +125,8 @@
     }
   },
   "Welcome": {
-    "welcome": "Hi there, I'm <name>Xav</name>! Welcome to my own little corner of cyberspace :)",
-    "siteIntro1": "This site can be browsed by clicking on the links in the side navigation.",
-    "siteIntro2": "Or, for a CLI experience... Get started with <cmd></cmd>."
+    "heroLine1": "Hi, I'm Xav.",
+    "heroLine2": "I build AI agents for customer support, workflow automation, and internal knowledge."
   },
   "BuildInfo": {
     "buildTimeLabel": "Build Time",

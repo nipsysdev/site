@@ -1,4 +1,4 @@
-# xav.gwei.site
+# xav.dev
 
 My personal portfolio website with a terminal-style interface. Navigate using
 CLI commands instead of traditional UI.
@@ -7,7 +7,7 @@ CLI commands instead of traditional UI.
 ![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-green)
 ![pnpm](https://img.shields.io/badge/pnpm-%3E%3D10-orange)
 
-**Live:** [xav.gwei.site](https://xav.gwei.site)
+**Live:** [xav.dev](https://xav.dev)
 
 ## What makes it unique
 

@@ -30,6 +30,10 @@
     "switchToLightMode": "Passer au mode jour",
     "switchToDarkMode": "Passer au mode nuit"
   },
+  "Footer": {
+    "availableForContracts": "disponible pour des contrats",
+    "getInTouch": "me contacter"
+  },
   "Sidebar": {
     "p2pMessaging": "Logos Delivery",
     "aboutSite": "À propos de ce site",
@@ -91,9 +95,6 @@
       "cd": {
         "description": "Changer le répertoire de travail"
       },
-      "clear": {
-        "description": "Effacer l'écran du terminal"
-      },
       "contact": {
         "description": "Afficher les informations de contact"
       },
@@ -124,9 +125,8 @@
     }
   },
   "Welcome": {
-    "welcome": "Bien le bonjour, je suis <name>Xav</name>! Bienvenue dans mon petit chez moi en plein cyberspace :)",
-    "siteIntro1": "Ce site peut être parcouru en cliquant sur les liens dans la navigation latérale.",
-    "siteIntro2": "Ou, pour une expérience CLI... Vous pouvez commencer avec <cmd></cmd>."
+    "heroLine1": "Bonjour, je suis Xav.",
+    "heroLine2": "Je développe des agents IA pour le support client, l'automatisation des flux de travail et la gestion des connaissances internes."
   },
   "BuildInfo": {
     "buildTimeLabel": "Date du build",
