@@ -9,7 +9,7 @@
   --light-y: 55%;
 }
 
-[data-theme='phosphor'] {
+[data-theme="phosphor"] {
   &,
   &.light {
     --lsd-primary: #078aa1; /* cyan-800 — passes AA on white with comfortable margin */

@@ -209,7 +209,6 @@
   }
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .aurora-canvas-wrap {
     opacity: 1;

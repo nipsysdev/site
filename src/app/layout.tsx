@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
 import localFont from 'next/font/local';
+import { getTranslations } from 'next-intl/server';
 import LoadSequence from '@/components/LoadSequence';
 import 'tailwindcss/index.css';
 import '@nipsys/lsd/css';
