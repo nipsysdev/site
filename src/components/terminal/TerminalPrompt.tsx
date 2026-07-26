@@ -45,7 +45,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
     const [isFocused, setIsFocused] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [scrollLeft, setScrollLeft] = useState(0);
-    const [inputWidth, setInputWidth] = useState(0);
+    const [inputWidth, setInputWidth] = useState(Infinity);
 
     const value = entry ? getTerminalEntryInput(entry) : input;
 
@@ -57,8 +57,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
 
     useEffect(() => {
       const el = inputRef.current;
-      if (!el) return;
-      setInputWidth(el.clientWidth);
+      if (!el || typeof ResizeObserver === 'undefined') return;
       const observer = new ResizeObserver(() => {
         setInputWidth(el.clientWidth);
       });

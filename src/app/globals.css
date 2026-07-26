@@ -11,23 +11,11 @@ html {
   font-family: var(--lsd-font-mono);
 }
 
-@keyframes status-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.25);
-    opacity: 0.5;
-  }
-}
-
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: var(--lsd-primary);
-  animation: status-pulse 2s ease-in-out infinite alternate;
 }
 
 @keyframes prompt-cursor-blink {
@@ -66,10 +54,6 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .status-dot {
-    animation: none;
-  }
-
   .prompt-cursor {
     animation: none;
   }
