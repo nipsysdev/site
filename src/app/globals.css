@@ -1,14 +1,20 @@
-@import "../styles/themes/phosphor.css";
+@import "../styles/themes/paper-blue.css";
 @import "../styles/aurora.css";
 
 :root {
   --lsd-font-mono:
     var(--font-ubuntu-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Legibility halo for text over the aurora — adaptive: pulls the backdrop
+     away from the text color while preserving its hue, instead of stamping the
+     flat bg color. Self-limiting (only reads where text crosses the glow).
+     Dark-mode default below; light mode overrides via .light. */
+  --text-halo: 0 0 2px rgba(246, 242, 234, 0.9);
 }
 
 html {
   font-family: var(--lsd-font-mono);
+  text-shadow: var(--text-halo);
 }
 
 .status-dot {
