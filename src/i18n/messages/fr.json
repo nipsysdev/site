@@ -28,7 +28,10 @@
   "Header": {
     "languageSelector": "Sélecteur de langue",
     "switchToLightMode": "Passer au mode jour",
-    "switchToDarkMode": "Passer au mode nuit"
+    "switchToDarkMode": "Passer au mode nuit",
+    "navigation": "Navigation",
+    "menuTrigger": "Ouvrir le menu",
+    "language": "Langue"
   },
   "Footer": {
     "availableForContracts": "disponible pour des contrats",

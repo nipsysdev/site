@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "Xavier Saliniere",
+    "title": "xav.dev",
     "description": "My personal and decentralized website"
   },
   "Core": {
@@ -28,7 +28,10 @@
   "Header": {
     "languageSelector": "Language selector",
     "switchToLightMode": "Switch to light mode",
-    "switchToDarkMode": "Switch to dark mode"
+    "switchToDarkMode": "Switch to dark mode",
+    "navigation": "Navigation",
+    "menuTrigger": "Toggle menu",
+    "language": "Language"
   },
   "Footer": {
     "availableForContracts": "Available for contracts",
