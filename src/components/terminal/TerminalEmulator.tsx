@@ -1,9 +1,8 @@
 'use client';
 
 import { useStore } from '@nanostores/react';
-import { Typography } from '@nipsys/lsd';
-import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { ScrollArea, Typography } from '@nipsys/lsd';
+import { useEffect, useState } from 'react';
 import { $isAppReady } from '@/stores/app-store';
 import { $repoTree } from '@/stores/repo-store';
 import {
@@ -13,7 +12,6 @@ import {
 } from '@/stores/terminal-store';
 import { isRecognizedCommand } from '@/utils/terminal-utils';
 import UnknownCmdOutput from '../cmd-outputs/UnknownCmdOutput';
-import TerminalPrompt, { type TerminalPromptRef } from './TerminalPrompt';
 
 interface TerminalEmulatorProps {
   initialCommand?: string;
@@ -25,11 +23,7 @@ export default function TerminalEmulator({
   const history = useStore($terminalHistory);
   const isAppReady = useStore($isAppReady);
 
-  const t = useTranslations('Terminal');
-
   const [hasWindow, setHasWindow] = useState(false);
-
-  const mainPrompt = useRef<TerminalPromptRef>(null);
 
   useEffect(() => {
     setHasWindow(typeof window !== 'undefined');
@@ -37,17 +31,8 @@ export default function TerminalEmulator({
 
   useEffect(() => {
     if (hasWindow && isAppReady) {
-      setTimeout(() => {
-        $terminalPromptRef.set(mainPrompt);
-        mainPrompt.current?.scrollIntoView();
-        mainPrompt.current?.focus();
-      }, 100);
-    }
-  }, [hasWindow, isAppReady]);
-
-  useEffect(() => {
-    if (hasWindow && isAppReady) {
       initializeTerminal(initialCommand);
+      $terminalPromptRef.get()?.current?.focus();
     }
   }, [hasWindow, isAppReady, initialCommand]);
 
@@ -60,26 +45,22 @@ export default function TerminalEmulator({
 
   return (
     hasWindow && (
-      <div className="flex flex-col size-full overflow-hidden">
-        <TerminalPrompt ref={mainPrompt} i18n={t} />
-
-        <div className="flex-1 flex overflow-y-auto p-(--lsd-spacing-largest)">
-          <div className="h-fit">
-            {currentEntry &&
-              (currentEntry.output ? (
-                <currentEntry.output entry={currentEntry} />
-              ) : currentEntry.error ? (
-                <Typography variant="body2" color="destructive">
-                  {currentEntry.error}
-                </Typography>
-              ) : isRecognizedCommand(currentEntry.cmdName) ? null : (
-                currentEntry.cmdName && (
-                  <UnknownCmdOutput cmdName={currentEntry.cmdName} />
-                )
-              ))}
-          </div>
+      <ScrollArea type="always" className="flex-1 min-h-0 w-full">
+        <div className="mx-auto w-full max-w-[1200px] px-(--lsd-spacing-base) py-(--lsd-spacing-largest)">
+          {currentEntry &&
+            (currentEntry.output ? (
+              <currentEntry.output entry={currentEntry} />
+            ) : currentEntry.error ? (
+              <Typography variant="body2" color="destructive">
+                {currentEntry.error}
+              </Typography>
+            ) : isRecognizedCommand(currentEntry.cmdName) ? null : (
+              currentEntry.cmdName && (
+                <UnknownCmdOutput cmdName={currentEntry.cmdName} />
+              )
+            ))}
         </div>
-      </div>
+      </ScrollArea>
     )
   );
 }

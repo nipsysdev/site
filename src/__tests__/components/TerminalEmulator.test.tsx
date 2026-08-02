@@ -3,7 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildCommandEntry } from '@/__tests__/fixtures/terminal-fixtures';
 import TerminalEmulator from '@/components/terminal/TerminalEmulator';
 import { $isAppReady } from '@/stores/app-store';
-import { $terminalHistory, $terminalPromptRef } from '@/stores/terminal-store';
+import {
+  $terminalHistory,
+  $terminalPromptRef,
+  initializeTerminal,
+} from '@/stores/terminal-store';
 import type { CommandEntry } from '@/types/terminal';
 import { Command } from '@/types/terminal';
 
@@ -17,6 +21,7 @@ vi.mock('@/stores/terminal-store', () => ({
   },
   $terminalPromptRef: {
     set: vi.fn(),
+    get: vi.fn(() => null),
   },
   initializeTerminal: vi.fn(),
 }));
@@ -33,22 +38,6 @@ vi.mock('@/stores/repo-store', () => ({
   },
 }));
 
-vi.mock('next-intl', () => ({
-  useTranslations: vi.fn(() => (key: string) => key),
-}));
-
-vi.mock('@/components/terminal/TerminalPrompt', () => ({
-  default: vi.fn(({ entry }) => {
-    const input = entry ? entry.cmdName : 'test-input';
-    return (
-      <div data-testid="terminal-prompt" data-entry={entry ? 'true' : 'false'}>
-        <span>$</span>
-        <input type="text" defaultValue={input} data-readonly={!!entry} />
-      </div>
-    );
-  }),
-}));
-
 vi.mock('@/components/cmd-outputs/UnknownCmdOutput', () => ({
   default: vi.fn(({ cmdName }) => (
     <div data-testid="unknown-cmd-output">Unknown command: {cmdName}</div>
@@ -57,8 +46,8 @@ vi.mock('@/components/cmd-outputs/UnknownCmdOutput', () => ({
 
 describe('TerminalEmulator', () => {
   const mockHistoryGet = vi.mocked($terminalHistory.get);
-  const mockPromptRefSet = vi.mocked($terminalPromptRef.set);
   const mockIsAppReadyGet = vi.mocked($isAppReady.get);
+  const mockInitializeTerminal = vi.mocked(initializeTerminal);
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -71,49 +60,19 @@ describe('TerminalEmulator', () => {
   });
 
   describe('rendering', () => {
-    it('renders terminal container after hydration', () => {
+    // The prompt was moved to TopNav; TerminalEmulator is now output-only.
+    it('does not render the prompt (owned by TopNav)', () => {
       render(<TerminalEmulator />);
-      expect(screen.getByTestId('terminal-prompt')).toBeInTheDocument();
+      expect(screen.queryByTestId('terminal-prompt')).not.toBeInTheDocument();
     });
 
-    it('renders main prompt', () => {
-      render(<TerminalEmulator />);
-      const prompts = screen.getAllByTestId('terminal-prompt');
-      expect(prompts.length).toBeGreaterThan(0);
-    });
-
-    it('renders only the editable prompt when history is empty', () => {
+    it('renders no output when history is empty', () => {
       mockHistoryGet.mockReturnValue([]);
 
       render(<TerminalEmulator />);
-      const prompts = screen.getAllByTestId('terminal-prompt');
-      // No history → only the editable main prompt.
-      expect(prompts).toHaveLength(1);
-    });
-
-    it('renders only the editable prompt regardless of history (single-prompt model)', () => {
-      const entries: CommandEntry[] = [
-        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
-        buildCommandEntry({ cmdName: Command.Whoami, timestamp: 2000 }),
-      ];
-      mockHistoryGet.mockReturnValue(entries);
-
-      render(<TerminalEmulator />);
-      const prompts = screen.getAllByTestId('terminal-prompt');
-      // Single-prompt model: editable main prompt doubles as the display.
-      // The read-only echo prompt was removed; only output renders below.
-      expect(prompts).toHaveLength(1);
-    });
-
-    it('renders a single editable prompt for one entry (no echo)', () => {
-      const entries: CommandEntry[] = [
-        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
-      ];
-      mockHistoryGet.mockReturnValue(entries);
-
-      render(<TerminalEmulator />);
-      const prompts = screen.getAllByTestId('terminal-prompt');
-      expect(prompts).toHaveLength(1);
+      expect(
+        screen.queryByTestId('unknown-cmd-output'),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -202,26 +161,14 @@ describe('TerminalEmulator', () => {
   });
 
   describe('store integration', () => {
-    it('sets prompt ref on mount', () => {
-      vi.useFakeTimers();
+    it('initializes the terminal on app ready', () => {
       render(<TerminalEmulator />);
-
-      vi.advanceTimersByTime(100);
-      expect(mockPromptRefSet).toHaveBeenCalled();
-      vi.useRealTimers();
+      expect(mockInitializeTerminal).toHaveBeenCalledWith('welcome');
     });
 
-    it('uses history from store', () => {
-      const entries: CommandEntry[] = [
-        buildCommandEntry({ cmdName: Command.Help, timestamp: 1000 }),
-      ];
-      mockHistoryGet.mockReturnValue(entries);
-
+    it('does not own the prompt ref (owned by TopNav)', () => {
       render(<TerminalEmulator />);
-      // Single-prompt model: only the editable main prompt is rendered.
-      expect(screen.getAllByTestId('terminal-prompt').length).toBeGreaterThanOrEqual(
-        1,
-      );
+      expect(vi.mocked($terminalPromptRef.set)).not.toHaveBeenCalled();
     });
   });
 });

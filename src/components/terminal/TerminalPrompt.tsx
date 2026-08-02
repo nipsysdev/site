@@ -106,7 +106,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
 
     return (
       <>
-        <div className="flex w-4/5 items-center gap-x-(--lsd-spacing-small) text-xl cursor-pointer opacity-80 transition-opacity duration-150 hover:opacity-100">
+        <div className="flex w-full items-center gap-x-(--lsd-spacing-small) text-lg cursor-pointer">
           <span className="leading-none text-(--lsd-primary)">$</span>
           <div className="relative flex-1">
             <input
@@ -127,7 +127,7 @@ const TerminalPrompt = forwardRef<TerminalPromptRef, Props>(
               onBeforeInput={() => $terminalHistoryIdx.set(-1)}
               onFocus={() => {
                 setIsFocused(true);
-                if (!isReadOnly) {
+                if (!$terminalInputReadOnly.get()) {
                   $lastDisplayedCommand.set($terminalInput.get());
                   $terminalInput.set('');
                 }

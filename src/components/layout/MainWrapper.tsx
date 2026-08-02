@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
+import { SidebarProvider } from '@nipsys/lsd';
+import { useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { $isAppMounted, $isAppReady } from '@/stores/app-store';
+import AppSidebar from './AppSidebar';
 import AuroraBackground from './AuroraBackground';
-import TopNav from './TopNav';
 import Footer from './Footer';
+import TopNav from './TopNav';
 
 export default function MainWrapper({
   children,
@@ -22,15 +24,18 @@ export default function MainWrapper({
   return (
     <>
       <AuroraBackground />
-      <div
-        className={`relative z-10 flex h-dvh w-screen flex-col transition-opacity duration-700 ${isAppReady ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      >
-        <TopNav />
-        <main className="mx-auto flex w-full min-h-0 max-w-[1200px] flex-1 flex-col overflow-hidden py-(--lsd-spacing-base) px-(--lsd-spacing-base)">
-          {children}
-        </main>
-        <Footer />
-      </div>
+      <SidebarProvider style={{ display: 'contents' }}>
+        <div
+          className={`relative z-10 flex h-dvh w-screen flex-col transition-opacity duration-700 ${isAppReady ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <TopNav />
+          <main className="flex w-full min-h-0 flex-1 flex-col overflow-hidden">
+            {children}
+          </main>
+          <Footer />
+        </div>
+        <AppSidebar />
+      </SidebarProvider>
       {/* TODO: Fix toaster export in @nipsys/lsd package to avoid doing all of this */}
       <Toaster
         className="lsd:toaster lsd:group"
