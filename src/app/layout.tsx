@@ -44,12 +44,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="phosphor"
+      data-theme="paper-blue"
       suppressHydrationWarning
-      className={`dark ${ubuntuMono.variable}`}
+      className={`light ${ubuntuMono.variable}`}
     >
       <head>
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#f6f2ea" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, interactive-widget=resizes-content"
