@@ -26,6 +26,7 @@ export default function AuroraBackground() {
       <div className="aurora-canvas-wrap">
         <svg
           role="presentation"
+          viewBox="0 0 1600 900"
           width="100%"
           height="100%"
           preserveAspectRatio="xMidYMid slice"
@@ -59,18 +60,44 @@ export default function AuroraBackground() {
             >
               <feTurbulence
                 type="turbulence"
-                baseFrequency="0.015 0.018"
+                baseFrequency="0.010 0.024"
                 numOctaves={4}
                 seed={7}
                 result="noise"
-              />
+              >
+                {/* Animate the noise scale so the displacement morphs the blob
+                    organically over time (lava-lamp / metaball behaviour).
+                    x and y frequencies swing WIDE + asymmetric for a pronounced,
+                    non-uniform morph. */}
+                <animate
+                  attributeName="baseFrequency"
+                  dur="14s"
+                  values="0.010 0.024; 0.026 0.012; 0.014 0.028; 0.010 0.024"
+                  keyTimes="0; 0.33; 0.66; 1"
+                  calcMode="spline"
+                  keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                  repeatCount="indefinite"
+                />
+              </feTurbulence>
               <feDisplacementMap
                 in="SourceGraphic"
                 in2="noise"
-                scale={120}
+                scale={190}
                 xChannelSelector="R"
                 yChannelSelector="G"
-              />
+              >
+                {/* Breathe the displacement depth on a different cycle than the
+                    turbulence so the blob varies in both shape AND wobble. */}
+                <animate
+                  attributeName="scale"
+                  dur="11s"
+                  values="190; 240; 140; 190"
+                  keyTimes="0; 0.33; 0.66; 1"
+                  calcMode="spline"
+                  keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                  repeatCount="indefinite"
+                />
+              </feDisplacementMap>
             </filter>
           </defs>
           <g className="aurora-light">
@@ -89,48 +116,11 @@ export default function AuroraBackground() {
       </div>
 
       {phase === 'loading' && (
-        <div className="aurora-loading-text">Please wait</div>
+        <div className="aurora-loading-text">
+          <span className="aurora-loading-text-en">Please wait</span>
+          <span className="aurora-loading-text-fr">Veuillez patienter</span>
+        </div>
       )}
-
-      {/* Layer 2: grain overlay (separate SVG so it stays SHARP, not blurred by CSS) */}
-      <svg
-        className="aurora-grain-layer"
-        aria-hidden="true"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          <filter
-            id="aurora-grain"
-            filterUnits="userSpaceOnUse"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            color-interpolation-filters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.9"
-              numOctaves={2}
-              seed={3}
-              stitchTiles="stitch"
-            />
-            <feColorMatrix type="saturate" values="0" />
-            <feComponentTransfer>
-              <feFuncR type="linear" slope="2.2" intercept="-0.6" />
-              <feFuncG type="linear" slope="2.2" intercept="-0.6" />
-              <feFuncB type="linear" slope="2.2" intercept="-0.6" />
-            </feComponentTransfer>
-          </filter>
-        </defs>
-        <rect
-          x="0"
-          y="0"
-          width="100%"
-          height="100%"
-          filter="url(#aurora-grain)"
-        />
-      </svg>
     </div>
   );
 }

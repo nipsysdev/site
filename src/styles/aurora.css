@@ -2,7 +2,6 @@
    Hybrid architecture (Pattern 5):
    - Glow lives in SVG with feTurbulence+feDisplacementMap (organic shape)
    - Blur is CSS filter on an OVERSIZED wrapper (defeats SVG viewport clipping)
-   - Grain is a SEPARATE layer so it stays sharp
    - .aurora-root { overflow: hidden } is the single clip boundary
 */
 
@@ -31,13 +30,11 @@
 
   /* Glow core alpha — dark default (electric cyan in the void). */
   --glow-alpha: 0.6;
-  --grain-alpha: 0.08;
 }
 
 /* Light mode: visibly cyan-tinted bloom on cool paper. */
 .light .aurora-root {
   --glow-alpha: 0.7;
-  --grain-alpha: 0.3;
 }
 
 /* The blurred glow layer — oversized so the soft fade happens before the clip edge. */
@@ -116,11 +113,14 @@
 /* Loading text: centered, pulses in sync with the aurora's 1.5s heavy pulse. */
 .aurora-loading-text {
   position: absolute;
+  display: grid;
+  place-items: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--lsd-primary);
-  font-size: 1rem;
+  color: var(--lsd-background);
+  text-shadow: none;
+  font-size: 1.2rem;
   letter-spacing: 0.15em;
   z-index: 1;
   pointer-events: none;
@@ -137,15 +137,33 @@
   }
 }
 
-/* Grain overlay — separate layer, stays sharp, covers viewport exactly. */
-.aurora-grain-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: var(--grain-alpha);
-  mix-blend-mode: overlay;
-  pointer-events: none;
+/* EN/FR swap synced to the 1.5s loading-text-pulse: the cycle is 3s (two
+   pulses), so each pulse shows one language. The crossfade lands at the pulse
+   trough (lowest opacity) so the language change is masked by the dimness. fr
+   is offset half a cycle (-1.5s) and starts hidden. */
+.aurora-loading-text > span {
+  grid-area: 1 / 1;
+}
+.aurora-loading-text-en {
+  animation: lang-cycle 3s ease-in-out infinite;
+}
+.aurora-loading-text-fr {
+  opacity: 0;
+  animation: lang-cycle 3s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+@keyframes lang-cycle {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  50%,
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes drift {
@@ -215,6 +233,11 @@
     animation: none !important;
   }
 
+  /* Halt the SMIL turbulence morph (display:none stops <animate>). */
+  .aurora-canvas-wrap animate {
+    display: none;
+  }
+
   .aurora-breathe {
     animation: none !important;
   }
@@ -226,5 +249,9 @@
   .aurora-loading-text {
     animation: none !important;
     opacity: 0.7;
+  }
+
+  .aurora-loading-text > span {
+    animation: none !important;
   }
 }
