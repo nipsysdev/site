@@ -8,7 +8,7 @@
   --lsd-text-secondary: #36332b;
   --lsd-background: #f6f2ea;
   --lsd-foreground: #efeadf;
-  --lsd-border: #bdb5a5;
+  --lsd-border: rgba(224, 213, 194, 0.8);
   --lsd-destructive: #b91c1c;
   --lsd-text-destructive: #b91c1c;
   --lsd-success: #047857;
