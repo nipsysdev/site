@@ -30,9 +30,9 @@ export async function generateMetadata() {
   return {
     title: tMeta('title'),
     description: tMeta('description'),
-    icons: {
-      icon: '/favicon.ico',
-    },
+    // Favicons/icons are provided via App Router file conventions:
+    // src/app/favicon.ico, src/app/icon.svg, src/app/apple-icon.png
+    // and src/app/manifest.ts. These auto-inject the <link>/<meta> tags.
   };
 }
 
@@ -50,6 +50,8 @@ export default function RootLayout({
     >
       <head>
         <meta name="theme-color" content="#f6f2ea" />
+        <meta name="application-name" content="xav.dev" />
+        <meta name="apple-mobile-web-app-title" content="xav.dev" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, interactive-widget=resizes-content"
