@@ -56,7 +56,7 @@ export default function AuroraBackground() {
               y="-25%"
               width="150%"
               height="150%"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
               <feTurbulence
                 type="turbulence"
