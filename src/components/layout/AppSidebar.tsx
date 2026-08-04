@@ -6,7 +6,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -32,16 +31,6 @@ export default function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader>
-        <Link
-          href="/"
-          className="shrink-0 text-[16px] font-semibold leading-none text-(--lsd-text-neutral) transition-colors hover:text-(--lsd-primary)"
-        >
-          <span>xav</span>
-          <span style={{ color: 'var(--lsd-primary)' }}>.</span>
-          <span>dev</span>
-        </Link>
-      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{tHeader('navigation')}</SidebarGroupLabel>
