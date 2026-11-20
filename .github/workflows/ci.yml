@@ -277,9 +277,8 @@ jobs:
       - name: Pin to Filebase
         env:
           # Filebase IPFS Pinning Service API auth: a per-bucket Secret Access
-          # Token (Bearer). FILEBASE_TOKEN is the canonical secret; falls back
-          # to FILEBASE_SECRET if the owner stored the token there.
-          FILEBASE_TOKEN: ${{ secrets.FILEBASE_TOKEN || secrets.FILEBASE_SECRET }}
+          # Token (Bearer).
+          FILEBASE_TOKEN: ${{ secrets.FILEBASE_TOKEN }}
           FILEBASE_CID: ${{ steps.deploy.outputs.cid }}
         run: |
           # Find the existing 'site' pin (PSA replace avoids duplicate pins on redeploy)
