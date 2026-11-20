@@ -248,3 +248,28 @@ jobs:
 
           echo "⚠️ TIMEOUT: Pin did not reach 'pinned' status within 60 seconds"
           exit 1
+
+      - name: Pin to Pinata
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          PINATA_CID: ${{ steps.deploy.outputs.cid }}
+        run: |
+          RESP=$(curl --silent --show-error --write-out '\n%{http_code}' \
+            --request POST \
+            --url https://api.pinata.cloud/v3/files/public/pin_by_cid \
+            --header "authorization: Bearer ${PINATA_JWT}" \
+            --header "content-type: application/json" \
+            --data "{\"cid\": \"${PINATA_CID}\", \"name\": \"site\"}")
+
+          HTTP_CODE=$(echo "$RESP" | tail -n1)
+          BODY=$(echo "$RESP" | sed '$d')
+
+          echo "Pinata pin-by-CID response (HTTP $HTTP_CODE):"
+          echo "$BODY"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Pinata pin failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+
+          echo "✅ Pin accepted by Pinata (CID: ${PINATA_CID})"
