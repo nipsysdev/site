@@ -159,9 +159,17 @@ jobs:
 
       - name: Deploy to IPFS
         id: deploy
-        uses: ipshipyard/ipfs-deploy-action@v1
+        # @v3 fetches kubo from GitHub Releases (ipfs/download-ipfs-distribution-action@v2)
+        # instead of dist.ipfs.tech, which is a recurring single point of failure,
+        # and verifies the archive sha256 against the release API digest.
+        uses: ipshipyard/ipfs-deploy-action@v3
         with:
           path-to-deploy: ./out
+          kubo-version: v0.43.1
+          # Keep the CID semantics @v1 applied by default (CIDv1, 1 MiB chunks,
+          # no raw leaves) so identical content still maps to the same CID.
+          cid-profile: ''
+          ipfs-add-options: '--cid-version 1 --chunker size-1048576'
           kubo-api-url: ${{ secrets.KUBO_API_URL }}
           kubo-api-auth: ${{ secrets.KUBO_API_AUTH }}
           github-token: ${{ github.token }}
