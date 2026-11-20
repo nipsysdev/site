@@ -187,6 +187,8 @@ jobs:
           echo "Site available at: https://xav.gwei.site"
 
       - name: Pin to 4EVERLand
+        id: four-everland
+        continue-on-error: true
         env:
           PIN_4EVER_TOKEN: ${{ secrets.PIN_4EVER_TOKEN }}
         run: |
@@ -255,31 +257,47 @@ jobs:
           exit 1
 
       - name: Pin to Pinata
+        id: pinata
+        continue-on-error: true
         env:
           PINATA_JWT: ${{ secrets.PINATA_JWT }}
           PINATA_CID: ${{ steps.deploy.outputs.cid }}
+          CAR_PATH: ${{ steps.deploy.outputs.car-path }}
         run: |
+          # CAR upload unpacks server-side and pins the contained root CID,
+          # unlike pin_by_cid which requires a paid plan
           RESP=$(curl --silent --show-error --write-out '\n%{http_code}' \
             --request POST \
-            --url https://api.pinata.cloud/v3/files/public/pin_by_cid \
+            --url https://uploads.pinata.cloud/v3/files \
             --header "authorization: Bearer ${PINATA_JWT}" \
-            --header "content-type: application/json" \
-            --data "{\"cid\": \"${PINATA_CID}\", \"name\": \"site\"}")
+            --form "network=public" \
+            --form "file=@${CAR_PATH}" \
+            --form "name=site" \
+            --form "car=true")
 
           HTTP_CODE=$(echo "$RESP" | tail -n1)
           BODY=$(echo "$RESP" | sed '$d')
 
-          echo "Pinata pin-by-CID response (HTTP $HTTP_CODE):"
+          echo "Pinata CAR upload response (HTTP $HTTP_CODE):"
           echo "$BODY"
 
           if [ "$HTTP_CODE" != "200" ]; then
-            echo "❌ Pinata pin failed with HTTP $HTTP_CODE"
+            echo "❌ Pinata CAR upload failed with HTTP $HTTP_CODE"
             exit 1
           fi
 
-          echo "✅ Pin accepted by Pinata (CID: ${PINATA_CID})"
+          RETURNED_CID=$(echo "$BODY" | jq -r '.data.cid // empty')
+
+          if [ "$RETURNED_CID" != "$PINATA_CID" ]; then
+            echo "❌ Pinata returned CID ${RETURNED_CID}, expected ${PINATA_CID}"
+            exit 1
+          fi
+
+          echo "✅ Pin accepted by Pinata (CID: ${RETURNED_CID})"
 
       - name: Pin to Filebase
+        id: filebase
+        continue-on-error: true
         env:
           # Filebase IPFS Pinning Service API auth: a per-bucket Secret Access
           # Token (Bearer).
@@ -363,3 +381,17 @@ jobs:
 
           echo "⚠️ TIMEOUT: Pin did not reach 'pinned' status within 60 seconds"
           exit 1
+
+      - name: Verify pin results
+        if: always()
+        env:
+          EVERLAND_OUTCOME: ${{ steps.four-everland.outcome }}
+          PINATA_OUTCOME: ${{ steps.pinata.outcome }}
+          FILEBASE_OUTCOME: ${{ steps.filebase.outcome }}
+        run: |
+          echo "4EVERLAND: ${EVERLAND_OUTCOME} / Pinata: ${PINATA_OUTCOME} / Filebase: ${FILEBASE_OUTCOME}"
+
+          if [ "$EVERLAND_OUTCOME" != "success" ] || [ "$PINATA_OUTCOME" != "success" ] || [ "$FILEBASE_OUTCOME" != "success" ]; then
+            echo "❌ One or more pin services failed"
+            exit 1
+          fi
