@@ -273,3 +273,89 @@ jobs:
           fi
 
           echo "✅ Pin accepted by Pinata (CID: ${PINATA_CID})"
+
+      - name: Pin to Filebase
+        env:
+          # Filebase IPFS Pinning Service API auth: a per-bucket Secret Access
+          # Token (Bearer). FILEBASE_TOKEN is the canonical secret; falls back
+          # to FILEBASE_SECRET if the owner stored the token there.
+          FILEBASE_TOKEN: ${{ secrets.FILEBASE_TOKEN || secrets.FILEBASE_SECRET }}
+          FILEBASE_CID: ${{ steps.deploy.outputs.cid }}
+        run: |
+          # Find the existing 'site' pin (PSA replace avoids duplicate pins on redeploy)
+          LIST_RESP=$(curl --silent --show-error --write-out '\n%{http_code}' \
+            --url "https://api.filebase.io/v1/ipfs/pins?name=site&match=exact&limit=1" \
+            --header "authorization: Bearer ${FILEBASE_TOKEN}")
+
+          HTTP_CODE=$(echo "$LIST_RESP" | tail -n1)
+          LIST_BODY=$(echo "$LIST_RESP" | sed '$d')
+
+          echo "Filebase pin list response (HTTP $HTTP_CODE):"
+          echo "$LIST_BODY"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Filebase pin list failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+
+          REQUESTID=$(echo "$LIST_BODY" | jq -r '.results[0].requestid // empty')
+
+          if [ -z "$REQUESTID" ]; then
+            echo "No existing pin found, creating new pin..."
+
+            PIN_RESP=$(curl --silent --show-error --write-out '\n%{http_code}' \
+              --request POST \
+              --url https://api.filebase.io/v1/ipfs/pins \
+              --header "authorization: Bearer ${FILEBASE_TOKEN}" \
+              --header "content-type: application/json" \
+              --data "{\"cid\": \"${FILEBASE_CID}\", \"name\": \"site\"}")
+          else
+            echo "Found existing pin, replacing CID (requestid: ${REQUESTID})..."
+
+            PIN_RESP=$(curl --silent --show-error --write-out '\n%{http_code}' \
+              --request POST \
+              --url "https://api.filebase.io/v1/ipfs/pins/${REQUESTID}" \
+              --header "authorization: Bearer ${FILEBASE_TOKEN}" \
+              --header "content-type: application/json" \
+              --data "{\"cid\": \"${FILEBASE_CID}\", \"name\": \"site\"}")
+          fi
+
+          HTTP_CODE=$(echo "$PIN_RESP" | tail -n1)
+          PIN_BODY=$(echo "$PIN_RESP" | sed '$d')
+
+          echo "Filebase pin response (HTTP $HTTP_CODE):"
+          echo "$PIN_BODY"
+
+          if [ "$HTTP_CODE" != "202" ]; then
+            echo "❌ Filebase pin failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+
+          REQUESTID=$(echo "$PIN_BODY" | jq -r '.requestid')
+          STATUS=$(echo "$PIN_BODY" | jq -r '.status')
+          echo "Pin accepted: REQUESTID=$REQUESTID, STATUS=$STATUS"
+
+          # Poll for pinned status (max 60 seconds)
+          echo "Waiting for pin to finalize..."
+          for i in {1..12}; do
+            STATUS_RESP=$(curl --silent --show-error \
+              --url "https://api.filebase.io/v1/ipfs/pins/${REQUESTID}" \
+              --header "authorization: Bearer ${FILEBASE_TOKEN}")
+
+            PIN_STATUS=$(echo "$STATUS_RESP" | jq -r '.status')
+            echo "Poll $i: STATUS=$PIN_STATUS"
+
+            if [ "$PIN_STATUS" = "pinned" ]; then
+              echo "✅ Pin successful! (CID: ${FILEBASE_CID})"
+              exit 0
+            elif [ "$PIN_STATUS" = "failed" ]; then
+              echo "❌ Pin failed!"
+              echo "$STATUS_RESP" | jq -r '.info'
+              exit 1
+            fi
+
+            sleep 5
+          done
+
+          echo "⚠️ TIMEOUT: Pin did not reach 'pinned' status within 60 seconds"
+          exit 1
