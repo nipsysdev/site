@@ -159,7 +159,6 @@ jobs:
 
       - name: Deploy to IPFS
         id: deploy
-        # and verifies the archive sha256 against the release API digest.
         uses: ipshipyard/ipfs-deploy-action@v3
         with:
           path-to-deploy: ./out
